@@ -20,8 +20,21 @@
   --color-primary: var(--primary);
 }
 
-.shadows {
-  box-shadow: -7px 1px 14px -4px rgba(0, 0, 0, 0.75);
-  -webkit-box-shadow: -7px 1px 14px -4px rgba(0, 0, 0, 0.75);
-  -moz-box-shadow: -7px 1px 14px -4px rgba(0, 0, 0, 0.75);
+.scrollbar-thin-primary {
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: theme("colors.primary.DEFAULT") transparent;
+}
+
+/* Chrome, Edge, Safari */
+.scrollbar-thin-primary::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-thin-primary::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-thin-primary::-webkit-scrollbar-thumb {
+  background-color: rgb(59 130 246); /* Tailwind primary (adjust if needed) */
+  border-radius: 9999px;
 }

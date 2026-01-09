@@ -3,7 +3,7 @@ import React from "react";
 
 export default function AuthLayout({ children, image }) {
   return (
-    <div className="min-h-screen bg-white flex flex-col lg:flex-row">
+    <div className="min-h-screen max-h-100 bg-white flex flex-col lg:flex-row">
       {children}
 
       <div className="lg:w-1/3 relative overflow-hidden order-first lg:order-last">
