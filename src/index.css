@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap");
+
+@font-face {
+  font-family: "ibmplex";
+  src: url("/Font/IBMPlexSans-Light.ttf") format("truetype");
+  font-weight: 300; /* match the font weight */
+  font-style: normal;
+}
+
+:root {
+  --primary: #ff7802;
+}
+
+@theme {
+  --font-bebas: "Bebas Neue", sans-serif;
+  --font-worksans: "Work Sans", sans-serif;
+  --font-ibmplex: "ibmplex", sans-serif;
+  --color-primary: var(--primary);
+}
+
+.shadows {
+  box-shadow: -7px 1px 14px -4px rgba(0, 0, 0, 0.75);
+  -webkit-box-shadow: -7px 1px 14px -4px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: -7px 1px 14px -4px rgba(0, 0, 0, 0.75);
+}
