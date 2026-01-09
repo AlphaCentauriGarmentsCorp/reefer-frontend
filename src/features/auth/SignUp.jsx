@@ -1,20 +1,25 @@
 import { useState } from "react";
 import { loginService } from "./auth.service";
 import { useAuth } from "../../hooks/useAuth";
-import { FcGoogle } from "react-icons/fc";
-import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import AuthLayout from "../../layouts/AuthLayout";
+import { Input, PhoneInput } from "../../components/Input";
 
 export default function Login() {
   const { setUser } = useAuth();
   const [form, setForm] = useState({
+    firstName: "",
+    lastName: "",
     email: "",
-    password: "",
+    contact: "",
+    street: "",
+    province: "",
+    postalCode: "",
+    barangay: "",
+    city: "",
     frontend: "ash",
   });
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
-  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -45,130 +50,165 @@ export default function Login() {
 
   return (
     <AuthLayout image={"/Auth/BG2.png"}>
-      <div className="flex-1 flex items-center justify-center p-6 lg:p-12 xl:p-16">
-        <div className="w-full max-w-xl">
-          <div className="lg:hidden text-center mb-8">
-            <h1 className="text-4xl font-bold text-black font-bebas text-center">
+      <div className="flex-1 flex items-center justify-center p-4 sm:p-6 lg:p-12 xl:p-16">
+        <div className="w-full max-w-lg md:max-w-3xl">
+          {/* Mobile Header */}
+          <div className="lg:hidden text-center mb-6 sm:mb-8">
+            <h1 className="text-3xl sm:text-4xl font-bold text-black font-bebas text-center">
               create an account
             </h1>
-            <p className="text-gray-600 font-worksans mt-2 text-center">
+            <p className="text-gray-600 font-worksans mt-2 text-center text-sm sm:text-base px-2">
               Be the first to catch the next big drop.
             </p>
           </div>
 
           {/* Desktop Header */}
-          <div className="hidden lg:block mb-8 ">
-            <h1 className="uppercase font-bebas text-6xl lg:text-7xl text-black leading-20 ">
+          <div className="hidden lg:block mb-6 lg:mb-8">
+            <h1 className="uppercase font-bebas text-5xl lg:text-6xl xl:text-7xl text-black leading-tight">
               create an account
             </h1>
-            <h2 className="text-xl text-gray-800 font-ibmplex mt-2">
+            <h2 className="text-lg lg:text-xl text-gray-800 font-ibmplex">
               Be the first to catch the next big drop.
             </h2>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-3">
-            {errors.general && (
-              <div className="p-3 rounded-lg bg-red-50 border border-red-200">
-                <p className="text-sm text-red-600 text-center">
-                  {errors.general}
-                </p>
-              </div>
-            )}
+          <form onSubmit={handleSubmit} className="space-y-4 lg:space-y-5">
+            <div className="border border-gray-200 h-[58vh] overflow-auto scrollbar-thin-primary rounded-md">
+              <div className="p-4 sm:p-6 lg:p-6 xl:p-5 rounded-lg space-y-5 lg:space-y-6">
+                <h1 className="font-worksans font-semibold text-gray-600 text-base lg:text-lg">
+                  PERSONAL INFORMATION
+                </h1>
 
-            <div className="space-y-4 lg:space-y-8 ">
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium text-gray-700 font-worksans mb-2"
-                >
-                  E-mail or username
-                </label>
-                <input
-                  id="email"
-                  type="email"
-                  name="email"
-                  placeholder="Enter your email"
-                  value={form.email}
-                  onChange={handleChange}
-                  required
-                  className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all font-worksans ${
-                    errors?.email
-                      ? "border-red-500 0"
-                      : "border-gray-300 hover:border-gray-400"
-                  }`}
-                />
+                {/* First & Last Name */}
+                <div className="flex flex-col sm:flex-row gap-3 lg:gap-4 px-2">
+                  <Input
+                    id="firstName"
+                    name="firstName"
+                    label="First name"
+                    value={form.firstName}
+                    onChange={handleChange}
+                    placeholder="Enter your first name"
+                    error={errors?.firstName}
+                    required
+                    containerClassName="flex-1"
+                  />
+                  <Input
+                    id="lastName"
+                    name="lastName"
+                    label="Last Name"
+                    value={form.lastName}
+                    onChange={handleChange}
+                    placeholder="Enter your last name"
+                    error={errors?.lastName}
+                    required
+                    containerClassName="flex-1"
+                  />
+                </div>
 
-                {errors?.email && (
-                  <p className="mt-1 text-sm text-red-600">{errors.email}</p>
-                )}
-              </div>
+                {/* Email */}
+                <div className="px-2">
+                  <Input
+                    id="email"
+                    name="email"
+                    type="email"
+                    label="E-mail"
+                    value={form.email}
+                    onChange={handleChange}
+                    placeholder="Enter your email"
+                    error={errors?.email}
+                    required
+                  />
+                </div>
 
-              <div className="relative">
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-medium text-gray-700 font-worksans mb-2"
-                >
-                  Password
-                </label>
-                <input
-                  id="password"
-                  type={showPassword ? "text" : "password"}
-                  name="password"
-                  placeholder="Enter your password"
-                  value={form.password}
-                  onChange={handleChange}
-                  required
-                  className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all font-worksans ${
-                    errors?.password
-                      ? "border-red-500 bg-red-50"
-                      : "border-gray-300 hover:border-gray-400"
-                  }`}
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-2/3 -translate-y-1/2 hover:text-primary text-gray-400"
-                >
-                  {showPassword ? (
-                    <AiFillEyeInvisible size={20} />
-                  ) : (
-                    <AiFillEye size={20} />
-                  )}
-                </button>
-                {errors?.password && (
-                  <p className="mt-1 text-sm text-red-600">{errors.password}</p>
-                )}
+                {/* Contact Number */}
+                <div className="px-2">
+                  <PhoneInput
+                    id="contact"
+                    name="contact"
+                    value={form.contact}
+                    onChange={handleChange}
+                    error={errors?.contact}
+                  />
+                </div>
+
+                {/* Address Section */}
+                <h1 className="font-worksans font-semibold text-gray-600 text-base lg:text-lg pt-2">
+                  ADDRESS
+                </h1>
+
+                {/* Street */}
+                <div className="px-2">
+                  <Input
+                    id="street"
+                    name="street"
+                    label="Street"
+                    value={form.street}
+                    onChange={handleChange}
+                    placeholder="Enter your street"
+                    error={errors?.street}
+                    required
+                  />
+                </div>
+
+                {/* Province & Postal Code */}
+                <div className="flex flex-col sm:flex-row gap-3 lg:gap-4 px-2">
+                  <Input
+                    id="province"
+                    name="province"
+                    label="Province"
+                    value={form.province}
+                    onChange={handleChange}
+                    placeholder="Enter your province"
+                    error={errors?.province}
+                    required
+                    containerClassName="flex-1"
+                  />
+                  <Input
+                    id="postalCode"
+                    name="postalCode"
+                    label="Postal Code"
+                    value={form.postalCode}
+                    onChange={handleChange}
+                    placeholder="Enter your postal code"
+                    error={errors?.postalCode}
+                    required
+                    containerClassName="flex-1"
+                  />
+                </div>
+
+                {/* Barangay & City */}
+                <div className="flex flex-col sm:flex-row gap-3 lg:gap-4 px-2">
+                  <Input
+                    id="barangay"
+                    name="barangay"
+                    label="Barangay"
+                    value={form.barangay}
+                    onChange={handleChange}
+                    placeholder="Enter your barangay"
+                    error={errors?.barangay}
+                    required
+                    containerClassName="flex-1"
+                  />
+                  <Input
+                    id="city"
+                    name="city"
+                    label="City"
+                    value={form.city}
+                    onChange={handleChange}
+                    placeholder="Enter your city"
+                    error={errors?.city}
+                    required
+                    containerClassName="flex-1"
+                  />
+                </div>
               </div>
             </div>
 
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <input
-                  type="checkbox"
-                  id="remember"
-                  className="h-4 w-4 text-primary focus:ring-primary border-gray-200 rounded"
-                />
-                <label
-                  htmlFor="remember"
-                  className="ml-2 block text-sm text-gray-700 font-worksans"
-                >
-                  Remember me
-                </label>
-              </div>
-              <div>
-                <a
-                  href="#"
-                  className="text-sm font-medium text-primary hover:text-primary/80 transition-colors font-worksans"
-                >
-                  Forgot password?
-                </a>
-              </div>
-            </div>
-
+            {/* Submit Button */}
             <button
               type="submit"
               disabled={loading}
-              className="mt-7 w-full bg-primary hover:bg-primary/90  text-white font-bold py-3 px-4 rounded-full transition-all duration-200 disabled:opacity-70 disabled:cursor-not-allowed font-worksans text-md lg:text-xl shadow-md hover:shadow-lg"
+              className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3 px-4 rounded-full transition-all duration-200 disabled:opacity-70 disabled:cursor-not-allowed font-worksans text-base lg:text-lg shadow-md hover:shadow-lg active:scale-[0.98]"
             >
               {loading ? (
                 <span className="flex items-center justify-center">
@@ -192,38 +232,17 @@ export default function Login() {
                       d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                     ></path>
                   </svg>
-                  Logging in...
+                  Creating Account...
                 </span>
               ) : (
-                "Log in"
+                "Next"
               )}
             </button>
           </form>
 
-          <div className="mt-5">
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-300"></div>
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-4 bg-white text-gray-500 font-worksans">
-                  or
-                </span>
-              </div>
-            </div>
-
-            <button
-              type="button"
-              disabled={loading}
-              className="mt-5 w-full bg-white relative border border-gray-300 hover:border-gray-400 hover:bg-gray-50 text-black font-medium py-3 px-4 rounded-full transition-all duration-200 disabled:opacity-70 disabled:cursor-not-allowed font-worksans flex items-center justify-center gap-3 text-md lg:text-lg shadow-sm hover:shadow"
-            >
-              <FcGoogle className="w-6 h-6 top-50% absolute left-5" />
-              <span>Continue with Google</span>
-            </button>
-          </div>
-
-          <div className="mt-8 text-center">
-            <p className="text-gray-600 font-worksans text-xs lg:text-base">
+          {/* Footer Links */}
+          <div className="mt-6 lg:mt-8 text-center space-y-3 lg:space-y-4">
+            <p className="text-gray-600 font-worksans text-xs sm:text-sm lg:text-base px-2">
               By continuing, you agree to our{" "}
               <a
                 href="#"
@@ -239,13 +258,13 @@ export default function Login() {
                 Privacy Policy
               </a>
             </p>
-            <p className="text-gray-600 font-worksans text-xs lg:text-base mt-2">
-              Don't have an account?{" "}
+            <p className="text-gray-600 font-worksans text-xs sm:text-sm lg:text-base">
+              Already have an account?{" "}
               <a
-                href="#"
+                href="/login"
                 className="font-medium text-primary hover:text-primary/80 transition-colors underline"
               >
-                Sign up
+                Log in
               </a>
             </p>
           </div>

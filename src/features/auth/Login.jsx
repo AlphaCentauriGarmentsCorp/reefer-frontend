@@ -2,8 +2,8 @@ import { useState } from "react";
 import { loginService } from "./auth.service";
 import { useAuth } from "../../hooks/useAuth";
 import { FcGoogle } from "react-icons/fc";
-import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import AuthLayout from "../../layouts/AuthLayout";
+import { Input, PasswordInput } from "../../components/Input";
 
 export default function Login() {
   const { setUser } = useAuth();
@@ -14,7 +14,7 @@ export default function Login() {
   });
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
-  const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -46,7 +46,8 @@ export default function Login() {
   return (
     <AuthLayout image={"/Auth/BG.png"}>
       <div className="flex-1 flex items-center justify-center p-6 lg:p-12 xl:p-16">
-        <div className="w-full max-w-xl">
+        <div className="w-full max-w-xl md:max-w-2xl">
+          {/* Mobile Header */}
           <div className="lg:hidden text-center mb-8">
             <h1 className="text-4xl font-bold text-black font-bebas text-center">
               READY TO RUN IT BACK?
@@ -58,7 +59,7 @@ export default function Login() {
 
           {/* Desktop Header */}
           <div className="hidden lg:block mb-8 text-center px-23">
-            <h1 className="uppercase font-bebas text-6xl lg:text-8xl text-black leading-20 ">
+            <h1 className="uppercase font-bebas text-6xl lg:text-8xl text-black leading-20">
               ready to run it back?
             </h1>
             <h2 className="text-xl text-gray-800 font-ibmplex mt-2">
@@ -75,70 +76,31 @@ export default function Login() {
               </div>
             )}
 
-            <div className="space-y-4 lg:space-y-8 ">
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium text-gray-700 font-worksans mb-2"
-                >
-                  E-mail or username
-                </label>
-                <input
-                  id="email"
-                  type="email"
-                  name="email"
-                  placeholder="Enter your email"
-                  value={form.email}
-                  onChange={handleChange}
-                  required
-                  className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all font-worksans ${
-                    errors?.email
-                      ? "border-red-500 0"
-                      : "border-gray-300 hover:border-gray-400"
-                  }`}
-                />
+            <div className="space-y-4 lg:space-y-8">
+              <Input
+                id="email"
+                name="email"
+                type="email"
+                label="E-mail or username"
+                value={form.email}
+                onChange={handleChange}
+                placeholder="Enter your email"
+                error={errors?.email}
+                required={true}
+                labelClassName="text-gray-600 font-worksans mb-2"
+              />
 
-                {errors?.email && (
-                  <p className="mt-1 text-sm text-red-600">{errors.email}</p>
-                )}
-              </div>
-
-              <div className="relative">
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-medium text-gray-700 font-worksans mb-2"
-                >
-                  Password
-                </label>
-                <input
-                  id="password"
-                  type={showPassword ? "text" : "password"}
-                  name="password"
-                  placeholder="Enter your password"
-                  value={form.password}
-                  onChange={handleChange}
-                  required
-                  className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all font-worksans ${
-                    errors?.password
-                      ? "border-red-500 bg-red-50"
-                      : "border-gray-300 hover:border-gray-400"
-                  }`}
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-2/3 -translate-y-1/2 hover:text-primary text-gray-400"
-                >
-                  {showPassword ? (
-                    <AiFillEyeInvisible size={20} />
-                  ) : (
-                    <AiFillEye size={20} />
-                  )}
-                </button>
-                {errors?.password && (
-                  <p className="mt-1 text-sm text-red-600">{errors.password}</p>
-                )}
-              </div>
+              <PasswordInput
+                id="password"
+                name="password"
+                label="Password"
+                value={form.password}
+                onChange={handleChange}
+                error={errors?.password}
+                placeholder="Enter your password"
+                required={true}
+                labelClassName="text-gray-600 font-worksans mb-2"
+              />
             </div>
 
             <div className="flex items-center justify-between">
@@ -146,6 +108,8 @@ export default function Login() {
                 <input
                   type="checkbox"
                   id="remember"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
                   className="h-4 w-4 text-primary focus:ring-primary border-gray-200 rounded"
                 />
                 <label
@@ -168,7 +132,7 @@ export default function Login() {
             <button
               type="submit"
               disabled={loading}
-              className="mt-7 w-full bg-primary hover:bg-primary/90  text-white font-bold py-3 px-4 rounded-full transition-all duration-200 disabled:opacity-70 disabled:cursor-not-allowed font-worksans text-md lg:text-xl shadow-md hover:shadow-lg"
+              className="mt-7 w-full bg-primary hover:bg-primary/90 text-white font-bold py-3 px-4 rounded-full transition-all duration-200 disabled:opacity-70 disabled:cursor-not-allowed font-worksans text-md lg:text-xl shadow-md hover:shadow-lg"
             >
               {loading ? (
                 <span className="flex items-center justify-center">
@@ -223,26 +187,10 @@ export default function Login() {
           </div>
 
           <div className="mt-8 text-center">
-            <p className="text-gray-600 font-worksans text-xs lg:text-base">
-              By continuing, you agree to our{" "}
-              <a
-                href="#"
-                className="font-medium text-primary hover:text-primary/80 transition-colors underline"
-              >
-                Terms
-              </a>{" "}
-              and{" "}
-              <a
-                href="#"
-                className="font-medium text-primary hover:text-primary/80 transition-colors underline"
-              >
-                Privacy Policy
-              </a>
-            </p>
             <p className="text-gray-600 font-worksans text-xs lg:text-base mt-2">
               Don't have an account?{" "}
               <a
-                href="#"
+                href="/signup"
                 className="font-medium text-primary hover:text-primary/80 transition-colors underline"
               >
                 Sign up
