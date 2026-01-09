@@ -15,7 +15,6 @@ export const AuthProvider = ({ children }) => {
       return;
     }
 
-    // If token exists, call /me to fetch user info
     meApi()
       .then((res) => setUser(res.data))
       .catch(() => {
