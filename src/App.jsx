@@ -5,6 +5,7 @@ import Login from "./features/auth/Login";
 import Dashboard from "./pages/Dashboard";
 import About from "./pages/About";
 import Signup from "./features/auth/Signup";
+import ForgotPassword from "./features/auth/ForgotPassword";
 import OTP from "./features/auth/OTP";
 
 import ProtectedRoute from "./routes/ProtectedRoute";
@@ -47,6 +48,15 @@ function App() {
           element={
             <PublicRoute>
               <OTP />
+            </PublicRoute>
+          }
+        />
+
+        <Route
+          path="/forgot-password"
+          element={
+            <PublicRoute>
+              <ForgotPassword />
             </PublicRoute>
           }
         />

@@ -29,7 +29,7 @@ export default function Signup() {
     password: "",
     confirmPassword: "",
 
-    frontend: "ash",
+    frontend: "refeer",
   });
 
   const handleChange = (e) => {
@@ -402,7 +402,6 @@ export default function Signup() {
     <AuthLayout image={"/Auth/BG2.png"}>
       <div className="flex-1 flex items-center justify-center p-4 sm:p-6 lg:p-12 xl:p-16">
         <div className="w-full max-w-lg md:max-w-3xl">
-          {/* Mobile Header */}
           <div className="lg:hidden text-center mb-6 sm:mb-8">
             <h1 className="text-3xl sm:text-4xl font-bold text-black font-bebas text-center">
               create an account
@@ -412,7 +411,6 @@ export default function Signup() {
             </p>
           </div>
 
-          {/* Desktop Header */}
           <div className="hidden lg:block mb-6 lg:mb-8">
             <h1 className="uppercase font-bebas text-5xl lg:text-6xl xl:text-7xl text-black leading-tight">
               create an account

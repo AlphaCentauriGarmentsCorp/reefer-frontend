@@ -49,19 +49,21 @@ export default function Login() {
         <div className="w-full max-w-xl md:max-w-2xl">
           <div className="lg:hidden text-center mb-8">
             <h1 className="text-4xl font-bold text-black font-bebas text-center">
-              READY TO RUN IT BACK?
+              Forgot your password?
             </h1>
             <p className="text-gray-600 font-worksans mt-2 text-center">
-              Your next step in streetwear starts here.
+              Don’t worry! Enter your email and we’ll send you a link where you
+              can reset your password.
             </p>
           </div>
 
-          <div className="hidden lg:block mb-8 text-center px-23">
-            <h1 className="uppercase font-bebas text-6xl lg:text-8xl text-black leading-20">
-              ready to run it back?
+          <div className="hidden lg:block mb-8 text-center px-15">
+            <h1 className="uppercase font-bebas text-6xl lg:text-9xl text-black leading-30">
+              Forgot your password?
             </h1>
             <h2 className="text-xl text-gray-800 font-ibmplex mt-2">
-              Your next step in streetwear starts here.
+              Don’t worry! Enter your email and we’ll send you a link where you
+              can reset your password.
             </h2>
           </div>
 
@@ -79,7 +81,7 @@ export default function Login() {
                 id="email"
                 name="email"
                 type="email"
-                label="E-mail or username"
+                label="E-mail"
                 value={form.email}
                 onChange={handleChange}
                 placeholder="Enter your email"
@@ -87,44 +89,6 @@ export default function Login() {
                 required={true}
                 labelClassName="text-gray-600 font-worksans mb-2"
               />
-
-              <PasswordInput
-                id="password"
-                name="password"
-                label="Password"
-                value={form.password}
-                onChange={handleChange}
-                error={errors?.password}
-                placeholder="Enter your password"
-                required={true}
-                labelClassName="text-gray-600 font-worksans mb-2"
-              />
-            </div>
-
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <input
-                  type="checkbox"
-                  id="remember"
-                  checked={rememberMe}
-                  onChange={(e) => setRememberMe(e.target.checked)}
-                  className="h-4 w-4 text-primary focus:ring-primary border-gray-200 rounded"
-                />
-                <label
-                  htmlFor="remember"
-                  className="ml-2 block text-sm text-gray-700 font-worksans"
-                >
-                  Remember me
-                </label>
-              </div>
-              <div>
-                <a
-                  href="/forgot-password"
-                  className="text-sm font-medium text-primary hover:text-primary/80 transition-colors font-worksans"
-                >
-                  Forgot password?
-                </a>
-              </div>
             </div>
 
             <button
@@ -154,44 +118,22 @@ export default function Login() {
                       d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                     ></path>
                   </svg>
-                  Logging in...
+                  Sending Email...
                 </span>
               ) : (
-                "Log in"
+                "Reset Password"
               )}
             </button>
           </form>
 
-          <div className="mt-5">
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-300"></div>
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-4 bg-white text-gray-500 font-worksans">
-                  or
-                </span>
-              </div>
-            </div>
-
-            <button
-              type="button"
-              disabled={loading}
-              className="mt-5 w-full bg-white relative border border-gray-300 hover:border-gray-400 hover:bg-gray-50 text-black font-medium py-3 px-4 rounded-full transition-all duration-200 disabled:opacity-70 disabled:cursor-not-allowed font-worksans flex items-center justify-center gap-3 text-md lg:text-lg shadow-sm hover:shadow"
-            >
-              <FcGoogle className="w-6 h-6 top-50% absolute left-5" />
-              <span>Continue with Google</span>
-            </button>
-          </div>
-
           <div className="mt-8 text-center">
-            <p className="text-gray-600 font-worksans text-xs lg:text-base mt-2">
-              Don't have an account?{" "}
+            <p className="text-gray-600 font-worksans text-xs lg:text-base">
+              Already have an account?{" "}
               <a
-                href="/signup"
+                href="/login"
                 className="font-medium text-primary hover:text-primary/80 transition-colors underline"
               >
-                Sign up
+                Log in
               </a>
             </p>
           </div>
