@@ -5,6 +5,11 @@ export const loginService = async (payload) => {
   return data;
 };
 
+export const registerService = async (payload) => {
+  const { data } = await register(payload);
+  return data;
+};
+
 export const verifyOtpService = async (payload) => {
   const { data } = await verifyOtpApi(payload);
   if (data.token) {
@@ -22,4 +27,3 @@ export const logoutService = async () => {
   await logoutApi();
   localStorage.removeItem("token");
 };
-

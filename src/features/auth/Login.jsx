@@ -132,7 +132,7 @@ export default function Login() {
             <button
               type="submit"
               disabled={loading}
-              className="mt-7 w-full bg-primary hover:bg-primary/90 text-white font-bold py-3 px-4 rounded-full transition-all duration-200 disabled:opacity-70 disabled:cursor-not-allowed font-worksans text-md lg:text-xl shadow-md hover:shadow-lg"
+              className="mt-7 w-full bg-primary hover:bg-primary/90 text-white font-bold py-2 lg:py-3 px-4 rounded-full transition-all duration-200 disabled:opacity-70 disabled:cursor-not-allowed font-worksans text-md text-md lg:text-xl shadow-md hover:shadow-lg"
             >
               {loading ? (
                 <span className="flex items-center justify-center">
