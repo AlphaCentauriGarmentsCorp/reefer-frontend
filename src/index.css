@@ -20,6 +20,12 @@
   --color-primary: var(--primary);
 }
 
+.shadows {
+  box-shadow: -7px 1px 14px -4px rgba(0, 0, 0, 0.75);
+  -webkit-box-shadow: -7px 1px 14px -4px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: -7px 1px 14px -4px rgba(0, 0, 0, 0.75);
+}
+
 .scrollbar-thin-primary {
   scrollbar-width: thin; /* Firefox */
   scrollbar-color: theme("colors.primary.DEFAULT") transparent;
