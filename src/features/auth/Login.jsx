@@ -26,18 +26,18 @@ export default function Login() {
     setErrors({});
 
     try {
-      const data = await loginService(form);
+      const data = await loginService({
+        ...form,
+        remember: rememberMe,
+      });
+
+      // Save token
       localStorage.setItem("token", data.token);
       setUser(data.user);
-      setErrors({});
     } catch (err) {
       const response = err.response?.data;
-
-      if (response?.errors) {
-        setErrors(response.errors);
-      } else {
-        setErrors({ general: response?.message || "Login failed" });
-      }
+      if (response?.errors) setErrors(response.errors);
+      else setErrors({ general: response?.message || "Login failed" });
     } finally {
       setLoading(false);
     }
