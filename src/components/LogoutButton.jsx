@@ -1,17 +1,17 @@
 import { useAuth } from "../hooks/useAuth";
-import { logout } from "../api/auth.api";
+import { authApi } from "../api/authApi";
 
 export default function LogoutButton() {
   const { setUser } = useAuth();
 
   const handleLogout = async () => {
     try {
-      await logout(); 
+      await authApi.logout();
     } catch (err) {
       console.error("Logout failed", err);
     } finally {
       setUser(null);
-      localStorage.removeItem("token"); 
+      localStorage.removeItem("token");
     }
   };
 
