@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { verifyOtpService, resendOtpService } from "./auth.service";
+import { authApi } from "../../api/authApi";
 import { useAuth } from "../../hooks/useAuth";
 import AuthLayout from "../../layouts/AuthLayout";
 import { useNavigate } from "react-router-dom";
@@ -30,7 +30,7 @@ export default function OTP() {
     setError("");
 
     try {
-      const data = await verifyOtpService({ otp });
+      const data = await authApi.verifyOtp({ otp });
       setUser(data.user);
       navigate("/dashboard");
     } catch (err) {
@@ -54,7 +54,10 @@ export default function OTP() {
             </p>
           </div>
 
+<<<<<<< Updated upstream
           {/* Desktop Header */}
+=======
+>>>>>>> Stashed changes
           <div className="hidden lg:block mb-8 ">
             <h1 className="uppercase font-bebas text-6xl lg:text-7xl text-black leading-20 ">
               OTP Verification

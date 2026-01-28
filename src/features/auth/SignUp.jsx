@@ -2,7 +2,12 @@ import { useState } from "react";
 import { loginService } from "./auth.service";
 import { useAuth } from "../../hooks/useAuth";
 import AuthLayout from "../../layouts/AuthLayout";
+<<<<<<< Updated upstream
 import { Input, PhoneInput } from "../../components/Input";
+=======
+import { Input, PhoneInput, PasswordInput } from "../../components/Input";
+import { authApi } from "../../api/authApi";
+>>>>>>> Stashed changes
 
 export default function Login() {
   const { setUser } = useAuth();
@@ -31,7 +36,13 @@ export default function Login() {
     setErrors({});
 
     try {
+<<<<<<< Updated upstream
       const data = await loginService(form);
+=======
+      const { confirmPassword, ...registerData } = form;
+
+      const data = await authApi.register(registerData);
+>>>>>>> Stashed changes
       localStorage.setItem("token", data.token);
       setUser(data.user);
       setErrors({});
@@ -268,6 +279,65 @@ export default function Login() {
               </a>
             </p>
           </div>
+<<<<<<< Updated upstream
+=======
+
+          <div className="flex justify-center mt-6">
+            <div className="flex items-center space-x-4">
+              {/* Step 1 */}
+              <button
+                type="button"
+                onClick={() => setStep(1)}
+                className="relative focus:outline-none group"
+              >
+                <div
+                  className={`w-3 h-3 rounded-full flex items-center justify-center transition-all duration-300 ${
+                    step === 1
+                      ? "bg-white ring-2 ring-black"
+                      : "bg-white ring-1 ring-gray-300 hover:ring-gray-400"
+                  }`}
+                >
+                  <div
+                    className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
+                      step === 1
+                        ? "bg-black"
+                        : "bg-gray-300 group-hover:bg-gray-500"
+                    }`}
+                  ></div>
+                </div>
+              </button>
+
+              {/* Step 2 */}
+              <button
+                type="button"
+                onClick={() => step === 1 && validateStep1() && setStep(2)}
+                className={`relative focus:outline-none group ${
+                  step === 1 ? "cursor-pointer" : "cursor-default"
+                }`}
+              >
+                <div
+                  className={`w-3 h-3 rounded-full flex items-center justify-center transition-all duration-300 ${
+                    step === 2
+                      ? "bg-white ring-2 ring-black"
+                      : step === 1
+                        ? "bg-white ring-1 ring-gray-300 hover:ring-gray-400"
+                        : "bg-white ring-1 ring-gray-300"
+                  }`}
+                >
+                  <div
+                    className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
+                      step === 2
+                        ? "bg-black"
+                        : step === 1
+                          ? "bg-gray-300 group-hover:bg-gray-500"
+                          : "bg-gray-300"
+                    }`}
+                  ></div>
+                </div>
+              </button>
+            </div>
+          </div>
+>>>>>>> Stashed changes
         </div>
       </div>
     </AuthLayout>

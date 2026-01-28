@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { loginService } from "./auth.service";
 import { useAuth } from "../../hooks/useAuth";
 import { FcGoogle } from "react-icons/fc";
 import AuthLayout from "../../layouts/AuthLayout";
 import { Input, PasswordInput } from "../../components/Input";
+import { authApi } from "../../api/authApi";
 
 export default function Login() {
   const { setUser } = useAuth();
@@ -26,7 +26,16 @@ export default function Login() {
     setErrors({});
 
     try {
+<<<<<<< Updated upstream
       const data = await loginService(form);
+=======
+      const data = await authApi.login({
+        ...form,
+        remember: rememberMe,
+      });
+
+      // Save token
+>>>>>>> Stashed changes
       localStorage.setItem("token", data.token);
       setUser(data.user);
       setErrors({});
