@@ -54,10 +54,6 @@ export default function OTP() {
             </p>
           </div>
 
-<<<<<<< Updated upstream
-          {/* Desktop Header */}
-=======
->>>>>>> Stashed changes
           <div className="hidden lg:block mb-8 ">
             <h1 className="uppercase font-bebas text-6xl lg:text-7xl text-black leading-20 ">
               OTP Verification

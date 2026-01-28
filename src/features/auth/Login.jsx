@@ -26,16 +26,12 @@ export default function Login() {
     setErrors({});
 
     try {
-<<<<<<< Updated upstream
-      const data = await loginService(form);
-=======
       const data = await authApi.login({
         ...form,
         remember: rememberMe,
       });
 
       // Save token
->>>>>>> Stashed changes
       localStorage.setItem("token", data.token);
       setUser(data.user);
       setErrors({});
