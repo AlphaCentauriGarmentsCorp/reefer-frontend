@@ -2,12 +2,8 @@ import { useState } from "react";
 import { loginService } from "./auth.service";
 import { useAuth } from "../../hooks/useAuth";
 import AuthLayout from "../../layouts/AuthLayout";
-<<<<<<< Updated upstream
-import { Input, PhoneInput } from "../../components/Input";
-=======
 import { Input, PhoneInput, PasswordInput } from "../../components/Input";
 import { authApi } from "../../api/authApi";
->>>>>>> Stashed changes
 
 export default function Login() {
   const { setUser } = useAuth();
@@ -36,13 +32,9 @@ export default function Login() {
     setErrors({});
 
     try {
-<<<<<<< Updated upstream
-      const data = await loginService(form);
-=======
       const { confirmPassword, ...registerData } = form;
 
       const data = await authApi.register(registerData);
->>>>>>> Stashed changes
       localStorage.setItem("token", data.token);
       setUser(data.user);
       setErrors({});
@@ -279,8 +271,6 @@ export default function Login() {
               </a>
             </p>
           </div>
-<<<<<<< Updated upstream
-=======
 
           <div className="flex justify-center mt-6">
             <div className="flex items-center space-x-4">
@@ -337,7 +327,6 @@ export default function Login() {
               </button>
             </div>
           </div>
->>>>>>> Stashed changes
         </div>
       </div>
     </AuthLayout>
