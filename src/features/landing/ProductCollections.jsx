@@ -1,4 +1,4 @@
-import ProductCard from "../Product/ProductCard";
+import ProductCard from "../../components/Product/ProductCard";
 
 const collections = [
   {
