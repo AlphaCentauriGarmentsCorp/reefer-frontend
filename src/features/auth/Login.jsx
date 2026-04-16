@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { FcGoogle } from "react-icons/fc";
 import AuthLayout from "../../layouts/AuthLayout";
@@ -6,6 +7,7 @@ import { Input, PasswordInput } from "../../components/Input";
 import { authApi } from "../../api/authApi";
 
 export default function Login() {
+  const navigate = useNavigate();
   const { setUser } = useAuth();
   const [form, setForm] = useState({
     email: "",
@@ -35,6 +37,9 @@ export default function Login() {
       localStorage.setItem("token", data.token);
       setUser(data.user);
       setErrors({});
+      
+      // Redirect to landing page
+      navigate("/");
     } catch (err) {
       const response = err.response?.data;
 

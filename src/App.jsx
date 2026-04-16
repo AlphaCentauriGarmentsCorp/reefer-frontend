@@ -4,6 +4,8 @@ import "./index.css";
 import Login from "./features/auth/Login";
 import Dashboard from "./pages/Dashboard";
 import About from "./pages/About";
+import Landing from "./pages/Landing";
+import Profile from "./pages/Profile";
 import Signup from "./features/auth/Signup";
 import OTP from "./features/auth/OTP";
 
@@ -25,43 +27,23 @@ function App() {
     <BrowserRouter>
       <Routes>
         {/* Public routes */}
-        <Route
-          path="/login"
-          element={
-            <PublicRoute>
-              <Login />
-            </PublicRoute>
-          }
-        />
-        <Route
-          path="/signup"
-          element={
-            <PublicRoute>
-              <Signup />
-            </PublicRoute>
-          }
-        />
-
-        <Route
-          path="/otp-verification"
-          element={
-            <PublicRoute>
-              <OTP />
-            </PublicRoute>
-          }
-        />
+        <Route path="/" element={<Landing />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/profile" element={<Profile />} />
+        
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/otp-verification" element={<OTP />} />
 
         {/* Protected routes */}
         <Route
-          path="/"
+          path="/dashboard"
           element={
             <ProtectedRoute>
               <Dashboard />
             </ProtectedRoute>
           }
         />
-
-        <Route path="/about" element={<About />} />
 
         {/* Catch-all */}
         <Route path="*" element={<div>Page Not Found</div>} />
