@@ -1,6 +1,9 @@
 import ProductCard from "../../components/Product/ProductCard";
+import { useNavigate } from "react-router-dom";
 
 export default function FavouritesTab() {
+  const navigate = useNavigate();
+  
   const favourites = [
     {
       id: 1,
@@ -20,6 +23,43 @@ export default function FavouritesTab() {
     }
   ];
 
+  const handleAddToCart = (product) => {
+    // Get existing cart from localStorage
+    const existingCart = JSON.parse(localStorage.getItem('cart') || '[]');
+    
+    // Create cart item
+    const cartItem = {
+      id: product.id,
+      name: product.name,
+      size: "M", // Default size
+      price: product.price,
+      quantity: 1,
+      image: product.image
+    };
+    
+    // Check if item already exists in cart
+    const existingItemIndex = existingCart.findIndex(
+      item => item.id === product.id && item.size === "M"
+    );
+    
+    if (existingItemIndex > -1) {
+      // Update quantity if item exists
+      existingCart[existingItemIndex].quantity += 1;
+    } else {
+      // Add new item
+      existingCart.push(cartItem);
+    }
+    
+    // Save to localStorage
+    localStorage.setItem('cart', JSON.stringify(existingCart));
+    
+    // Trigger cart update event
+    window.dispatchEvent(new Event('cartUpdated'));
+    
+    // Redirect to cart page
+    navigate('/cart');
+  };
+
   return (
     <div className="p-8">
       <h3 className="text-2xl font-bold mb-6">My Favourites</h3>
@@ -32,7 +72,15 @@ export default function FavouritesTab() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {favourites.map((product) => (
-            <ProductCard key={product.id} product={product} />
+            <div key={product.id} className="relative">
+              <ProductCard product={product} />
+              <button
+                onClick={() => handleAddToCart(product)}
+                className="absolute bottom-20 left-1/2 transform -translate-x-1/2 bg-orange-500 text-white px-6 py-2 rounded-full hover:bg-orange-600 transition font-semibold text-sm"
+              >
+                Add to Cart
+              </button>
+            </div>
           ))}
         </div>
       )}

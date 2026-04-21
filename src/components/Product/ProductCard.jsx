@@ -1,6 +1,11 @@
+import { Link } from "react-router-dom";
+
 export default function ProductCard({ product }) {
   return (
-    <div className="group bg-white overflow-hidden hover:shadow-lg transition-all duration-300">
+    <Link 
+      to={`/product/${product.id}`}
+      className="group bg-white overflow-hidden hover:shadow-lg transition-all duration-300 block"
+    >
       {/* Product Image Container */}
       <div className="relative aspect-square bg-gray-100 flex items-center justify-center p-8 border border-gray-200">
         <img 
@@ -44,6 +49,6 @@ export default function ProductCard({ product }) {
           ₱{product.price.toFixed(2)}
         </button>
       </div>
-    </div>
+    </Link>
   );
 }

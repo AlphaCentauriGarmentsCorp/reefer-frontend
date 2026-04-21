@@ -35,8 +35,11 @@ export default function Navbar() {
             </button>
             
             {/* Cart */}
-            <Link to="/" className="relative">
+            <Link to="/cart" className="relative">
               <FiShoppingCart className="w-5 h-5 text-gray-900 hover:text-orange-500 transition" />
+              <span className="absolute -top-2 -right-2 bg-orange-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
+                1
+              </span>
             </Link>
             
             {/* Profile Button */}
