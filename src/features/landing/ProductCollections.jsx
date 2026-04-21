@@ -37,7 +37,7 @@ const collections = [
 
 export default function ProductCollections() {
   return (
-    <section className="py-20 px-4 bg-gray-50">
+    <section className="py-20 px-4 bg-white">
       <div className="max-w-7xl mx-auto">
         <h2 className="text-5xl font-bold text-center mb-16 tracking-tight">
           Product Collections
