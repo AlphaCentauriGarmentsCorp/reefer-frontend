@@ -6,6 +6,7 @@ import Dashboard from "./pages/Dashboard";
 import About from "./pages/About";
 import Landing from "./pages/Landing";
 import Profile from "./pages/Profile";
+import HowToOrder from "./pages/HowToOrder";
 import Signup from "./features/auth/Signup";
 import OTP from "./features/auth/OTP";
 
@@ -30,6 +31,7 @@ function App() {
         <Route path="/" element={<Landing />} />
         <Route path="/about" element={<About />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/how-to-order" element={<HowToOrder />} />
         
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
