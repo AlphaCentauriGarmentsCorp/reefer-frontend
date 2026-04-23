@@ -66,11 +66,41 @@ export default function ProductDetail() {
   ];
 
   const handleAddToCart = () => {
-    console.log(`Added to cart - Size: ${selectedSize}`);
+    // Get existing cart from localStorage
+    const existingCart = JSON.parse(localStorage.getItem('cart') || '[]');
+    
+    // Create cart item
+    const cartItem = {
+      id: product.id,
+      name: product.name,
+      size: selectedSize,
+      price: product.price,
+      quantity: 1,
+      image: product.images[0]
+    };
+    
+    // Check if item already exists in cart
+    const existingItemIndex = existingCart.findIndex(
+      item => item.id === product.id && item.size === selectedSize
+    );
+    
+    if (existingItemIndex > -1) {
+      // Update quantity if item exists
+      existingCart[existingItemIndex].quantity += 1;
+    } else {
+      // Add new item
+      existingCart.push(cartItem);
+    }
+    
+    // Save to localStorage
+    localStorage.setItem('cart', JSON.stringify(existingCart));
+    
+    // Redirect to cart page
+    navigate('/cart');
   };
 
   const handleCheckout = () => {
-    console.log(`Checkout - Size: ${selectedSize}`);
+    handleAddToCart();
   };
 
   return (

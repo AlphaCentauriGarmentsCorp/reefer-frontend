@@ -1,14 +1,19 @@
+import { Link } from "react-router-dom";
+
 export default function ProductCard({ product }) {
   return (
-    <div className="group bg-white overflow-hidden hover:shadow-lg transition-all duration-300">
-      {/* Product Image Container */}
-      <div className="relative aspect-square bg-gray-100 flex items-center justify-center p-8 border border-gray-200">
+    <Link 
+      to={`/product/${product.id}`}
+      className="group bg-white overflow-hidden hover:shadow-lg transition-all duration-300 block"
+    >
+      {/* Product Image Container - Clean White Background */}
+      <div className="relative aspect-square bg-white overflow-hidden flex items-center justify-center p-4">
         <img 
           src={product.image} 
           alt={product.name}
-          className="w-full h-full object-contain"
+          className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
           onError={(e) => {
-            e.target.src = "https://via.placeholder.com/400x400/f3f4f6/9ca3af?text=REEFER";
+            e.target.src = "https://via.placeholder.com/400x400/ffffff/9ca3af?text=REEFER";
           }}
         />
         
@@ -23,7 +28,7 @@ export default function ProductCard({ product }) {
       </div>
 
       {/* Product Info */}
-      <div className="p-5 text-center bg-white border-x border-b border-gray-200">
+      <div className="p-4 text-center bg-white border-t border-gray-100">
         {/* REEFER Brand */}
         <div className="text-orange-500 font-bold text-xs tracking-wider mb-2">
           REEFER
@@ -35,7 +40,7 @@ export default function ProductCard({ product }) {
         </h3>
         
         {/* Product Type */}
-        <p className="text-xs text-gray-500 mb-4 capitalize">
+        <p className="text-xs text-gray-500 mb-3 capitalize">
           {product.type}
         </p>
         
@@ -44,6 +49,6 @@ export default function ProductCard({ product }) {
           ₱{product.price.toFixed(2)}
         </button>
       </div>
-    </div>
+    </Link>
   );
 }

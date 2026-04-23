@@ -98,7 +98,7 @@ export default function Navbar() {
               </button>
               
               {/* Cart */}
-              <Link to="/" className="relative">
+              <Link to="/cart" className="relative">
                 <FiShoppingCart className={`w-5 h-5 ${textColor} ${hoverColor} transition`} />
               </Link>
               

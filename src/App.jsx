@@ -7,6 +7,11 @@ import About from "./pages/About";
 import Landing from "./pages/Landing";
 import Profile from "./pages/Profile";
 import HowToOrder from "./pages/HowToOrder";
+import Cart from "./pages/Cart";
+import ProductDetail from "./pages/ProductDetail";
+import Shop from "./pages/Shop";
+import Sale from "./pages/Sale";
+import AllCollections from "./pages/AllCollections";
 import Signup from "./features/auth/Signup";
 import OTP from "./features/auth/OTP";
 
@@ -30,8 +35,13 @@ function App() {
         {/* Public routes */}
         <Route path="/" element={<Landing />} />
         <Route path="/about" element={<About />} />
+        <Route path="/shop" element={<Shop />} />
+        <Route path="/shop/all" element={<AllCollections />} />
+        <Route path="/shop/sale" element={<Sale />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/how-to-order" element={<HowToOrder />} />
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/product/:id" element={<ProductDetail />} />
         
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
