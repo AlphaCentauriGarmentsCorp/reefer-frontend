@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { FiShoppingCart, FiMenu, FiUser, FiSearch } from "react-icons/fi";
 import { useState, useEffect } from "react";
 import reefer2Logo from "../assets/images/reefer2.png";
@@ -6,15 +6,17 @@ import reefer2Logo from "../assets/images/reefer2.png";
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isDarkBackground, setIsDarkBackground] = useState(true);
+  const location = useLocation();
 
   useEffect(() => {
     const controlNavbar = () => {
       if (typeof window !== 'undefined') {
         const scrollY = window.scrollY;
+        const currentPath = location.pathname;
 
         // Control background and text color
-        // Past hero section (around 800px) = white navbar with black text
-        if (scrollY > 800) {
+        // If on a white background page (not landing page) or scrolled past hero section
+        if (currentPath !== '/' || scrollY > 800) {
           setIsDarkBackground(false); // White navbar, black text
         } else {
           setIsDarkBackground(true); // Transparent navbar, white text
@@ -22,19 +24,29 @@ export default function Navbar() {
       }
     };
 
+    // Run immediately when component mounts or location changes
+    controlNavbar();
+
     if (typeof window !== 'undefined') {
       window.addEventListener('scroll', controlNavbar);
       return () => {
         window.removeEventListener('scroll', controlNavbar);
       };
     }
-  }, []);
+  }, [location.pathname]); // Add location.pathname as dependency
 
   const navbarBg = isDarkBackground ? 'bg-transparent' : 'bg-white shadow-sm';
   const textColor = isDarkBackground ? 'text-white' : 'text-black';
   const hoverColor = 'hover:text-orange-500';
   const mobileMenuBg = isDarkBackground ? 'bg-black/80' : 'bg-white';
   const mobileMenuText = isDarkBackground ? 'text-white' : 'text-black';
+
+  const getNavLinkClass = (path) => {
+    const isActive = location.pathname === path;
+    const baseClass = `text-sm font-semibold transition`;
+    const activeClass = isActive ? 'text-orange-500 italic' : `${textColor} ${hoverColor}`;
+    return `${baseClass} ${activeClass}`;
+  };
 
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 ${navbarBg} transition-all duration-300`}>
@@ -50,28 +62,28 @@ export default function Navbar() {
           {/* Center - Navigation Links (spread across middle) */}
           <div className="hidden md:flex items-center justify-center flex-1 px-12">
             <div className="flex items-center justify-between w-full max-w-4xl">
-              <Link to="/" className={`text-sm font-semibold ${textColor} ${hoverColor} transition`}>
+              <Link to="/" className={getNavLinkClass('/')}>
                 Home
               </Link>
-              <Link to="/branch" className={`text-sm font-semibold ${textColor} ${hoverColor} transition`}>
+              <Link to="/branch" className={getNavLinkClass('/branch')}>
                 Branch
               </Link>
-              <Link to="/shop" className={`text-sm font-semibold ${textColor} ${hoverColor} transition`}>
+              <Link to="/shop" className={getNavLinkClass('/shop')}>
                 Shop
               </Link>
-              <Link to="/lookbook" className={`text-sm font-semibold ${textColor} ${hoverColor} transition`}>
+              <Link to="/lookbook" className={getNavLinkClass('/lookbook')}>
                 Lookbook
               </Link>
-              <Link to="/faq" className={`text-sm font-semibold ${textColor} ${hoverColor} transition`}>
+              <Link to="/faq" className={getNavLinkClass('/faq')}>
                 FAQ
               </Link>
-              <Link to="/how-to-order" className={`text-sm font-semibold ${textColor} ${hoverColor} transition`}>
+              <Link to="/how-to-order" className={getNavLinkClass('/how-to-order')}>
                 How to Order
               </Link>
-              <Link to="/size-chart" className={`text-sm font-semibold ${textColor} ${hoverColor} transition`}>
+              <Link to="/size-chart" className={getNavLinkClass('/size-chart')}>
                 Size Chart
               </Link>
-              <Link to="/about" className={`text-sm font-semibold ${textColor} ${hoverColor} transition`}>
+              <Link to="/about" className={getNavLinkClass('/about')}>
                 About
               </Link>
             </div>
