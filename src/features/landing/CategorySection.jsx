@@ -11,7 +11,7 @@ export default function CategorySection() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 h-[500px]">
           {/* Left Side - All Collections */}
           <Link 
-            to="/collections" 
+            to="/shop/all" 
             className="relative group overflow-hidden rounded-lg bg-cover bg-center"
             style={{ backgroundImage: `url(${reefer3})` }}
           >

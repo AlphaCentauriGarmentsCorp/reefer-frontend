@@ -14,6 +14,7 @@ import Sale from "./pages/Sale";
 import AllCollections from "./pages/AllCollections";
 import Signup from "./features/auth/Signup";
 import OTP from "./features/auth/OTP";
+import ScrollToTop from "./components/ScrollToTop";
 
 import ProtectedRoute from "./routes/ProtectedRoute";
 import PublicRoute from "./routes/PublicRoute";
@@ -31,6 +32,7 @@ function App() {
 
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
         {/* Public routes */}
         <Route path="/" element={<Landing />} />
