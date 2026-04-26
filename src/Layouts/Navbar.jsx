@@ -44,7 +44,7 @@ export default function Navbar() {
   const getNavLinkClass = (path) => {
     const isActive = location.pathname === path;
     const baseClass = `text-sm font-semibold transition`;
-    const activeClass = isActive ? 'text-orange-500 italic' : `${textColor} ${hoverColor}`;
+    const activeClass = isActive ? 'text-orange-500' : `${textColor} ${hoverColor}`;
     return `${baseClass} ${activeClass}`;
   };
 
