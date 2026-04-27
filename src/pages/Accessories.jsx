@@ -1,68 +1,68 @@
 import { MainLayout } from "../Layouts";
 import ProductCard from "../components/Product/ProductCard";
-import reefer5 from "../assets/images/reefer5.jpg";
+import reefer3 from "../assets/images/reefer3.jpg";
 import reefer6 from "../assets/images/reefer6.jpg";
 
-const allProducts = [
+const accessoriesProducts = [
   {
     id: 1,
-    name: "LIFE TO BE",
-    type: "Shirt",
+    name: "Coin Organizer",
+    type: "Wallet",
     price: 369.60,
     image: reefer6,
     badge: ""
   },
   {
     id: 2,
-    name: "Chill Season",
-    type: "Sando Shirt",
-    price: 369.60,
-    image: reefer6,
-    badge: ""
-  },
-  {
-    id: 3,
-    name: "TITTLE",
+    name: "LIFE TO BE",
     type: "Bag",
     price: 369.60,
     image: reefer6,
     badge: ""
   },
   {
+    id: 3,
+    name: "Coin Organizer",
+    type: "Wallet",
+    price: 369.60,
+    image: reefer6,
+    badge: ""
+  },
+  {
     id: 4,
-    name: "TITTLE",
-    type: "Hoodie",
+    name: "LIFE TO BE",
+    type: "Bag",
     price: 369.60,
     image: reefer6,
     badge: ""
   },
   {
     id: 5,
-    name: "LIFE TO BE",
-    type: "Shirt",
+    name: "Coin Organizer",
+    type: "Wallet",
     price: 369.60,
     image: reefer6,
     badge: ""
   },
   {
     id: 6,
-    name: "TITTLE",
-    type: "Hoodie",
+    name: "LIFE TO BE",
+    type: "Bag",
     price: 369.60,
     image: reefer6,
     badge: ""
   },
   {
     id: 7,
-    name: "Chill Season",
-    type: "Sando Shirt",
+    name: "Coin Organizer",
+    type: "Wallet",
     price: 369.60,
     image: reefer6,
     badge: ""
   },
   {
     id: 8,
-    name: "TITTLE",
+    name: "LIFE TO BE",
     type: "Bag",
     price: 369.60,
     image: reefer6,
@@ -70,15 +70,15 @@ const allProducts = [
   },
   {
     id: 9,
-    name: "Chill Season",
-    type: "Sando Shirt",
+    name: "Coin Organizer",
+    type: "Wallet",
     price: 369.60,
     image: reefer6,
     badge: ""
   },
   {
     id: 10,
-    name: "TITTLE",
+    name: "LIFE TO BE",
     type: "Bag",
     price: 369.60,
     image: reefer6,
@@ -86,8 +86,8 @@ const allProducts = [
   },
   {
     id: 11,
-    name: "TITTLE",
-    type: "Hoodie",
+    name: "Coin Organizer",
+    type: "Wallet",
     price: 369.60,
     image: reefer6,
     badge: ""
@@ -95,14 +95,14 @@ const allProducts = [
   {
     id: 12,
     name: "LIFE TO BE",
-    type: "Shirt",
+    type: "Bag",
     price: 369.60,
     image: reefer6,
     badge: ""
   }
 ];
 
-export default function AllCollections() {
+export default function Accessories() {
   return (
     <MainLayout>
       <div className="min-h-screen bg-white">
@@ -110,7 +110,7 @@ export default function AllCollections() {
         <div 
           className="relative h-96 bg-cover bg-center flex items-center justify-center"
           style={{ 
-            backgroundImage: `url(${reefer5})`,
+            backgroundImage: `url(${reefer3})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center center'
           }}
@@ -126,7 +126,7 @@ export default function AllCollections() {
               textShadow: '2px 2px 8px rgba(0,0,0,0.5)'
             }}
           >
-            T-Shirt Collections
+            Accessories Collections
           </h1>
         </div>
 
@@ -135,7 +135,7 @@ export default function AllCollections() {
           <div className="max-w-7xl mx-auto">
             {/* Products Grid */}
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-12">
-              {allProducts.map((product) => (
+              {accessoriesProducts.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
             </div>

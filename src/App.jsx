@@ -12,6 +12,8 @@ import ProductDetail from "./pages/ProductDetail";
 import Shop from "./pages/Shop";
 import Sale from "./pages/Sale";
 import AllCollections from "./pages/AllCollections";
+import SummerVibes from "./pages/SummerVibes";
+import Accessories from "./pages/Accessories";
 import Signup from "./features/auth/Signup";
 import OTP from "./features/auth/OTP";
 import ScrollToTop from "./components/ScrollToTop";
@@ -39,6 +41,8 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/shop" element={<Shop />} />
         <Route path="/shop/all" element={<AllCollections />} />
+        <Route path="/shop/summer-vibes" element={<SummerVibes />} />
+        <Route path="/shop/accessories" element={<Accessories />} />
         <Route path="/shop/sale" element={<Sale />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/how-to-order" element={<HowToOrder />} />
