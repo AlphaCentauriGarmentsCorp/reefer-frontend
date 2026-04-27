@@ -1,5 +1,8 @@
 import { MainLayout } from "../Layouts";
 import { Link } from "react-router-dom";
+import allCollection from "../assets/images/all collection.jpg";
+import tshirtCollections from "../assets/images/T-shirt Collections.jpg";
+import summerVibes from "../assets/images/Summer-vibes.jpg";
 import reefer3 from "../assets/images/reefer3.jpg";
 import reefer4 from "../assets/images/reefer4.jpg";
 import reefer5 from "../assets/images/reefer5.jpg";
@@ -11,13 +14,13 @@ const categories = [
   {
     id: 1,
     name: "All Collections",
-    image: reefer3, // What you wanted - swapped with t-shirt
+    image: allCollection,
     link: "/shop/all"
   },
   {
     id: 2,
     name: "T-shirt",
-    image: reefer5, // What you wanted - swapped with all collections
+    image: tshirtCollections,
     link: "/shop/t-shirt"
   },
   {
@@ -35,7 +38,7 @@ const categories = [
   {
     id: 5,
     name: "Summer Vibes",
-    image: reefer4,
+    image: summerVibes,
     link: "/shop/summer-vibes"
   },
   {
@@ -71,7 +74,7 @@ const categories = [
   {
     id: 11,
     name: "Accessories",
-    image: reefer4, // What you wanted - swapped with t-shirt originally
+    image: reefer4,
     link: "/shop/accessories"
   },
   {
@@ -142,9 +145,13 @@ export default function Shop() {
 
           {/* Load More Button */}
           <div className="text-center">
-            <button className="bg-black text-white px-12 py-3 hover:bg-gray-800 transition text-sm font-semibold" style={{ letterSpacing: '0.05em' }}>
+            <Link 
+              to="/shop/all"
+              className="bg-black text-white px-12 py-3 hover:bg-gray-800 transition text-sm font-semibold inline-block"
+              style={{ letterSpacing: '0.05em' }}
+            >
               Load More
-            </button>
+            </Link>
           </div>
         </div>
       </div>

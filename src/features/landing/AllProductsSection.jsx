@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useState } from "react";
 import ProductCard from "../../components/Product/ProductCard";
 import reefer6 from "../../assets/images/reefer6.jpg";
 
@@ -102,6 +103,14 @@ const allProducts = [
 ];
 
 export default function AllProductsSection() {
+  const [visibleCount, setVisibleCount] = useState(12);
+
+  const loadMore = () => {
+    setVisibleCount(prev => prev + 12);
+  };
+
+  const displayedProducts = allProducts.slice(0, visibleCount);
+
   return (
     <section className="py-20 px-4 bg-white">
       <div className="max-w-7xl mx-auto">
@@ -110,20 +119,22 @@ export default function AllProductsSection() {
         </h2>
         
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-          {allProducts.map((product) => (
+          {displayedProducts.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
 
         {/* Load More Button */}
-        <div className="text-center mb-8">
-          <Link 
-            to="/shop"
-            className="bg-black text-white px-8 py-3 font-semibold hover:bg-gray-800 transition inline-block"
-          >
-            Load More
-          </Link>
-        </div>
+        {visibleCount < allProducts.length && (
+          <div className="text-center mb-8">
+            <button 
+              onClick={loadMore}
+              className="bg-black text-white px-8 py-3 font-semibold hover:bg-gray-800 transition"
+            >
+              Load More
+            </button>
+          </div>
+        )}
 
         {/* Shop All Collections Button */}
         <div className="text-center">

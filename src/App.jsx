@@ -4,6 +4,9 @@ import "./index.css";
 import Login from "./features/auth/Login";
 import Dashboard from "./pages/Dashboard";
 import About from "./pages/About";
+import AboutProfile from "./pages/AboutProfile";
+import AboutVideos from "./pages/AboutVideos";
+import AboutContact from "./pages/AboutContact";
 import Landing from "./pages/Landing";
 import Profile from "./pages/Profile";
 import HowToOrder from "./pages/HowToOrder";
@@ -42,6 +45,9 @@ function App() {
         {/* Public routes */}
         <Route path="/" element={<Landing />} />
         <Route path="/about" element={<About />} />
+        <Route path="/about/profile" element={<AboutProfile />} />
+        <Route path="/about/videos" element={<AboutVideos />} />
+        <Route path="/about/contact" element={<AboutContact />} />
         <Route path="/lookbook" element={<Lookbook />} />
         <Route path="/faq" element={<FAQ />} />
         <Route path="/size-chart" element={<SizeChart />} />

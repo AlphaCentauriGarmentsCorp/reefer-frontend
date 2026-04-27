@@ -26,7 +26,7 @@ export default function CategorySection() {
           <div className="grid grid-cols-1 gap-4">
             {/* Top Right - Accessories */}
             <Link 
-              to="/accessories" 
+              to="/shop/accessories" 
               className="relative group overflow-hidden rounded-lg bg-cover bg-center h-[240px]"
               style={{ backgroundImage: `url(${reefer4})` }}
             >
@@ -41,7 +41,7 @@ export default function CategorySection() {
             <div className="grid grid-cols-2 gap-4 h-[240px]">
               {/* Hoodies */}
               <Link 
-                to="/hoodies" 
+                to="/shop/hoodies" 
                 className="relative group overflow-hidden rounded-lg bg-cover bg-center"
                 style={{ backgroundImage: `url(${reefer5})` }}
               >
@@ -53,7 +53,7 @@ export default function CategorySection() {
 
               {/* T-Shirt */}
               <Link 
-                to="/t-shirts" 
+                to="/shop/t-shirts" 
                 className="relative group overflow-hidden rounded-lg bg-cover bg-center"
                 style={{ backgroundImage: `url(${reefer7})` }}
               >

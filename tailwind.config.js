@@ -5,6 +5,11 @@ export default {
     extend: {
       colors: {
         primary: "var(--primary)",
+        reefer: {
+          orange: '#FF6B35',
+          black: '#0A0A0A',
+          darkgray: '#1A1A1A',
+        },
       },
     },
   },

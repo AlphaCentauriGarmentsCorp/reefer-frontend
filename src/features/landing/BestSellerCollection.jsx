@@ -1,5 +1,8 @@
 import ProductCard from "../../components/Product/ProductCard";
 import reefer6 from "../../assets/images/reefer6.jpg";
+import reefer7 from "../../assets/images/reefer7.jpg";
+import reefer8 from "../../assets/images/reefer8.jpg";
+import reefer5 from "../../assets/images/reefer5.jpg";
 
 const bestSellers = [
   {
@@ -15,7 +18,7 @@ const bestSellers = [
     name: "THE PRAYER",
     type: "Shirt",
     price: 365.00,
-    image: reefer6,
+    image: reefer7,
     badge: "Bestseller"
   },
   {
@@ -23,7 +26,7 @@ const bestSellers = [
     name: "PROFESSOR",
     type: "Shirt",
     price: 307.12,
-    image: reefer6,
+    image: reefer8,
     badge: "Bestseller"
   },
   {
@@ -31,7 +34,7 @@ const bestSellers = [
     name: "HIGH TOP",
     type: "Shirt",
     price: 307.12,
-    image: reefer6,
+    image: reefer5,
     badge: "Bestseller"
   }
 ];
