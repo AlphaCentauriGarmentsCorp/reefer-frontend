@@ -14,6 +14,9 @@ import Sale from "./pages/Sale";
 import AllCollections from "./pages/AllCollections";
 import SummerVibes from "./pages/SummerVibes";
 import Accessories from "./pages/Accessories";
+import Lookbook from "./pages/Lookbook";
+import FAQ from "./pages/FAQ";
+import SizeChart from "./pages/SizeChart";
 import Signup from "./features/auth/Signup";
 import OTP from "./features/auth/OTP";
 import ScrollToTop from "./components/ScrollToTop";
@@ -39,6 +42,9 @@ function App() {
         {/* Public routes */}
         <Route path="/" element={<Landing />} />
         <Route path="/about" element={<About />} />
+        <Route path="/lookbook" element={<Lookbook />} />
+        <Route path="/faq" element={<FAQ />} />
+        <Route path="/size-chart" element={<SizeChart />} />
         <Route path="/shop" element={<Shop />} />
         <Route path="/shop/all" element={<AllCollections />} />
         <Route path="/shop/summer-vibes" element={<SummerVibes />} />
