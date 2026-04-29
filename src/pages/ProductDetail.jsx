@@ -248,10 +248,10 @@ export default function ProductDetail() {
         </div>
 
         {/* LOWER PART - Recommendations Section */}
-        <div className="bg-black text-white py-16 px-8">
+        <div className="bg-white py-16 px-8">
           <div className="max-w-7xl mx-auto">
             {/* Section Title */}
-            <h2 className="text-4xl font-bold mb-12 uppercase tracking-wider">RECOMMENDATION</h2>
+            <h2 className="text-4xl font-bold mb-12 uppercase tracking-wider text-black">RECOMMENDATION</h2>
 
             {/* Product Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -262,7 +262,7 @@ export default function ProductDetail() {
                     navigate(`/product/${rec.id}`);
                     window.scrollTo(0, 0);
                   }}
-                  className="bg-white overflow-hidden hover:shadow-xl transition-all cursor-pointer group"
+                  className="bg-white overflow-hidden hover:shadow-xl transition-all cursor-pointer group border border-gray-200"
                 >
                   {/* Product Image Container */}
                   <div className="relative bg-white aspect-square overflow-hidden flex flex-col items-center justify-center p-8">

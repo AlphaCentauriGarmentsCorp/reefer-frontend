@@ -53,7 +53,7 @@ export default function CategorySection() {
 
               {/* T-Shirt */}
               <Link 
-                to="/shop/t-shirts" 
+                to="/shop/t-shirt" 
                 className="relative group overflow-hidden rounded-lg bg-cover bg-center"
                 style={{ backgroundImage: `url(${reefer7})` }}
               >
