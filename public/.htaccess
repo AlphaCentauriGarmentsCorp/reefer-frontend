@@ -1,0 +1,40 @@
+# REEFER storefront (Vite SPA) — Apache/LiteSpeed config for Hostinger
+# This file MUST sit in public_html, next to index.html.
+
+# ---- SPA fallback: serve index.html for any client-side route ----
+# Without this, refreshing or deep-linking /shop, /faq, etc. returns a 404
+# from the server before React Router ever loads.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # SSL is already active on reeferclothing.com. Uncomment to FORCE https:
+  # RewriteCond %{HTTPS} !=on
+  # RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+  # Never rewrite requests for real files or directories (assets, images, etc.)
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # Everything else -> the SPA entry point
+  RewriteRule ^ index.html [L]
+</IfModule>
+
+# ---- Caching ----
+# Hashed assets (index-<hash>.js/css, images) never change content, so cache hard.
+# index.html points at the current hashes, so it must always revalidate — otherwise
+# users get a stale page after you redeploy.
+<IfModule mod_headers.c>
+  <FilesMatch "\.(?:css|js|jpg|jpeg|png|webp|svg|ico|ttf|woff2?)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  <FilesMatch "^index\.html$">
+    Header set Cache-Control "no-cache, must-revalidate"
+  </FilesMatch>
+</IfModule>
+
+# ---- Compression ----
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css application/javascript application/json image/svg+xml font/ttf
+</IfModule>
