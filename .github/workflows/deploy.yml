@@ -32,30 +32,37 @@ jobs:
       - name: Deploy dist/ to Hostinger via rsync over SSH
         env:
           SSH_PRIVATE_KEY: ${{ secrets.HOSTINGER_SSH_KEY }}
-          SSH_HOST: ${{ secrets.HOSTINGER_SSH_HOST }}
-          SSH_PORT: ${{ secrets.HOSTINGER_SSH_PORT }}
-          SSH_USER: ${{ secrets.HOSTINGER_SSH_USER }}
+          RAW_HOST: ${{ secrets.HOSTINGER_SSH_HOST }}
+          RAW_PORT: ${{ secrets.HOSTINGER_SSH_PORT }}
+          RAW_USER: ${{ secrets.HOSTINGER_SSH_USER }}
           TARGET_DIR: domains/reeferclothing.com/public_html
         run: |
           set -euo pipefail
 
+          # Strip ALL whitespace (spaces, tabs, CR, LF) from the connection values
+          HOST="$(printf '%s' "$RAW_HOST" | tr -d '[:space:]')"
+          PORT="$(printf '%s' "$RAW_PORT" | tr -d '[:space:]')"
+          USER="$(printf '%s' "$RAW_USER" | tr -d '[:space:]')"
+
+          # Show exactly what we're using (lengths reveal any hidden chars)
+          echo "HOST=[$HOST] len=${#HOST}"
+          echo "PORT=[$PORT] len=${#PORT}"
+          echo "USER=[$USER] len=${#USER}"
+
           mkdir -p ~/.ssh
+          # Write the key and FORCE a trailing newline
           printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
-
-          # Fail loudly if the key secret is malformed (prints the public half only)
           ssh-keygen -y -f ~/.ssh/deploy_key > /dev/null && echo "deploy key parsed OK"
 
-          # Auth + connectivity check (host key auto-accepted; errors are NOT hidden this time)
-          ssh -i ~/.ssh/deploy_key -p "$SSH_PORT" \
+          ssh -i ~/.ssh/deploy_key -p "$PORT" \
               -o IdentitiesOnly=yes \
               -o StrictHostKeyChecking=accept-new \
-              "$SSH_USER@$SSH_HOST" "echo SSH_OK; which rsync"
+              "${USER}@${HOST}" "echo SSH_OK; which rsync"
 
-          # Mirror the build into public_html
           rsync -avz --delete \
-            -e "ssh -i ~/.ssh/deploy_key -p $SSH_PORT -o IdentitiesOnly=yes -o StrictHostKeyChecking=accept-new" \
-            dist/ "$SSH_USER@$SSH_HOST:$TARGET_DIR/"
+            -e "ssh -i ~/.ssh/deploy_key -p $PORT -o IdentitiesOnly=yes -o StrictHostKeyChecking=accept-new" \
+            dist/ "${USER}@${HOST}:${TARGET_DIR}/"
 
       - name: Done
         run: echo "Deployed to https://reeferclothing.com"
