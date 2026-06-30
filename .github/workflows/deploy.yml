@@ -38,12 +38,23 @@ jobs:
           TARGET_DIR: domains/reeferclothing.com/public_html
         run: |
           set -euo pipefail
+
           mkdir -p ~/.ssh
           printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
-          ssh-keyscan -p "$SSH_PORT" "$SSH_HOST" >> ~/.ssh/known_hosts 2>/dev/null
+
+          # Fail loudly if the key secret is malformed (prints the public half only)
+          ssh-keygen -y -f ~/.ssh/deploy_key > /dev/null && echo "deploy key parsed OK"
+
+          # Auth + connectivity check (host key auto-accepted; errors are NOT hidden this time)
+          ssh -i ~/.ssh/deploy_key -p "$SSH_PORT" \
+              -o IdentitiesOnly=yes \
+              -o StrictHostKeyChecking=accept-new \
+              "$SSH_USER@$SSH_HOST" "echo SSH_OK; which rsync"
+
+          # Mirror the build into public_html
           rsync -avz --delete \
-            -e "ssh -i ~/.ssh/deploy_key -p $SSH_PORT" \
+            -e "ssh -i ~/.ssh/deploy_key -p $SSH_PORT -o IdentitiesOnly=yes -o StrictHostKeyChecking=accept-new" \
             dist/ "$SSH_USER@$SSH_HOST:$TARGET_DIR/"
 
       - name: Done
