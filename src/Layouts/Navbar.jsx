@@ -3,7 +3,6 @@ import { FiShoppingCart, FiMenu, FiSearch } from "react-icons/fi";
 import { useState, useEffect } from "react";
 import reeferLogoWhite from "../assets/images/REEFER_LOGO_WHITE.webp";
 import reeferFullname from "../assets/images/REEFER-fullnamem.png";
-import profileImage from "../assets/images/1.jpg";
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -100,15 +99,8 @@ export default function Navbar() {
                 <FiShoppingCart className={`w-5 h-5 ${iconColor} hover:text-reefer-orange transition`} />
               </Link>
               
-              {/* Profile Button with Image */}
-              <Link to="/profile" className="relative">
-                <img 
-                  src={profileImage} 
-                  alt="Profile" 
-                  className="w-8 h-8 rounded-full object-cover border-2 border-transparent hover:border-reefer-orange transition"
-                />
-              </Link>
-              
+              {/* Account hidden for coming-soon launch */}
+
               {/* Mobile menu button */}
               <button 
                 className="md:hidden"
