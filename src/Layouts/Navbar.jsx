@@ -7,6 +7,7 @@ import reeferFullname from "../assets/images/REEFER-fullnamem.png";
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [cartCount, setCartCount] = useState(0);
   const location = useLocation();
   
   // Pages with hero/header images that should have transparent navbar at top
@@ -20,6 +21,29 @@ export default function Navbar() {
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Live cart count - reads localStorage, updates on cartUpdated + cross-tab storage events
+  useEffect(() => {
+    const updateCartCount = () => {
+      try {
+        const savedCart = JSON.parse(localStorage.getItem('cart') || '[]');
+        const count = Array.isArray(savedCart)
+          ? savedCart.reduce((sum, item) => sum + (Number(item.quantity) || 0), 0)
+          : 0;
+        setCartCount(count);
+      } catch {
+        setCartCount(0);
+      }
+    };
+
+    updateCartCount();
+    window.addEventListener('cartUpdated', updateCartCount);
+    window.addEventListener('storage', updateCartCount);
+    return () => {
+      window.removeEventListener('cartUpdated', updateCartCount);
+      window.removeEventListener('storage', updateCartCount);
+    };
   }, []);
 
   // Pages with header: transparent when at top, white when scrolled
@@ -97,6 +121,11 @@ export default function Navbar() {
               {/* Cart */}
               <Link to="/cart" className="relative">
                 <FiShoppingCart className={`w-5 h-5 ${iconColor} hover:text-reefer-orange transition`} />
+                {cartCount > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-reefer-orange text-white text-[10px] leading-none rounded-full min-w-[18px] h-[18px] px-1 flex items-center justify-center font-bold">
+                    {cartCount > 99 ? '99+' : cartCount}
+                  </span>
+                )}
               </Link>
               
               {/* Account hidden for coming-soon launch */}

@@ -17,12 +17,14 @@ export default function Cart() {
     );
     setCartItems(updatedCart);
     localStorage.setItem('cart', JSON.stringify(updatedCart));
+    window.dispatchEvent(new Event('cartUpdated'));
   };
 
   const removeItem = (id) => {
     const updatedCart = cartItems.filter(item => item.id !== id);
     setCartItems(updatedCart);
     localStorage.setItem('cart', JSON.stringify(updatedCart));
+    window.dispatchEvent(new Event('cartUpdated'));
   };
 
   const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
@@ -132,9 +134,9 @@ export default function Cart() {
                   <button className="flex-1 bg-black text-white py-4 hover:bg-gray-800 transition text-base font-semibold" style={{ letterSpacing: '0.05em' }}>
                     Checkout Now
                   </button>
-                  <button className="flex-1 border-2 border-black text-black py-4 hover:bg-black hover:text-white transition text-base font-semibold" style={{ letterSpacing: '0.05em' }}>
-                    Checkout Now
-                  </button>
+                  <Link to="/" className="flex-1 border-2 border-black text-black py-4 hover:bg-black hover:text-white transition text-base font-semibold text-center" style={{ letterSpacing: '0.05em' }}>
+                    Continue Shopping
+                  </Link>
                 </div>
               </div>
             </>

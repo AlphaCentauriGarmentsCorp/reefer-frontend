@@ -126,6 +126,7 @@ function QuickViewContent({ product, onClose }) {
     }
     
     localStorage.setItem('cart', JSON.stringify(existingCart));
+    window.dispatchEvent(new Event('cartUpdated'));
     onClose();
     alert('Added to cart!');
   };

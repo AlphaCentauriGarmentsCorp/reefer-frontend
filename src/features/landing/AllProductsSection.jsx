@@ -145,6 +145,7 @@ export default function AllProductsSection() {
     }
     
     localStorage.setItem('cart', JSON.stringify(existingCart));
+    window.dispatchEvent(new Event('cartUpdated'));
     setQuickViewProduct(null);
     alert('Added to cart!');
   };

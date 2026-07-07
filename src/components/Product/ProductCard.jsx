@@ -28,6 +28,7 @@ export default function ProductCard({ product, onQuickView, isQuickViewOpen }) {
     }
     
     localStorage.setItem('cart', JSON.stringify(existingCart));
+    window.dispatchEvent(new Event('cartUpdated'));
     alert('Added to cart!');
   };
 

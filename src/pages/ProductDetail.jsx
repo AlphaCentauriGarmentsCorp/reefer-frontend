@@ -132,6 +132,7 @@ export default function ProductDetail() {
     
     // Save to localStorage
     localStorage.setItem('cart', JSON.stringify(existingCart));
+    window.dispatchEvent(new Event('cartUpdated'));
     
     // Redirect to cart page
     navigate('/cart');
