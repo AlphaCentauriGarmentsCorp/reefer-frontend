@@ -1,6 +1,8 @@
 import { Link, useLocation } from "react-router-dom";
 import { FiShoppingCart, FiMenu, FiSearch } from "react-icons/fi";
 import { useState, useEffect } from "react";
+import { useAuth } from "../hooks/useAuth";
+import { authApi } from "../api/authApi";
 import reeferLogoWhite from "../assets/images/REEFER_LOGO_WHITE.webp";
 import reeferFullname from "../assets/images/REEFER-fullnamem.png";
 
@@ -9,7 +11,18 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [cartCount, setCartCount] = useState(0);
   const location = useLocation();
-  
+  const { user, setUser } = useAuth();
+
+  const handleLogout = async () => {
+    try {
+      await authApi.logout();
+    } catch {
+      // ignore network/logout errors; clear the local session regardless
+    }
+    setUser(null);
+    localStorage.removeItem("token");
+  };
+
   // Pages with hero/header images that should have transparent navbar at top
   const pagesWithHeader = ['/', '/about', '/faq'];
   const hasHeader = pagesWithHeader.includes(location.pathname);
@@ -128,7 +141,22 @@ export default function Navbar() {
                 )}
               </Link>
               
-              {/* Account hidden for coming-soon launch */}
+              {/* Account: Login when logged out, Logout when logged in */}
+              {user ? (
+                <button
+                  onClick={handleLogout}
+                  className={`text-sm font-semibold ${iconColor} hover:text-reefer-orange transition`}
+                >
+                  Logout
+                </button>
+              ) : (
+                <Link
+                  to="/login"
+                  className={`text-sm font-semibold ${iconColor} hover:text-reefer-orange transition`}
+                >
+                  Login
+                </Link>
+              )}
 
               {/* Mobile menu button */}
               <button 

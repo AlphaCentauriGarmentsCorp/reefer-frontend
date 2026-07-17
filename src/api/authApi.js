@@ -57,10 +57,7 @@ export const authApi = {
   },
 
   meApi: async () => {
-    try {
-      await api.get("/me");
-    } catch (error) {
-      throw error;
-    }
+    const response = await api.get("/me");
+    return response.data;
   },
 };

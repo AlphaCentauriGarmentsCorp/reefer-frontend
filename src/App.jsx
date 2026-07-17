@@ -18,6 +18,7 @@ import Lookbook from "./pages/Lookbook";
 import FAQ from "./pages/FAQ";
 import SizeChart from "./pages/SizeChart";
 import ScrollToTop from "./components/ScrollToTop";
+import Login from "./features/auth/Login";
 
 function App() {
   const { loading } = useAuth();
@@ -52,9 +53,10 @@ function App() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/product/:id" element={<ProductDetail />} />
         
-        {/* Auth/account hidden for coming-soon launch. Restore these routes + their
-            imports (Login, Signup, OTP, Profile) when the backend is live. Until then,
-            any direct hit on those paths falls through to the catch-all redirect below. */}
+        {/* Login enabled (Bearer-token auth against the ASH API). Signup / OTP /
+            Profile stay hidden until the signup flow is wired; any hit on those
+            paths falls through to the catch-all redirect below. */}
+        <Route path="/login" element={<Login />} />
 
         {/* Catch-all */}
         <Route path="*" element={<Navigate to="/" replace />} />
