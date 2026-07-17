@@ -19,6 +19,8 @@ import FAQ from "./pages/FAQ";
 import SizeChart from "./pages/SizeChart";
 import ScrollToTop from "./components/ScrollToTop";
 import Login from "./features/auth/Login";
+import SignUp from "./features/auth/SignUp";
+import OTP from "./features/auth/OTP";
 
 function App() {
   const { loading } = useAuth();
@@ -53,10 +55,12 @@ function App() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/product/:id" element={<ProductDetail />} />
         
-        {/* Login enabled (Bearer-token auth against the ASH API). Signup / OTP /
-            Profile stay hidden until the signup flow is wired; any hit on those
-            paths falls through to the catch-all redirect below. */}
+        {/* Auth: login + customer signup (register -> OTP -> verified). Profile
+            stays hidden until the account pages are wired; unknown paths fall
+            through to the catch-all redirect below. */}
         <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/otp-verification" element={<OTP />} />
 
         {/* Catch-all */}
         <Route path="*" element={<Navigate to="/" replace />} />

@@ -24,7 +24,7 @@ export const authApi = {
   // Verify OTP
   verifyOtp: async (payload) => {
     try {
-      const response = await api.post("/auth/verify-otp", payload);
+      const response = await api.post("/verify-otp", payload);
 
       if (response.data?.token) {
         localStorage.setItem("token", response.data.token);
@@ -37,9 +37,9 @@ export const authApi = {
   },
 
   // Resend OTP
-  resendOtp: async () => {
+  resendOtp: async (payload) => {
     try {
-      const response = await api.post("/auth/resend-otp");
+      const response = await api.post("/resend-otp", payload);
       return response.data;
     } catch (error) {
       throw error;
