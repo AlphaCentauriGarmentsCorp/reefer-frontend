@@ -1,5 +1,6 @@
 // src/context/AuthContext.jsx
 import { createContext, useState, useEffect } from "react";
+import { authApi } from "../api/authApi";
 
 export const AuthContext = createContext(null);
 
@@ -14,19 +15,15 @@ export const AuthProvider = ({ children }) => {
       return;
     }
 
-    // Skip auth check for now - just set loading to false
-    setLoading(false);
-    
-    // Uncomment this when you have the meApi endpoint working
-    /*
-    meApi()
-      .then((res) => setUser(res.data))
+    // Hydrate the logged-in user from the stored token so login survives a refresh.
+    authApi
+      .meApi()
+      .then((data) => setUser(data))
       .catch(() => {
         localStorage.removeItem("token");
         setUser(null);
       })
       .finally(() => setLoading(false));
-    */
   }, []);
 
   return (
