@@ -1,11 +1,32 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Refeer</title>
+    <title>REEFER MNL — Ride the wave</title>
+    <!-- Default for the first paint and for crawlers; components/Seo.jsx swaps
+         both title and description per route once React is running. -->
+    <meta
+      name="description"
+      content="Small-batch streetwear printed in Quezon City. Tees, hoodies, shorts and bags from the current REEFER MNL drop."
+    />
+    <meta name="theme-color" content="#f6f1e7" />
+
+    <!-- Every icon below exists in public/. -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <!-- Same type system as the mockup: Anton (display) + Archivo (body). Loaded
+         here rather than via an @import in index.css so the fetch starts with the
+         document instead of waiting for the stylesheet to parse. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;900&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <div id="root"></div>

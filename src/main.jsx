@@ -1,13 +1,22 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
 import App from "./App";
 import "./index.css";
 import { AuthProvider } from "./context/AuthContext";
+import { CartProvider } from "./context/CartContext";
+import { FavoritesProvider } from "./context/FavoritesContext";
 
-ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
+// Provider order is load-bearing, not stylistic: CartContext and FavoritesContext
+// both read useAuth() (the cart merges the guest bag on sign-in, favorites only
+// sync for a signed-in user), so AuthProvider has to sit above both of them.
+createRoot(document.getElementById("root")).render(
+  <StrictMode>
     <AuthProvider>
-      <App />
+      <CartProvider>
+        <FavoritesProvider>
+          <App />
+        </FavoritesProvider>
+      </CartProvider>
     </AuthProvider>
-  </React.StrictMode>
+  </StrictMode>,
 );

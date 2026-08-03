@@ -1,7 +1,8 @@
 {
-  "name": "refeer-frontend",
+  "name": "reefer-storefront",
   "private": true,
   "version": "0.0.0",
+  "description": "REEFER clothing storefront — React + Vite SPA for reeferclothing.com, talking to the shared ash-ai-backend at /api/storefront/v1.",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -30,5 +31,8 @@
     "postcss": "^8.5.6",
     "tailwindcss": "^4.1.18",
     "vite": "^7.2.4"
+  },
+  "allowScripts": {
+    "esbuild@0.27.2": true
   }
 }
