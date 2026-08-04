@@ -60,10 +60,16 @@ You also need the backend running:
 php artisan serve    # http://127.0.0.1:8000
 ```
 
-Requests are cross-origin (`:5173` → `:8000`), so the backend must allow this
-origin. `http://localhost:5173` is already in its CORS allowlist, so normally there
-is nothing to configure; if you change ports, add the new origin to
-`STOREFRONT_ALLOWED_ORIGINS` in the backend's `.env`.
+Requests are cross-origin (`:5173` → `:8000`), so the backend must be told to allow
+this origin. In the backend's `.env`:
+
+```
+STOREFRONT_ALLOWED_ORIGINS=http://localhost:5173,http://127.0.0.1:5173
+```
+
+Without it the allowlist is empty on a fresh clone and the browser blocks every
+request — the catalogue renders empty with CORS errors in the console, even though
+`curl` against the same endpoints returns 200. Use the same key if you change ports.
 
 Other scripts: `npm run lint`, `npm run build`, `npm run preview` (serves the built
 `dist/` locally).
