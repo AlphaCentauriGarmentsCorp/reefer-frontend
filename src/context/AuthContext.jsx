@@ -1,24 +1,20 @@
-// src/context/AuthContext.jsx
 import { createContext, useState, useEffect } from "react";
 import { authApi } from "../api/authApi";
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const AuthContext = createContext(null);
 
-export const AuthProvider = ({ children }) => {
+export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(false); // Changed to false to skip auth check for now
+  // Loading only while a stored token is being verified, so protected UI doesn't flash.
+  const [loading, setLoading] = useState(() => !!localStorage.getItem("token"));
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (!token) {
-      setLoading(false);
-      return;
-    }
-
-    // Hydrate the logged-in user from the stored token so login survives a refresh.
+    if (!token) return;
     authApi
       .meApi()
-      .then((data) => setUser(data))
+      .then((u) => setUser(u))
       .catch(() => {
         localStorage.removeItem("token");
         setUser(null);
@@ -26,9 +22,17 @@ export const AuthProvider = ({ children }) => {
       .finally(() => setLoading(false));
   }, []);
 
-  return (
-    <AuthContext.Provider value={{ user, setUser, loading }}>
-      {children}
-    </AuthContext.Provider>
-  );
-};
+  const logout = async () => {
+    try {
+      await authApi.logout();
+    } finally {
+      // Anything cart-shaped left in localStorage would be merged into whoever
+      // signs in on this browser next, so it goes out with the session.
+      localStorage.removeItem("reefer-cart");
+      localStorage.removeItem("reefer-pending-add");
+      setUser(null);
+    }
+  };
+
+  return <AuthContext.Provider value={{ user, setUser, loading, logout }}>{children}</AuthContext.Provider>;
+}
