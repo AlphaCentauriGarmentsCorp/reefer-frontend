@@ -1,137 +1,152 @@
-import { MainLayout } from "../Layouts";
 import { useState } from "react";
-import { HiQuestionMarkCircle, HiCreditCard, HiShieldCheck, HiUserCircle } from "react-icons/hi";
-import headerFaq from "../assets/images/Header-Faq.jpg";
+import Nav from "../components/layout/Nav";
+import Footer from "../components/layout/Footer";
+import { Link } from "react-router-dom";
 
-const faqData = {
-  general: [
-    { q: "What is Reefer Clothing?", a: "Reefer is a streetwear brand based in Quezon City, Philippines, offering unique and stylish apparel." },
-    { q: "Where is Reefer Clothing located?", a: "We are located in Quezon City, Metro Manila, Philippines." },
-    { q: "What products do you offer?", a: "We offer t-shirts, hoodies, shorts, accessories, and more streetwear items." },
-    { q: "Who can wear Reefer Clothing?", a: "Our clothing is designed for anyone who loves streetwear and wants to express their individuality." },
-    { q: "How do I choose the right size?", a: "Please refer to our Size Chart page for detailed measurements." }
-  ],
-  payment: [
-    { q: "What payment methods do you accept?", a: "We accept credit cards, debit cards, GCash, PayMaya, and bank transfers." },
-    { q: "Are my payment transactions protected?", a: "Yes, all transactions are encrypted and secure." },
-    { q: "Will I receive confirmation after placing an order?", a: "Yes, you will receive an email confirmation immediately after your order is placed." },
-    { q: "Can I change or update my payment method after ordering?", a: "Please contact our customer service team for assistance with payment changes." },
-    { q: "Are there additional charges I should be aware of?", a: "Shipping fees may apply depending on your location. All charges are shown at checkout." }
-  ],
-  safety: [
-    { q: "Is my personal information safe with Reefer?", a: "Yes, we use industry-standard security measures to protect your data." },
-    { q: "Are your payment methods safe to use?", a: "All payment methods are processed through secure, encrypted channels." },
-    { q: "Will my personal data be shared with third parties?", a: "We do not share your personal information with third parties without your consent." },
-    { q: "Is your website protected from security threats?", a: "Yes, our website uses SSL encryption and regular security updates." },
-    { q: "How do you protect my account from unauthorized access?", a: "We use password encryption and recommend enabling two-factor authentication." }
-  ],
-  account: [
-    { q: "How do I create an account?", a: "Click on the profile icon and select 'Sign Up' to create your account." },
-    { q: "How can I update my personal information?", a: "Log in to your account and go to Profile Settings to update your information." },
-    { q: "What should I do if I forget my password?", a: "Click 'Forgot Password' on the login page and follow the instructions." },
-    { q: "How will I stay updated on my orders?", a: "You will receive email notifications for order confirmations, shipping updates, and delivery." },
-    { q: "Can I manage or cancel my orders through my account?", a: "Yes, you can view and manage your orders in the Orders section of your account." }
-  ]
-};
+// An answer is usually a string, but it can be a node — the accordion renders
+// whatever it gets, so the one answer that has somewhere to send you does.
+const faqLink = { color: "#F97B0C", fontWeight: 700, textDecoration: "underline" };
+
+const GROUPS = [
+  {
+    category: "Shipping",
+    anchor: "shipping",
+    items: [
+      { q: "How long does shipping take?", a: "Metro Manila lands in 1–3 business days; provincial orders take 3–7 business days via J&T Express or LBC. You get a tracking number the moment your order ships." },
+      { q: "How much is shipping?", a: "Flat ₱80 within Metro Manila and ₱120 provincial. Orders over ₱2,500 ship free — the cart nudges you when you're close." },
+      { q: "Do you ship internationally?", a: "Not yet. We're PH-only for now. Follow @reefer.mnl and we'll announce the day that changes." },
+    ],
+  },
+  {
+    category: "Returns",
+    anchor: "returns",
+    items: [
+      { q: "What is your return policy?", a: "Unworn, unwashed pieces with tags still on can be returned within 7 days of delivery. Sale and sold-out drops are final once they're gone." },
+      {
+        q: "How do I start a return?",
+        a: (
+          <>
+            Straight from your account —{" "}
+            <Link to="/account?tab=returns" style={faqLink}>My Account → Returns</Link>. Open one on any delivered order, pick the pieces coming back and tell us why. You get a reference on the spot, and we follow up with the drop-off details. Rather talk to a person? DM @reefer.mnl with your order number.
+          </>
+        ),
+      },
+      { q: "When do I get refunded?", a: "Once we receive and inspect the item, refunds are processed within 5–7 business days back to your original payment method (or GCash)." },
+    ],
+  },
+  {
+    category: "Sizing",
+    anchor: "sizing",
+    items: [
+      { q: "How do the tees fit?", a: "Regular, box, and oversized cuts each drape differently. The Sizing Guide has flat measurements in inches plus a compare tool so you can see two sizes side by side before you commit." },
+      { q: "I'm between two sizes — what do I do?", a: "Size up for a boxier drape, especially on the box and oversized cuts. When in doubt, measure a tee you already love and match it to the chart." },
+      { q: "Where is the size chart?", a: "Every product page links to it, or head straight to the Sizing Guide from the shop header. Measurements are garment-flat, in inches, with a ±½–1\" tolerance." },
+    ],
+  },
+  {
+    category: "Exchanges",
+    anchor: "exchanges",
+    items: [
+      { q: "Can I exchange for a different size?", a: "Yes, within 7 days of delivery and subject to stock. Since we don't restock, the size you want may already be gone — message us as soon as you can." },
+      { q: "How do exchanges work?", a: "Same flow as returns: reach out with your order number, ship the item back unworn with tags, and we send the new size once it arrives with us." },
+      { q: "Is there an exchange shipping fee?", a: "Your first exchange ships back to you free within Metro Manila. You cover the postage to send the original item back to us." },
+    ],
+  },
+  {
+    category: "Payment Methods",
+    anchor: "payment",
+    items: [
+      { q: "What can I pay with?", a: "GCash, Maya, credit/debit cards (processed via PayMongo), and Cash on Delivery (COD). Pick your method at checkout." },
+      { q: "Is COD available nationwide?", a: "COD is available for most PH addresses through our couriers. A small COD handling fee may apply depending on your location." },
+      { q: "Is checkout secure?", a: "Card payments run entirely through PayMongo's secure gateway — Reefer never sees or stores your card details." },
+    ],
+  },
+];
 
 export default function FAQ() {
-  const [activeCategory, setActiveCategory] = useState(null);
-  const [openQuestion, setOpenQuestion] = useState(null);
-
-  const categories = [
-    { id: 'general', name: 'General Question', icon: <HiQuestionMarkCircle /> },
-    { id: 'payment', name: 'Payment & Billing', icon: <HiCreditCard /> },
-    { id: 'safety', name: 'Safety & Security', icon: <HiShieldCheck /> },
-    { id: 'account', name: 'Account & Update', icon: <HiUserCircle /> }
-  ];
-
-  const toggleQuestion = (index) => {
-    setOpenQuestion(openQuestion === index ? null : index);
-  };
+  // Items open independently and the first shipping answer is expanded on arrival,
+  // so the page never reads as a wall of collapsed headings.
+  const [open, setOpen] = useState({ "shipping-0": true });
+  const toggle = (key) => setOpen((o) => ({ ...o, [key]: !o[key] }));
 
   return (
-    <MainLayout>
-      <div className="bg-white">
-        {/* Hero Section */}
-        <div 
-          className="relative h-[500px] bg-cover bg-center"
-          style={{ backgroundImage: `url(${headerFaq})` }}
-        >
-          <div className="absolute inset-0 bg-black/20" />
-          <div className="absolute bottom-32 left-8 md:left-16">
-            <h1 className="text-white text-5xl md:text-7xl font-bold tracking-wide">
-              FAQ
+    <div style={{ background: "#F6F1E7", color: "#101010", minHeight: "100vh", overflowX: "clip" }}>
+      <Nav />
+
+      {/* Hero */}
+      <header style={{ maxWidth: 1200, margin: "0 auto", padding: "124px 32px 30px" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr", gap: 40, alignItems: "end" }}>
+          <div>
+            <span style={{ fontWeight: 900, fontSize: 12, letterSpacing: "0.22em", color: "#F97B0C" }}>HELP DESK</span>
+            <h1 style={{ fontFamily: "Anton, sans-serif", fontWeight: 400, fontSize: "clamp(56px, 12vw, 190px)", margin: "10px 0 0", textTransform: "uppercase", lineHeight: 0.82 }}>
+              Questions<span style={{ color: "#F97B0C" }}>?</span>
             </h1>
           </div>
+          <p style={{ margin: "0 0 8px", fontSize: 15, lineHeight: 1.7, color: "#6B6357", fontWeight: 500 }}>
+            Everything on shipping, returns, sizing, exchanges, and payment — straight, no runaround. Still stuck? Hit the crew at the bottom of the page.
+          </p>
         </div>
+      </header>
 
-        {/* Category Cards - Overlapping Hero */}
-        <div className="relative -mt-24 px-4 mb-20 bg-white">
-          <div className="max-w-6xl mx-auto pt-8">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-              {categories.map((cat) => (
-                <button
-                  key={cat.id}
-                  onClick={() => setActiveCategory(cat.id)}
-                  className={`text-white p-8 rounded-2xl transition-all duration-300 shadow-[0_8px_24px_rgba(0,0,0,0.15)] hover:shadow-[0_12px_32px_rgba(0,0,0,0.25)] ${
-                    activeCategory === cat.id ? 'border-2 border-reefer-orange' : 'border-2 border-transparent'
-                  }`}
-                  style={{ backgroundColor: '#616161' }}
-                >
-                  <div className="text-5xl mb-4 text-white flex justify-center items-center">{cat.icon}</div>
-                  <h3 className={`font-semibold text-base text-center ${activeCategory === cat.id ? 'text-reefer-orange' : 'text-white'}`}>
-                    {cat.name}
-                  </h3>
-                </button>
-              ))}
+      {/* Category chips */}
+      <section style={{ maxWidth: 1200, margin: "0 auto", padding: "10px 32px 0" }}>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
+          {GROUPS.map((g) => (
+            <a key={g.anchor} href={`#${g.anchor}`} className="rf-chip" style={{ fontFamily: "Anton, sans-serif", fontSize: 13, letterSpacing: "0.06em", textTransform: "uppercase", color: "#101010", textDecoration: "none", border: "2px solid #101010", padding: "8px 15px", background: "#FFFDF8" }}>
+              {g.category}
+            </a>
+          ))}
+        </div>
+      </section>
+
+      {/* FAQ sections */}
+      <section style={{ maxWidth: 1200, margin: "0 auto", padding: "40px 32px 80px", display: "flex", flexDirection: "column", gap: 46 }}>
+        {GROUPS.map((g, gi) => (
+          <div key={g.anchor} id={g.anchor} style={{ scrollMarginTop: 90 }}>
+            <div style={{ display: "flex", alignItems: "baseline", gap: 14, marginBottom: 18, borderBottom: "2px solid #101010", paddingBottom: 12 }}>
+              <span style={{ fontFamily: "Anton, sans-serif", fontSize: 15, background: "#F97B0C", color: "#101010", padding: "5px 11px", letterSpacing: "0.04em" }}>
+                {String(gi + 1).padStart(2, "0")}
+              </span>
+              <h2 style={{ fontFamily: "Anton, sans-serif", fontWeight: 400, fontSize: "clamp(28px, 4vw, 46px)", margin: 0, textTransform: "uppercase", lineHeight: 1 }}>{g.category}</h2>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              {g.items.map((it, ii) => {
+                const key = `${g.anchor}-${ii}`;
+                const isOpen = !!open[key];
+                return (
+                  <div key={ii} style={{ border: "2px solid #101010", background: "#FFFDF8" }}>
+                    <button onClick={() => toggle(key)} aria-expanded={isOpen} style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, background: "none", border: "none", cursor: "pointer", padding: "18px 20px", textAlign: "left" }}>
+                      <span style={{ fontFamily: "Anton, sans-serif", fontSize: "clamp(16px, 2vw, 21px)", textTransform: "uppercase", letterSpacing: "0.01em", lineHeight: 1.1 }}>{it.q}</span>
+                      <span style={{ flexShrink: 0, width: 30, height: 30, border: "2px solid #101010", background: isOpen ? "#F97B0C" : "transparent", color: "#101010", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "Anton, sans-serif", fontSize: 20, lineHeight: 1 }}>
+                        {isOpen ? "−" : "+"}
+                      </span>
+                    </button>
+                    {isOpen && <div style={{ padding: "0 20px 20px", fontSize: 15, lineHeight: 1.7, color: "#6B6357", fontWeight: 500 }}>{it.a}</div>}
+                  </div>
+                );
+              })}
             </div>
           </div>
-        </div>
+        ))}
+      </section>
 
-        {/* Customer Service Section */}
-        <div className="px-4 mb-12 mt-16">
-          <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Customer Service</h2>
-            <p className="text-gray-600 text-sm md:text-base leading-relaxed">
-              Everything you need to know about our products<br />
-              and how they work. Can't find an answer? Chat with<br />
-              our team,<br />
-              anytime—we're here to help!
-            </p>
-          </div>
+      {/* Still stuck CTA */}
+      <section style={{ background: "#101010", color: "#F6F1E7", padding: "72px 32px", textAlign: "center" }}>
+        <span style={{ fontWeight: 900, fontSize: 12, letterSpacing: "0.22em", color: "#F97B0C" }}>STILL STUCK?</span>
+        <h2 style={{ fontFamily: "Anton, sans-serif", fontWeight: 400, fontSize: "clamp(30px, 5vw, 60px)", margin: "12px 0 22px", textTransform: "uppercase", lineHeight: 0.92 }}>
+          Talk to the crew<span style={{ color: "#F97B0C" }}>.</span>
+        </h2>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 14, justifyContent: "center" }}>
+          <Link to="/about#contact" className="rf-cta" style={{ fontFamily: "Anton, sans-serif", fontSize: 15, letterSpacing: "0.06em", background: "#F97B0C", color: "#101010", textDecoration: "none", border: "2px solid #101010", padding: "14px 26px", boxShadow: "5px 5px 0 #F6F1E7", display: "inline-block" }}>
+            CONTACT US →
+          </Link>
+          <Link to="/sizing-guide" style={{ fontFamily: "Anton, sans-serif", fontSize: 15, letterSpacing: "0.06em", background: "none", color: "#F6F1E7", textDecoration: "none", border: "2px solid #F6F1E7", padding: "14px 26px", display: "inline-block" }}>
+            SIZING GUIDE
+          </Link>
         </div>
+      </section>
 
-        {/* FAQ Accordion */}
-        {activeCategory && (
-          <div className="px-4 pb-16">
-            <div className="max-w-3xl mx-auto">
-              <div className="space-y-2">
-                {faqData[activeCategory].map((faq, index) => (
-                <div
-                  key={index}
-                  className="bg-[#3a3a3a] text-white rounded-lg overflow-hidden transition-all border-l-4 border-reefer-orange"
-                >
-                  <button
-                    onClick={() => toggleQuestion(index)}
-                    className="w-full px-5 py-3.5 flex items-center justify-between hover:bg-[#4a4a4a] transition text-left"
-                  >
-                    <span className="font-medium text-sm pr-4">{faq.q}</span>
-                    <span className="text-xl flex-shrink-0 font-light">
-                      {openQuestion === index ? '−' : '+'}
-                    </span>
-                  </button>
-                  {openQuestion === index && (
-                    <div className="px-5 pb-3.5 pt-1 text-gray-300 text-xs leading-relaxed">
-                      {faq.a}
-                    </div>
-                  )}
-                </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-    </MainLayout>
+      <Footer />
+    </div>
   );
 }

@@ -1,40 +1,533 @@
-@import "tailwindcss";
-
-@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap");
-
-@font-face {
-  font-family: "ibmplex";
-  src: url("/Font/IBMPlexSans-Light.ttf") format("truetype");
-  font-weight: 300; /* match the font weight */
-  font-style: normal;
-}
+/* ── Reefer design foundation (ported verbatim from the mockup) ───────────── */
 
 :root {
-  --primary: #ff7802;
+  --cream: #f6f1e7;
+  --ink: #101010;
+  --orange: #f97b0c;
+  --navy: #14213d;
+  --muted: #6b6357;
 }
 
-@theme {
-  --font-bebas: "Bebas Neue", sans-serif;
-  --font-worksans: "Work Sans", sans-serif;
-  --font-ibmplex: "ibmplex", sans-serif;
-  --color-primary: var(--primary);
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: #f6f1e7;
+}
+html {
+  scroll-behavior: smooth;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  font-family: Archivo, sans-serif;
+  color: #101010;
+  -webkit-font-smoothing: antialiased;
+}
+::selection {
+  background: #f97b0c;
+  color: #fff;
+}
+a {
+  color: inherit;
 }
 
-.scrollbar-thin-primary {
-  scrollbar-width: thin; /* Firefox */
-  scrollbar-color: theme("colors.primary.DEFAULT") transparent;
+/* Keyframes — exactly as the mockup defines them. */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes heroWord {
+  from {
+    opacity: 0;
+    transform: translateY(90px) skewY(2deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) skewY(0deg);
+  }
+}
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
-/* Chrome, Edge, Safari */
-.scrollbar-thin-primary::-webkit-scrollbar {
-  width: 6px;
+/* The zoom viewer mounts rather than un-hides, so it fades in on its own. */
+@keyframes rf-zoom-fade {
+  from {
+    opacity: 0;
+  }
 }
 
-.scrollbar-thin-primary::-webkit-scrollbar-track {
-  background: transparent;
+/* "PICK A SIZE FIRST" sits with the size buttons, ~150px above the CTA that was just
+   pressed. Movement is what carries that distance — a static box, however loud, can be
+   missed when the eye is somewhere else on the page. */
+@keyframes rfNudge {
+  0% { transform: translateX(0); }
+  18% { transform: translateX(-8px); }
+  38% { transform: translateX(7px); }
+  58% { transform: translateX(-4px); }
+  78% { transform: translateX(2px); }
+  100% { transform: translateX(0); }
+}
+.rf-nudge {
+  animation: rfNudge 0.42s ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  .rf-nudge {
+    animation: none;
+  }
 }
 
-.scrollbar-thin-primary::-webkit-scrollbar-thumb {
-  background-color: rgb(59 130 246); /* Tailwind primary (adjust if needed) */
-  border-radius: 9999px;
+/* Hover interactions (the mockup drives these via style-hover). */
+.rf-navlink:hover,
+.rf-footlink:hover {
+  color: #f97b0c;
+}
+.rf-social:hover {
+  background: #f97b0c;
+  color: #101010;
+  border-color: #f97b0c;
+}
+.rf-cta {
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.rf-cta:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 8px 8px 0 #f97b0c;
+}
+.rf-dropcard {
+  transition: box-shadow 0.25s;
+}
+.rf-dropcard:hover {
+  box-shadow: 12px 14px 0 #f97b0c;
+}
+.rf-addbtn {
+  transition: background 0.15s, color 0.15s, box-shadow 0.15s, transform 0.15s;
+}
+.rf-addbtn:hover {
+  background: #f97b0c;
+  color: #101010;
+  box-shadow: 5px 5px 0 #101010;
+  transform: translate(-2px, -2px);
+}
+
+/* FAQ category chips — invert on hover. */
+.rf-chip {
+  transition: background 0.15s, color 0.15s;
+}
+.rf-chip:hover {
+  background: #101010;
+  color: #f6f1e7;
+}
+
+/* Shop collection tiles + About value cards + contact cards: the mockup's
+   lift-and-drop-shadow. (The tiles also carry a JS 3D tilt in the mockup; this
+   is the CSS half that works without it.) */
+.rf-collection {
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.rf-collection:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 9px 9px 0 #f97b0c;
+}
+.rf-value {
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.rf-value:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 8px 8px 0 #f97b0c;
+}
+.rf-infocard {
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.rf-infocard:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 #f97b0c;
+}
+
+/* ── Mobile navigation ─────────────────────────────────────────────────────
+   Below 860px the nav links collapse into a hamburger + slide-in drawer, the
+   same breakpoint and treatment the mockup's mobile-nav.js used. The account
+   chip is dropped from the bar on mobile (it's the drawer's footer action) so
+   CART never gets crowded against the edge. */
+
+.rf-burger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 44px;
+  height: 40px;
+  padding: 0 10px;
+  background: #f6f1e7;
+  border: 2px solid #101010;
+  box-shadow: 3px 3px 0 #f97b0c;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.rf-burger span {
+  display: block;
+  height: 2.5px;
+  background: #101010;
+  border-radius: 2px;
+}
+
+.rf-drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 420;
+  background: rgba(16, 16, 16, 0.55);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+.rf-drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 421;
+  width: min(82vw, 340px);
+  background: #f6f1e7;
+  border-right: 2px solid #101010;
+  box-shadow: 8px 0 0 rgba(16, 16, 16, 0.08);
+  transform: translateX(-102%);
+  transition: transform 0.32s cubic-bezier(0.2, 0.7, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+}
+.rf-drawer-open .rf-drawer-backdrop {
+  opacity: 1;
+  pointer-events: auto;
+}
+.rf-drawer-open .rf-drawer {
+  transform: translateX(0);
+}
+/* Freeze the page behind the drawer. */
+body.rf-drawer-open {
+  overflow: hidden;
+}
+
+.rf-drawer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 22px;
+  border-bottom: 2px solid #101010;
+}
+.rf-drawer-title {
+  font-family: Anton, sans-serif;
+  font-size: 20px;
+  letter-spacing: 0.08em;
+}
+.rf-drawer-close {
+  background: none;
+  border: 2px solid #101010;
+  width: 36px;
+  height: 36px;
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.rf-drawer-close:hover {
+  background: #f97b0c;
+}
+.rf-drawer-links {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+.rf-drawer-link {
+  font-family: Anton, sans-serif;
+  font-size: 22px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #101010;
+  text-decoration: none;
+  padding: 18px 22px;
+  border-bottom: 1px solid #e7dfce;
+  transition: background 0.15s, color 0.15s, padding-left 0.15s;
+}
+.rf-drawer-link:hover {
+  background: #101010;
+  color: #f97b0c;
+  padding-left: 28px;
+}
+.rf-drawer-foot {
+  padding: 20px 22px;
+  border-top: 2px solid #101010;
+}
+.rf-drawer-account {
+  display: block;
+  text-align: center;
+  font-family: Anton, sans-serif;
+  font-size: 15px;
+  letter-spacing: 0.06em;
+  background: #101010;
+  color: #f6f1e7;
+  text-decoration: none;
+  border: 2px solid #101010;
+  padding: 14px;
+  box-shadow: 4px 4px 0 #f97b0c;
+}
+
+@media (max-width: 860px) {
+  .rf-burger {
+    display: flex;
+  }
+  .rf-navlinks,
+  .rf-accountchip {
+    display: none !important;
+  }
+  .rf-nav {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+}
+/* Tiny phones: the logo image still carries the brand, so drop the wordmark. */
+@media (max-width: 340px) {
+  .rf-wordmark,
+  .rf-navmeta {
+    display: none !important;
+  }
+}
+
+/* ── Responsive utilities ──────────────────────────────────────────────────
+   The mockup carried per-page media queries (data-cart-grid, data-addr-grid,
+   data-reviews-grid, …). Inline styles can't express a media query, so the
+   collapsing rules live here and pages opt in by class name. */
+
+@media (max-width: 980px) {
+  /* Two-column shells (PDP, cart, checkout, account) stack. */
+  .rf-2col,
+  .rf-sidebar {
+    grid-template-columns: 1fr !important;
+  }
+  .rf-sticky {
+    position: static !important;
+  }
+}
+
+@media (max-width: 860px) {
+  .rf-grid-2 {
+    grid-template-columns: 1fr !important;
+  }
+  .rf-grid-3 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  /* Section padding tightens on phones so content isn't a narrow column. */
+  .rf-section {
+    padding-left: 18px !important;
+    padding-right: 18px !important;
+  }
+  /* Cart/checkout line rows reflow instead of squeezing. */
+  .rf-line {
+    flex-wrap: wrap !important;
+  }
+}
+
+@media (max-width: 560px) {
+  .rf-grid-3,
+  .rf-grid-auto {
+    grid-template-columns: 1fr !important;
+  }
+  .rf-stack-sm {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+}
+
+/* Anything genuinely wide (tables, trackers) scrolls inside its own box rather
+   than making the page scroll sideways. */
+.rf-scroll-x {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Film-grain overlay, like the mockup's body::after. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  opacity: 0.05;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+
+/* ─── Hero: phone layout ──────────────────────────────────────────────────
+ *
+ * The hero is composed with inline styles tuned for a wide viewport, and four of
+ * them collapse on a handset:
+ *
+ *   · the spinning seal is pinned `right: clamp(180px, 17vw, 320px)`. On a ~390px
+ *     screen that clamp floors at 180px, which places a 150px badge at x≈60 — dead
+ *     centre, on top of the wordmark and the "TIDAL SZN 03" pill.
+ *   · the eyebrow row is a nowrap flex pair, so "SMALL BATCH · 300 PCS · NO
+ *     RESTOCKS" is driven into the pill beside it.
+ *   · the headline runs at line-height 0.86, which is right for solid type but
+ *     lets the 3px stroke on "WAVE —" bleed into "WEAR REEFER." below it.
+ *   · the CTA and its caption sit side by side, squeezing both to a few words wide.
+ *
+ * Everything here is scoped to a max-width query, so the desktop composition is
+ * untouched — same sizes, same offsets, same rhythm. !important is needed only
+ * because the values being corrected are inline attributes, which outrank a class.
+ *
+ * The badge is resized rather than transformed on purpose: the parallax loop writes
+ * el.style.transform on this element every frame, so a CSS transform here would be
+ * overwritten ~60 times a second.
+ */
+@media (max-width: 767px) {
+  /* 16px gutters rather than 32 — on a 390px screen that is 32px more type width,
+     which is most of a character at this size. */
+  .rf-hero-content {
+    padding: 72px 16px 84px !important;
+  }
+
+  /* Let the strapline drop under the pill instead of colliding with it. */
+  .rf-hero-eyebrow {
+    flex-wrap: wrap !important;
+    gap: 9px !important;
+    margin-bottom: 16px !important;
+  }
+  .rf-hero-eyebrow > span:first-child {
+    font-size: 13px !important;
+    padding: 9px 16px !important;
+  }
+  .rf-hero-eyebrow > span:last-child {
+    font-size: 11.5px !important;
+  }
+
+  /* Sized to the type, not guessed. Measured at 390px and 360px: the longest line
+     ("wear Reefer.") was filling only ~79% of the available width, and ~16.9vw is
+     where it would touch both edges. 16.5vw lands at ~95% — the headline reads as
+     edge-to-edge without risking a wrap, which at this weight would look broken.
+     line-height stays loose enough that the 3px stroke on "wave —" clears the line
+     under it. */
+  .rf-hero-title {
+    line-height: 0.94 !important;
+    font-size: clamp(48px, 16.5vw, 104px) !important;
+  }
+
+  /* Stack the CTA over its caption so neither is squeezed to a sliver. */
+  .rf-hero-ctarow {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 14px !important;
+    margin-top: 30px !important;
+  }
+  .rf-hero-ctarow > a {
+    font-size: 19px !important;
+    padding: 18px 26px !important;
+    text-align: center !important;
+  }
+  .rf-hero-ctarow > span {
+    max-width: 300px !important;
+    font-size: 11.5px !important;
+  }
+
+  /* Bigger, but demoted BEHIND the type and faded back, so it reads as a watermark
+     the headline sits on rather than an object competing with it. That is what buys
+     the extra size: at z-index 0 an overlap costs nothing, where at z-index 1 it
+     would sit on top of the words. The SVG rides its own viewBox and scales for
+     free; only the raster logo needs numbers, kept proportional to the 150px
+     original (inset 44/150, image 62/150). */
+  .rf-hero-badge {
+    /* 80, not 58: the sticky header occupies roughly the first 68px and paints an
+       opaque background, so a smaller offset clips the top of the ring text. */
+    top: 80px !important;
+    right: 8px !important;
+    width: 132px !important;
+    height: 132px !important;
+    opacity: 0.5 !important;
+    z-index: 0 !important;
+  }
+  .rf-hero-badge img {
+    inset: 39px !important;
+    width: 55px !important;
+    height: 55px !important;
+    border-radius: 10px !important;
+    box-shadow: none !important;
+  }
+
+  /* Five columns cannot share a phone's width. Keep the three that say something
+     and drop the decorative pair rather than wrapping into a cramped block. */
+  .rf-hero-foot {
+    padding: 10px 20px !important;
+    gap: 10px !important;
+    font-size: 9px !important;
+    letter-spacing: 0.14em !important;
+    justify-content: space-between !important;
+  }
+  .rf-hero-foot > span:nth-child(2),
+  .rf-hero-foot > span:nth-child(5) {
+    display: none !important;
+  }
+}
+
+/* Sign-in art panel.
+ *
+ * The photo is painted here rather than by an <img> in the page so that the media
+ * query below actually saves the bytes it looks like it saves. An `<img src>` inside
+ * a `display: none` subtree is still fetched by every engine — the box is suppressed,
+ * the request is not — whereas a background-image on a box that is never generated is
+ * never fetched. Sign-in is the page a phone can least afford a 1.2 MB decoration on,
+ * so that asymmetry is the whole reason this rule exists.
+ *
+ * Keep the background off the element's inline style: a `background` shorthand there
+ * would outrank this rule and blank the image at every width.
+ */
+.rf-auth-art {
+  background: #101010 url("/Auth/BG2.png") center / cover no-repeat;
+}
+
+/*
+ * The split only pays for itself while both halves stay comfortable. At 860px the
+ * 36vw panel is down to ~310px — a strip too narrow to read as a photograph — and
+ * it is eating width the 440px card wants. So at the same breakpoint the nav
+ * collapses at, the panel drops out and the card takes the page back, which is
+ * exactly the single-column composition this page had before.
+ *
+ * !important because both values being corrected are inline attributes, which
+ * outrank a class.
+ */
+@media (max-width: 860px) {
+  .rf-auth-art {
+    display: none !important;
+  }
+  .rf-auth-main {
+    padding-left: 24px !important;
+  }
 }
