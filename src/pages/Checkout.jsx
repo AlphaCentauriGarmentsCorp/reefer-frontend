@@ -242,9 +242,12 @@ export default function Checkout() {
 
   // Ordered lines while the cart still holds them; the order's own lines once it
   // is placed, because the server has removed them from the cart by then.
+  // `image` is carried through so the summary can show the same thumbnail the cart
+  // does. Order items (the `placed` branch) may not include one — the render treats
+  // it as optional and falls back to the plain swatch.
   const lines = placed
-    ? (placed.items || []).map((i, idx) => ({ key: "p" + idx, name: i.name, size: i.size, qty: i.qty, total: peso(i.line_total) }))
-    : items.map((i) => ({ key: i.id, name: i.name, size: i.size, qty: i.qty, total: i.line_total_formatted }));
+    ? (placed.items || []).map((i, idx) => ({ key: "p" + idx, name: i.name, size: i.size, qty: i.qty, total: peso(i.line_total), image: i.image }))
+    : items.map((i) => ({ key: i.id, name: i.name, size: i.size, qty: i.qty, total: i.line_total_formatted, image: i.image }));
 
   const subtotal = placed ? placed.subtotal ?? 0 : buyNow ? buyNowSubtotal : cart.selected_subtotal ?? 0;
   const subtotalFmt = placed ? peso(placed.subtotal) : buyNow ? peso(buyNowSubtotal) : cart.selected_subtotal_formatted ?? "₱0";
@@ -687,8 +690,18 @@ export default function Checkout() {
           <div style={{ padding: "8px 22px", maxHeight: 320, overflowY: "auto" }}>
             {lines.map((l) => (
               <div key={l.key} style={{ display: "flex", gap: 12, alignItems: "center", padding: "14px 0", borderBottom: "1px solid #E7DFCE" }}>
-                <div style={{ position: "relative", width: 52, height: 64, flexShrink: 0, background: "#ECE5D6", border: "2px solid #101010" }}>
-                  <span style={{ position: "absolute", top: -9, right: -9, background: "#101010", color: "#F6F1E7", minWidth: 20, height: 20, borderRadius: 999, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 900 }}>{l.qty}</span>
+                <div style={{ position: "relative", width: 52, height: 64, flexShrink: 0, background: "#ECE5D6", border: "2px solid #101010", overflow: "visible" }}>
+                  {l.image && (
+                    <img
+                      src={l.image}
+                      alt=""
+                      loading="lazy"
+                      style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                    />
+                  )}
+                  {/* Sits outside the box on purpose, so it is never lost against a busy
+                      photo — hence overflow stays visible on the parent. */}
+                  <span style={{ position: "absolute", top: -9, right: -9, background: "#101010", color: "#F6F1E7", minWidth: 20, height: 20, borderRadius: 999, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 900, zIndex: 1 }}>{l.qty}</span>
                 </div>
                 <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: 3 }}>
                   <span style={{ fontFamily: "Anton, sans-serif", fontSize: 15, textTransform: "uppercase", lineHeight: 1 }}>{l.name}</span>

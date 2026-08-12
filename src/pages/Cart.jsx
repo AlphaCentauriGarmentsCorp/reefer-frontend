@@ -526,7 +526,23 @@ export default function Cart() {
             return (
               <div key={item.id} className="rf-line" style={{ display: "flex", gap: 18, alignItems: "center", padding: "20px 22px", borderBottom: "1px solid #E7DFCE" }}>
                 {checkbox(!!item.selected, () => quiet(selectItem(item.id, !item.selected)), `Select ${item.name} for checkout`)}
-                <Link to={`/product/${item.slug}`} style={{ width: 84, height: 104, flexShrink: 0, background: "#ECE5D6", border: "2px solid #101010", display: "block", opacity: dim, transition: "opacity 0.2s" }} />
+                {/* The cart line carries its own `image` (an absolute URL from the API),
+                    so the thumbnail does not need the product fetched again. The beige
+                    block stays as the fallback: most of the catalogue has no photography
+                    yet, and a broken <img> icon reads worse than a plain swatch. */}
+                <Link
+                  to={`/product/${item.slug}`}
+                  style={{ width: 84, height: 104, flexShrink: 0, background: "#ECE5D6", border: "2px solid #101010", display: "block", opacity: dim, transition: "opacity 0.2s", overflow: "hidden" }}
+                >
+                  {item.image && (
+                    <img
+                      src={item.image}
+                      alt=""
+                      loading="lazy"
+                      style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                    />
+                  )}
+                </Link>
                 <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: 6, opacity: dim, transition: "opacity 0.2s" }}>
                   <Hover
                     tag={Link}
