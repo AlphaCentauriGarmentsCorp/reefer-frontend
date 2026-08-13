@@ -366,14 +366,10 @@ function Tracker({ order, onAdvance }) {
         <p style={{ margin: "14px 0 0", fontSize: 12, fontWeight: 700, color: "#C0392B" }}>{error}</p>
       )}
 
-      {stage < STAGES.length - 1 && (
-        // Sized up from 11px grey: this line is the only thing telling anyone the
-        // tracker is interactive at all, and at footnote size it read as small print
-        // to skip rather than an instruction to follow.
-        <p style={{ margin: "16px 0 0", fontSize: narrow ? 13 : 14.5, fontWeight: 700, color: "#101010", lineHeight: 1.55, background: "#F6F1E7", border: "2px solid #101010", padding: "12px 14px" }}>
-          <span style={{ color: "#F97B0C" }}>Demo:</span> tap a step ahead to move this order along. It only goes forward.
-        </p>
-      )}
+      {/* The "Demo: tap a step ahead…" hint was removed on request. The tracker
+          itself is unchanged and still advances on tap where the backend allows it
+          (reefer.orders.allow_manual_advance) — only the instruction is gone, so
+          the interaction is now undiscoverable rather than disabled. */}
     </div>
   );
 }
