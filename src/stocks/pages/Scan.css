@@ -1,0 +1,58 @@
+/* Port of the inline <style> block in public/scan.html.
+   ------------------------------------------------------------------
+   scan.html was the one page that did NOT link css/theme.css: it is a
+   standalone dark card built for a tablet on the warehouse floor. In the SPA
+   theme.css is imported globally in main.jsx, so every rule below is scoped
+   under `.scan-station` — both to keep it off the other pages and to out-
+   specify the handful of theme.css selectors that would otherwise reach in
+   (`h1`, `p.sub`, `input:focus`).
+
+   `.scan-station` is what scan.html styled on `body`:
+     body { font-family: …; margin: 0; background: #0b1220; color: #e2e8f0;
+            display: flex; align-items: center; justify-content: center;
+            min-height: 100vh; }
+   `margin: 0` is dropped (a div has none) and `flex: 1` + `overflow-y: auto`
+   are added so the wrapper still fills and scrolls inside theme.css's
+   `body { display: flex; height: 100vh }` shell. */
+
+.scan-station {
+  font-family: -apple-system, "Segoe UI", Arial, sans-serif;
+  background: #0b1220;
+  color: #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.scan-station .card { width: 480px; max-width: 92%; background: #141c27; border-radius: 16px; padding: 32px; text-align: center; margin: 24px 0; box-sizing: border-box; }
+@media (max-width: 520px) { .scan-station .card { padding: 22px 18px; } }
+/* `letter-spacing: normal` is the one declaration with no counterpart in
+   scan.html: theme.css's later `h1 { letter-spacing: -0.2px }` did not exist on
+   this page before, so it is undone rather than inherited. */
+.scan-station h1 { font-size: 18px; margin: 0 0 6px; letter-spacing: normal; }
+.scan-station p.sub { font-size: 12.5px; color: #94a3b8; margin: 0 0 24px; }
+.scan-station input { width: 100%; box-sizing: border-box; min-height: 48px; font-size: 18px; padding: 14px; border-radius: 10px; border: 2px solid #22303f; background: #0f172a; color: #fff; text-align: center; outline: none; }
+.scan-station input:focus { border-color: #0891b2; }
+.scan-station #feedback { margin-top: 20px; padding: 16px; border-radius: 10px; font-size: 14px; font-weight: 700; min-height: 20px; }
+.scan-station .fb-success { background: #052e1f; color: #4ade80; border: 1px solid #16a34a; }
+.scan-station .fb-error { background: #3a0b0b; color: #fca5a5; border: 1px solid #dc2626; }
+.scan-station .fb-idle { color: #64748b; font-weight: 400; font-size: 12.5px; }
+.scan-station a.back-link { display: inline-block; margin-top: 12px; padding: 12px 16px; min-height: 20px; color: #7fa8d9; font-size: 13px; text-decoration: none; border-radius: 8px; }
+.scan-station a.back-link:active { background: rgba(255,255,255,0.06); }
+
+.scan-station .cam-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 44px; background: #0891b2; color: #fff; border: none; border-radius: 8px; padding: 12px 18px; font-size: 14px; font-weight: 700; cursor: pointer; }
+.scan-station .cam-btn:hover { background: #0e7490; }
+.scan-station .cam-btn.stop { background: #1f2937; border: 1.5px solid #374151; }
+.scan-station .cam-btn.stop:hover { background: #27303f; }
+.scan-station .video-wrap { display: none; position: relative; margin: 0 0 16px; border-radius: 12px; overflow: hidden; border: 2px solid #22303f; transition: box-shadow 0.15s; background: #000; }
+.scan-station .video-wrap.flash-ok { box-shadow: 0 0 0 4px #16a34a; }
+.scan-station .video-wrap.flash-err { box-shadow: 0 0 0 4px #dc2626; }
+.scan-station video { display: block; width: 100%; max-height: 320px; object-fit: cover; }
+.scan-station .scan-reticle { position: absolute; inset: 12%; border: 2px dashed rgba(255,255,255,0.55); border-radius: 10px; pointer-events: none; }
+.scan-station .cam-status { font-size: 11.5px; color: #64748b; margin: 0 0 14px; min-height: 15px; }
+.scan-station .cam-status.cam-error { color: #fca5a5; }
+.scan-station .divider { display: flex; align-items: center; gap: 10px; margin: 4px 0 16px; color: #4b5a6c; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
+.scan-station .divider::before, .scan-station .divider::after { content: ""; flex: 1; height: 1px; background: #22303f; }

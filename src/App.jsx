@@ -14,6 +14,7 @@ import ResetPassword from "./pages/ResetPassword";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import Account from "./pages/Account";
+import StocksApp from "./stocks/StocksApp";
 import Nav from "./components/layout/Nav";
 import Footer from "./components/layout/Footer";
 import Seo, { withBrand } from "./components/Seo";
@@ -143,6 +144,22 @@ const PAGES = [
   { path: "/reset-password", element: <ResetPassword />, title: "Reset password", description: "Choose a new password for your REEFER MNL account." },
   { path: "/checkout", element: <Checkout />, title: "Checkout", description: "Shipping details and payment — GCash, Maya or cash on delivery." },
   { path: "/account", element: <Account />, title: "Your account", description: "Orders, favorites, addresses and account settings." },
+
+  /*
+   | Stock manager. Staff-only, and a whole application behind one splat: StocksApp
+   | owns everything under /stocks and does its own routing, auth and layout.
+   |
+   | `title: null` keeps <Seo> out of it — these are internal screens, not pages that
+   | should ever carry the shop's branding into a search result.
+   |
+   | The /products/* alias exists because the sub-pages were asked for at that path.
+   | It sits BELOW "/products" above, which still resolves to the customer catalogue:
+   | React Router ranks a static segment over a splat, so /products stays the shop and
+   | only /products/<something> reaches the ERP.
+   */
+  { path: "/stocks/*", element: <StocksApp />, title: null },
+  { path: "/products/*", element: <StocksApp />, title: null },
+
   { path: "*", element: <NotFound />, title: "Page not found", description: "That page washed out with the last drop." },
 ];
 

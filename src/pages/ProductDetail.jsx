@@ -221,7 +221,11 @@ export default function ProductDetail() {
   const ratingAverageLabel = ratingCount ? Number(product.rating_average).toFixed(1) : "—";
   const ratingCountLabel = ratingCount === 0 ? "No ratings yet" : ratingCount === 1 ? "1 rating" : `${ratingCount} ratings`;
 
-  const descFull = `${product.blurb} Cut for an everyday relaxed fit and printed in small batches in Quezon City — once this colourway sells out, it’s gone for good.`;
+  // Interpolating blurb straight in put the literal word "null" at the top of the
+  // description for any product created in the stock manager, whose Add Product
+  // form has no blurb field. The boilerplate half stands on its own without it.
+  const blurbText = (product.blurb || "").trim();
+  const descFull = `${blurbText ? blurbText + " " : ""}Cut for an everyday relaxed fit and printed in small batches in Quezon City — once this colourway sells out, it’s gone for good.`;
   const descClamped = descFull.length > 138;
   const descText = descOpen || !descClamped ? `${descFull} ` : `${descFull.slice(0, 138).trim()}… `;
 

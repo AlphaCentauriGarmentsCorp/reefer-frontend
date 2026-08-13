@@ -157,12 +157,16 @@ export default function ProductTile({ item, corner }) {
           </span>
         </div>
       </div>
-      <div style={{ display: "flex", flexDirection: "column", gap: 12, padding: 20 }}>
+      {/* Padding and type sizes live in index.css (.rf-dropcard-*) rather than
+          inline, so the phone rule can shrink them. Two cards across a 320px
+          screen leaves each about 140px wide, where a 23px name and 20px of
+          padding overflow. Inline values would win over the media query. */}
+      <div className="rf-dropcard-body" style={{ display: "flex", flexDirection: "column" }}>
         <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 12 }}>
-          <span style={{ fontFamily: "Anton, sans-serif", fontSize: 23, textTransform: "uppercase", letterSpacing: "0.02em" }}>{item.name}</span>
-          <span style={{ fontWeight: 900, fontSize: 18, color: "#F97B0C", whiteSpace: "nowrap" }}>{item.priceFmt}</span>
+          <span className="rf-dropcard-name" style={{ fontFamily: "Anton, sans-serif", textTransform: "uppercase", letterSpacing: "0.02em" }}>{item.name}</span>
+          <span className="rf-dropcard-price" style={{ fontWeight: 900, color: "#F97B0C", whiteSpace: "nowrap" }}>{item.priceFmt}</span>
         </div>
-        <p style={{ margin: 0, fontSize: 14, lineHeight: 1.55, color: "#6B6357" }}>{item.blurb}</p>
+        <p className="rf-dropcard-blurb" style={{ margin: 0, lineHeight: 1.55, color: "#6B6357" }}>{item.blurb}</p>
 
         {picking ? (
           <div onClick={stop} style={{ display: "flex", flexDirection: "column", gap: 12, border: "2px solid #101010", background: "#F6F1E7", padding: 14 }}>

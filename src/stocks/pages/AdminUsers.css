@@ -1,0 +1,17 @@
+/* The inline <style> block of public/admin-users.html, copied rule for rule.
+   Imported by AdminUsers.jsx so it loads after theme.css, which is the order
+   the page had it in (the <link> to theme.css came first, the <style> second)
+   — .tab and .tabs also exist in theme.css and the page's copy has to keep
+   winning. */
+
+.tabs { display: flex; gap: 8px; margin: 18px 0 16px; }
+.tab { background: #fff; border: 1px solid var(--border-input); color: var(--slate-soft); font-size: 12px; font-weight: 600; padding: 8px 14px; border-radius: 999px; cursor: pointer; }
+.tab.active { background: var(--navy); color: #fff; border-color: var(--navy); }
+.tab .count { opacity: 0.7; margin-left: 4px; }
+
+.status-pending { background: var(--yellow-bg); color: var(--yellow-text); }
+.status-approved { background: var(--green-bg); color: var(--green-text); }
+.status-rejected { background: var(--red-bg); color: var(--red-text); }
+.status-inactive { background: var(--slate-bg); color: var(--muted-dark); }
+
+td .btn { padding: 6px 12px; font-size: 11.5px; }

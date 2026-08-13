@@ -1,0 +1,30 @@
+/* The inline <style> block of public/register.html, copied verbatim.
+ *
+ * One change, and only one: the original's bare `body { ... }` rule is scoped to
+ * `body.auth-page` here. In the static app that rule lived inside register.html
+ * and so applied only while that page was open. Vite bundles every imported
+ * stylesheet into one file that is loaded for the whole SPA, so an unscoped
+ * `body` rule would centre the dashboard's sidebar+main layout too. Register.jsx
+ * adds `auth-page` to <body> while it is mounted and removes it on unmount,
+ * which reproduces the original's "only on this page" scope exactly.
+ *
+ * Everything else is left alone, including the quirk in
+ * `.field-label:first-of-type`: inside .auth-card the first <div> is
+ * .auth-logo-row, not a .field-label, so that rule matches nothing and the
+ * Username label keeps its 14px top margin. The JSX keeps the same element
+ * order so it keeps matching nothing.
+ */
+
+/* Retargeted from `body.auth-page` — see the note in Login.css. */
+body.auth-page .stocks-root { display: flex; align-items: center; justify-content: center; height: 100vh; }
+.auth-card { width: 380px; max-width: 90%; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 32px; box-sizing: border-box; }
+.auth-logo-row { display: flex; align-items: center; gap: 10px; margin-bottom: 22px; }
+.auth-logo-row .logo-box { width: 34px; height: 34px; border-radius: 9px; background: linear-gradient(135deg, var(--accent), var(--navy)); display: flex; align-items: center; justify-content: center; font-size: 16px; flex: none; }
+.auth-card h1 { font-size: 17px; margin: 0 0 4px; }
+.auth-card p.sub { margin: 0 0 22px; }
+.field-label { font-size: 11.5px; font-weight: 700; color: var(--muted-dark); text-transform: uppercase; letter-spacing: 0.3px; margin: 14px 0 6px; }
+.field-label:first-of-type { margin-top: 0; }
+.auth-input { width: 100%; box-sizing: border-box; padding: 10px 12px; border: 1.5px solid var(--border-strong); border-radius: 8px; font-size: 13.5px; }
+#auth-message { font-size: 12.5px; padding: 10px 12px; border-radius: 8px; margin-top: 16px; display: none; }
+.auth-footer { margin-top: 18px; font-size: 12px; color: var(--muted-dark); text-align: center; }
+.auth-footer a { color: var(--accent); font-weight: 600; text-decoration: none; }
