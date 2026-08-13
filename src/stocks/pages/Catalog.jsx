@@ -306,9 +306,17 @@ function logSize(sku, allProducts) {
 // ---------------------------------------------------------------- pieces --
 
 // Stock-left badge, shared by the list rows, grid cards and detail panel.
-// `available` is what can still be sold (order allocations already netted out).
+//
+// `sellable`, NOT `available`. This comment used to claim `available` was "what
+// can still be sold (order allocations already netted out)" — it is not, and the
+// server says so at the point it builds the field: "The ERP's `available` IS the
+// warehouse count ... Sellable stock (on_hand - allocated) is deliberately not
+// what this means." So a badge reading "17 left" was reporting the shelf count
+// and never moved when customers bought things, while the shop next to it showed
+// 5. `sellable` is the server's own on_hand - allocated, zeroed for an inactive
+// size — the same number the storefront sells against.
 function StockBadge({ row }) {
-  const n = Number(row.available) || 0;
+  const n = Number(row.sellable) || 0;
   return (
     <span className={'stock-left ' + (n === 0 ? 'stock-out' : n <= 5 ? 'stock-low' : 'stock-ok')}>
       {n === 0 ? 'Out of stock' : n + ' left'}
@@ -639,7 +647,9 @@ function WebsiteView({
     const pricePool = (activeRows.length ? activeRows : design.rows).map((r) => Number(r.price) || 0);
     const minPrice = Math.min.apply(null, pricePool);
     const distinctPrices = [...new Set(pricePool)];
-    const totalStock = design.rows.reduce((sum, r) => sum + (Number(r.available) || 0), 0);
+    // sellable, not available: this chip is described as being "like the site",
+    // and the site sells against on_hand - allocated.
+    const totalStock = design.rows.reduce((sum, r) => sum + (Number(r.sellable) || 0), 0);
 
     body = (
       <>
@@ -733,7 +743,11 @@ function WebsiteView({
                 <span
                   key={r.sku}
                   className="wv-size-chip"
-                  style={{ opacity: (Number(r.available) || 0) === 0 ? 0.35 : 1 }}
+                  /* sellable, not available: this previews the storefront's size
+                     picker, and the site greys a size out when it cannot be SOLD,
+                     not when the shelf is empty. Reading on_hand showed a size as
+                     available here while the shop had it struck through. */
+                  style={{ opacity: (Number(r.sellable) || 0) === 0 ? 0.35 : 1 }}
                 >
                   {wvShortSize(r.size)}
                 </span>
@@ -1546,7 +1560,8 @@ export default function Catalog() {
             const activeSizes = p.sizes.filter((s) => s.row.active !== false);
             const pricePool = (activeSizes.length ? activeSizes : p.sizes).map((s) => Number(s.row.price) || 0);
             const minPrice = pricePool.length ? Math.min.apply(null, pricePool) : 0;
-            const totalStock = p.sizes.reduce((sum, s) => sum + (Number(s.row.available) || 0), 0);
+            // sellable, matching the storefront's own total-stock figure.
+              const totalStock = p.sizes.reduce((sum, s) => sum + (Number(s.row.sellable) || 0), 0);
 
             return (
               <div className="rfc-card" key={p.key}>
