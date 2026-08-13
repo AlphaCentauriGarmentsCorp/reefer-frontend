@@ -1,0 +1,156 @@
+/* Page-specific styles for Inventory — the inline <style> block of
+   public/inventory.html, copied verbatim. theme.css still carries the design
+   system; this file only adds what that one page drew on top of it.
+
+   Imported by src/pages/Inventory.jsx, so it lands after theme.css in the
+   bundle — the same cascade order as the old
+   <link rel="stylesheet" href="css/theme.css"> sitting above the page's
+   inline <style>. */
+
+  .detail-panel .sku-code { font-family: ui-monospace, Menlo, monospace; font-size: 13px; font-weight: 700; color: var(--accent); margin-top: 12px; }
+  .panel-header-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+  .panel-header-row .close-btn { float: none; }
+  .panel-nav { display: flex; align-items: center; gap: 6px; }
+  .panel-nav-btn { border: 1px solid var(--border-strong); background: var(--surface); color: var(--slate); width: 26px; height: 26px; border-radius: 7px; cursor: pointer; font-size: 10px; display: inline-flex; align-items: center; justify-content: center; line-height: 1; padding: 0; }
+  .panel-nav-btn:hover:not(:disabled) { background: var(--slate-bg); border-color: var(--slate); }
+  .panel-nav-btn:disabled { opacity: 0.35; cursor: default; }
+  .panel-nav-pos { font-size: 11px; color: var(--muted); font-weight: 700; min-width: 46px; text-align: center; }
+
+  /* ---- Detail panel: editable fields ----
+     Same "reads like plain text, edits on focus" treatment as the Stock
+     grid's inputs, just laid out as a compact one/two-column form instead of
+     table cells. */
+  .pf-name-row { display: flex; align-items: baseline; gap: 8px; margin-top: 2px; }
+  .pf-name-input { flex: 1; min-width: 0; font-size: 16px; font-weight: 800; color: var(--text); background: transparent; border: 1px solid transparent; border-radius: 7px; padding: 4px 7px; margin-left: -7px; font-family: inherit; }
+  .pf-name-input:hover { border-color: var(--border-strong); background: var(--surface-tint); }
+  .pf-name-input:focus { outline: none; border-color: var(--navy); background: var(--surface); box-shadow: 0 0 0 3px rgba(15,23,42,0.07); }
+  .panel-size-badge { flex-shrink: 0; display: inline-block; background: var(--slate-bg); color: var(--slate); font-size: 11px; font-weight: 800; padding: 3px 9px; border-radius: 6px; }
+
+  .pf-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 10px; margin-top: 12px; }
+  .pf-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px 10px; margin-top: 8px; }
+  .pf-field { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+  .pf-field label { font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .3px; }
+  .pf-input { width: 100%; box-sizing: border-box; font: inherit; font-size: 12.5px; font-weight: 600; color: var(--text); background: var(--surface-tint); border: 1px solid transparent; border-radius: 7px; padding: 6px 8px; }
+  .pf-input:hover { border-color: var(--border-strong); }
+  .pf-input:focus { outline: none; background: var(--surface); border-color: var(--navy); box-shadow: 0 0 0 3px rgba(15,23,42,0.07); }
+  .pf-section-label { font-size: 10.5px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .3px; margin: 18px 0 0; padding-top: 14px; border-top: 1px solid var(--border-soft); }
+  .pf-hint { font-size: 11px; color: var(--muted); margin-top: 3px; line-height: 1.5; }
+
+  .toolbar .search-box { max-width: 360px; }
+
+  .stock-ok { color: var(--green); font-weight: 700; }
+  .stock-low { color: var(--orange); font-weight: 700; }
+  .stock-out { color: var(--red); font-weight: 700; }
+
+  /* ---- Products: List / Grid sub-toggle ---- */
+  .gallery-toolbar { display: flex; align-items: center; justify-content: space-between; margin: 14px 0 10px; }
+  .subview-toggle { display: inline-flex; background: var(--slate-bg); border-radius: 9px; padding: 3px; gap: 2px; }
+  .subview-btn { border: none; background: transparent; color: var(--muted-dark); font-size: 12px; font-weight: 700; padding: 6px 12px; border-radius: 7px; cursor: pointer; }
+  .subview-btn.active { background: var(--surface); color: var(--navy); box-shadow: 0 1px 2px rgba(15,23,42,0.08); }
+
+  /* Still used by the Activity Log's product column. */
+  .list-size-badge { font-size: 11px; font-weight: 800; color: var(--slate); background: var(--slate-bg); border-radius: 6px; padding: 3px 9px; display: inline-block; min-width: 26px; text-align: center; }
+
+  /* ---- Stock tab: read-only warehousing grid ----
+     Display only — editing happens in the detail panel (click a row) or via
+     Import Stock → Update Product for bulk changes. */
+  .grid-hint { font-size: 12px; color: var(--muted-dark); margin: 2px 0 12px; line-height: 1.6; }
+  .stock-grid { min-width: 1060px; }
+  .stock-grid th, .stock-grid td { vertical-align: middle; white-space: nowrap; }
+  .stock-grid th.sg-num, .stock-grid td.sg-num { text-align: right; }
+  .stock-grid .sg-img-col { width: 66px; }
+  .sg-thumb { width: 46px; height: 46px; border-radius: 8px; overflow: hidden; background: var(--surface-tint); border: 1px solid var(--border); }
+  .sg-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  /* Name over SKU in a single column, matching the reference layout. Both are
+     plain text — name is edited from the detail panel instead — so the whole
+     cell reliably opens the panel with nothing to intercept the click. */
+  .sg-idcell { display: flex; flex-direction: column; align-items: flex-start; gap: 1px; min-width: 200px; cursor: pointer; padding: 6px 7px; margin: -1px; }
+  .sg-idcell:hover { background: var(--surface-tint); border-radius: 6px; }
+  .sg-idcell:hover .sg-sku { text-decoration: underline; }
+  .sg-name-text { font-weight: 700; font-size: 12.5px; color: var(--text); }
+  .sg-sku { font-family: ui-monospace, Menlo, monospace; font-size: 11.5px; font-weight: 700; color: var(--accent); }
+  .sg-derived { font-weight: 700; font-size: 12.5px; color: var(--slate); padding-right: 8px; }
+  .sg-derived.zero { color: var(--muted); font-weight: 600; }
+  .sg-derived.alloc { color: var(--navy); }
+
+  /* ---- Column help: "?" in the header opens a small explainer popover ---- */
+  .th-help { width: 15px; height: 15px; border-radius: 50%; border: 1.5px solid currentColor; background: transparent; color: inherit; opacity: .55; font: inherit; font-size: 9.5px; font-weight: 800; line-height: 1; padding: 0; margin-right: 5px; cursor: pointer; vertical-align: middle; display: inline-flex; align-items: center; justify-content: center; }
+  .th-help:hover, .th-help.open { opacity: 1; }
+  #help-pop { position: absolute; z-index: 70; width: 244px; background: var(--surface); border: 1px solid var(--border-strong); border-radius: 10px; box-shadow: 0 10px 30px rgba(15,23,42,0.18); padding: 11px 13px; display: none; text-align: left; }
+  #help-pop .help-title { font-size: 12.5px; font-weight: 800; color: var(--navy); margin-bottom: 6px; }
+  #help-pop .help-body { font-size: 12px; color: var(--muted-dark); font-weight: 400; }
+  #help-pop .help-body ul { list-style: none; margin: 0; padding: 0; }
+  #help-pop .help-body li { position: relative; padding-left: 13px; line-height: 1.5; margin-bottom: 5px; }
+  #help-pop .help-body li:last-child { margin-bottom: 0; }
+  #help-pop .help-body li::before { content: ""; position: absolute; left: 2px; top: 7px; width: 4px; height: 4px; border-radius: 50%; background: var(--border-strong); }
+  #help-pop .hl { font-style: normal; font-weight: 800; color: var(--navy); background: var(--slate-bg); border-radius: 4px; padding: 1px 4px; }
+  #help-pop .help-arrow { position: absolute; top: -6px; width: 10px; height: 10px; background: var(--surface); border-left: 1px solid var(--border-strong); border-top: 1px solid var(--border-strong); transform: rotate(45deg); }
+  #grid-toast { position: fixed; right: 22px; bottom: 22px; z-index: 60; background: var(--navy); color: #fff; font-size: 12.5px; font-weight: 600; padding: 10px 16px; border-radius: 10px; box-shadow: 0 10px 28px rgba(15,23,42,0.28); display: none; max-width: 340px; }
+  #grid-toast.ok { background: var(--green); }
+  #grid-toast.err { background: var(--red); }
+
+  /* ---- Products gallery (image display) ---- */
+  .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(236px, 1fr)); gap: 16px; margin-top: 4px; }
+  .product-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 1px 2px rgba(15,23,42,0.04); transition: box-shadow .14s ease, transform .08s ease; }
+  .product-card:hover { box-shadow: 0 8px 22px rgba(15,23,42,0.10); transform: translateY(-2px); }
+  .product-card .thumb { aspect-ratio: 1 / 1; background: var(--surface-tint); overflow: hidden; }
+  .product-card .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .product-card .card-body { padding: 13px 14px 14px; display: flex; flex-direction: column; }
+  .pc-eyebrow { font-family: ui-monospace, Menlo, monospace; font-size: 11px; font-weight: 700; color: var(--accent); letter-spacing: .3px; }
+  .pc-eyebrow .dot { color: var(--muted); margin: 0 5px; }
+  .pc-cat { color: var(--muted-dark); font-weight: 600; }
+  .pc-name { font-size: 14px; font-weight: 800; color: var(--text); line-height: 1.25; margin-top: 3px; }
+  .pc-priceline { display: flex; align-items: baseline; margin-top: 5px; }
+  .pc-price { font-size: 15.5px; font-weight: 800; color: var(--navy); }
+  .pc-total { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .3px; margin-left: auto; padding: 3px 8px; border-radius: 999px; }
+  .pc-total.ok { background: var(--green-bg); color: var(--green-text); }
+  .pc-total.low { background: var(--orange-bg); color: var(--orange-text); }
+  .pc-total.out { background: var(--red-bg); color: var(--red-text); }
+  .pc-sizes { margin-top: 12px; border-top: 1px solid var(--border-soft); }
+  .pc-size-row { display: grid; grid-template-columns: auto 1fr auto auto; align-items: center; gap: 9px; padding: 8px 2px; border-bottom: 1px solid var(--border-soft); cursor: pointer; }
+  .pc-size-row:last-child { border-bottom: none; }
+  .pc-size-row:hover { background: var(--surface-tint); }
+  .pc-size-badge { font-size: 11px; font-weight: 800; color: var(--slate); text-align: center; background: var(--slate-bg); border-radius: 6px; padding: 3px 8px; white-space: nowrap; }
+  .pc-size-sku { font-family: ui-monospace, Menlo, monospace; font-size: 11.5px; color: var(--slate-soft); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .pc-size-price { font-size: 11.5px; font-weight: 700; color: var(--navy); white-space: nowrap; }
+  .pc-size-qty { font-size: 11.5px; font-weight: 700; white-space: nowrap; text-align: right; }
+
+  .panel-thumb { width: 100%; aspect-ratio: 1 / 1; border-radius: 10px; overflow: hidden; background: var(--surface-tint); margin-bottom: 14px; position: relative; cursor: pointer; }
+  .panel-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .panel-thumb::after { content: "Click to change photo"; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; text-align: center; font-size: 11.5px; font-weight: 700; color: #fff; background: rgba(15,23,42,0.55); opacity: 0; transition: opacity .12s ease; }
+  .panel-thumb:hover::after { opacity: 1; }
+
+  /* ---- Import Stock modal: tabs + single-product form ---- */
+  .imp-tabs { display: inline-flex; background: var(--slate-bg); border-radius: 9px; padding: 3px; gap: 2px; margin: 14px 0 6px; }
+  .imp-tab { border: none; background: transparent; color: var(--muted-dark); font-size: 12.5px; font-weight: 700; padding: 7px 16px; border-radius: 7px; cursor: pointer; }
+  .imp-tab.active { background: var(--surface); color: var(--navy); box-shadow: 0 1px 2px rgba(15,23,42,0.08); }
+  .imp-panel { display: none; }
+  .imp-panel.active { display: block; }
+  .imp-mode { display: inline-flex; gap: 8px; margin: 4px 0 14px; }
+  .imp-mode-btn { border: 1.5px solid var(--border-strong); background: var(--surface); color: var(--slate); font-size: 12px; font-weight: 700; padding: 7px 14px; border-radius: 8px; cursor: pointer; }
+  .imp-mode-btn.active { border-color: var(--navy); background: var(--navy); color: #fff; }
+  .imp-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 11px 12px; }
+  .imp-field { display: flex; flex-direction: column; gap: 4px; }
+  .imp-field.full { grid-column: 1 / -1; }
+  .imp-field label { font-size: 11.5px; font-weight: 700; color: var(--slate); }
+  .imp-field input, .imp-field select { padding: 8px 10px; border: 1.5px solid var(--border-strong); border-radius: 8px; font-size: 13px; font-family: inherit; color: var(--slate); background: var(--surface); box-sizing: border-box; width: 100%; }
+  .imp-field input:disabled { background: var(--surface-tint); color: var(--muted); }
+  /* Excel upload tab: click-or-drop target plus a result summary box. */
+  .imp-drop { margin-top: 14px; border: 2px dashed var(--border-strong); border-radius: 12px; background: var(--surface-tint); padding: 26px 16px; text-align: center; cursor: pointer; transition: border-color .12s ease, background .12s ease; }
+  .imp-drop:hover, .imp-drop.dragover { border-color: var(--navy); background: var(--slate-bg); }
+  .imp-drop.has-file { border-style: solid; border-color: var(--green); background: var(--green-bg); }
+  .imp-drop-icon { font-size: 26px; line-height: 1; }
+  .imp-drop-main { font-size: 13px; font-weight: 700; color: var(--slate); margin-top: 8px; }
+  .imp-drop.has-file .imp-drop-main { color: var(--green-text); }
+  .imp-drop-sub { font-size: 11.5px; color: var(--muted); margin-top: 3px; }
+  .imp-result { margin-top: 10px; border: 1px solid var(--border); border-radius: 10px; padding: 11px 13px; font-size: 12px; background: var(--surface-tint); }
+  .imp-result .r-line { display: flex; justify-content: space-between; padding: 3px 0; }
+  .imp-result .r-line strong { font-weight: 800; color: var(--navy); }
+  .imp-result .r-warn { margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border); color: var(--orange-text); line-height: 1.55; }
+  .imp-check { display: flex; align-items: flex-start; gap: 8px; margin-top: 12px; font-size: 12.5px; color: var(--slate); cursor: pointer; }
+  .imp-check input { margin-top: 2px; }
+  .imp-check-sub { color: var(--muted); font-weight: 400; }
+
+  .imp-photo-row { display: flex; align-items: center; gap: 12px; }
+  .imp-photo-thumb { width: 56px; height: 56px; border-radius: 8px; background: var(--surface-tint); overflow: hidden; flex-shrink: 0; border: 1px solid var(--border); }
+  .imp-photo-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }

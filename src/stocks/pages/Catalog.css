@@ -1,0 +1,274 @@
+/* Page-specific styles for the Product Catalog.
+ *
+ * A verbatim copy of the <style> block in public/catalog.html — same rules,
+ * same order, same comments. Nothing was rewritten, renamed or "tidied": the
+ * class names here are the contract between the markup in Catalog.jsx and the
+ * design, and theme.css supplies every custom property they read.
+ *
+ * The one addition is the @import below. catalog.html loaded Anton from Google
+ * Fonts with a <link> in its own <head>; the SPA has a single shared
+ * index.html, so the font travels with the only page that uses it instead.
+ * Same family, same display=swap, same Impact/Arial Black fallback in the
+ * font stacks. */
+@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+
+.size-badge { font-size: 11px; font-weight: 800; color: var(--slate); background: var(--slate-bg); border-radius: 6px; padding: 3px 9px; display: inline-block; min-width: 26px; text-align: center; }
+.status-active { background: var(--green-bg); color: var(--green-text); }
+.status-inactive { background: var(--slate-bg); color: var(--muted-dark); }
+
+/* ---- Status pill: it is a TOGGLE, so it has to look like one -------------
+ *
+ * theme.css gives .status-pill `cursor: pointer` and nothing else, which left it
+ * pixel-identical to the static badges sitting next to it in the same row (the
+ * size badge, the stock-left chip). Nobody clicks a control they cannot see, so
+ * the interaction was effectively invisible.
+ *
+ * The affordances below are additive and page-scoped — theme.css stays untouched,
+ * so the pill still looks like itself everywhere else it is used.
+ */
+.status-pill {
+  /* A hairline the same hue as the fill: reads as a chip you can press, without
+     turning it into a heavy button that competes with the row's real actions. */
+  border: 1px solid rgba(15, 23, 42, 0.10);
+  position: relative;
+  transition: filter .12s ease, box-shadow .12s ease, transform .08s ease;
+}
+
+/* The glyph only appears on hover/focus. Permanently visible it would add noise
+   to every row of a dense grid; on hover it names the gesture. */
+.status-pill::after {
+  content: '⇄';
+  margin-left: 0;
+  max-width: 0;
+  opacity: 0;
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: baseline;
+  font-size: 9.5px;
+  transition: max-width .12s ease, opacity .12s ease, margin-left .12s ease;
+}
+
+.status-pill:hover,
+.status-pill:focus-visible {
+  filter: brightness(0.95);
+  box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.06);
+}
+
+.status-pill:hover::after,
+.status-pill:focus-visible::after {
+  max-width: 1.2em;
+  opacity: .7;
+  margin-left: 5px;
+}
+
+/* Keyboard users get a real focus ring, not just the hover treatment. */
+.status-pill:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.35);
+}
+
+/* Press feedback confirms the click landed. */
+.status-pill:active { transform: translateY(1px); }
+
+/* ---- Queued state -------------------------------------------------------
+ *
+ * The pill flips colour and label the moment you click, because that is what a
+ * toggle owes you. But the change is NOT live until the 12:00 AM push, and a row
+ * that lies about what the shop is serving is worse than one that feels sluggish.
+ *
+ * So a queued pill is drawn hollow: the new colour on the border and the text, a
+ * transparent fill, and a dashed edge. Solid = live on the site. Outlined = agreed
+ * but not yet pushed. The chip beside it names what the site still shows.
+ */
+.status-pill.status-queued {
+  background: transparent;
+  border-style: dashed;
+  border-width: 1.5px;
+}
+
+.status-pill.status-queued.status-active {
+  border-color: var(--green-text);
+  color: var(--green-text);
+}
+
+.status-pill.status-queued.status-inactive {
+  border-color: var(--muted-dark);
+  color: var(--muted-dark);
+}
+
+/* Hover on a queued pill means "undo this", so it fills back in to preview the
+   solid state a second click restores. */
+.status-pill.status-queued:hover { filter: none; }
+.status-pill.status-queued.status-active:hover { background: var(--green-bg); }
+.status-pill.status-queued.status-inactive:hover { background: var(--slate-bg); }
+
+/* ---- List / Grid sub-toggle ---- */
+.catalog-toolbar { display: flex; align-items: center; justify-content: space-between; margin: 14px 0 10px; }
+.subview-toggle { display: inline-flex; background: var(--slate-bg); border-radius: 9px; padding: 3px; gap: 2px; }
+.subview-btn { border: none; background: transparent; color: var(--muted-dark); font-size: 12px; font-weight: 700; padding: 6px 12px; border-radius: 7px; cursor: pointer; }
+.subview-btn.active { background: var(--surface); color: var(--navy); box-shadow: 0 1px 2px rgba(15,23,42,0.08); }
+
+/* ---- List view photo + grouping ---- */
+#catalog-list-wrap { overflow-x: auto; }
+#catalog-list-wrap td, #catalog-list-wrap th { vertical-align: middle; }
+#catalog-body tr:hover { background: var(--surface-tint); }
+.cat-thumb { width: 46px; height: 46px; border-radius: 8px; overflow: hidden; background: var(--surface-tint); }
+.cat-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.cat-code { font-family: ui-monospace, Menlo, monospace; font-size: 11.5px; font-weight: 700; color: var(--accent); }
+.cat-name { font-weight: 700; font-size: 13px; }
+.cat-sku { font-family: ui-monospace, Menlo, monospace; font-size: 11.5px; color: var(--slate-soft); }
+.group-first-row td { border-top: 2px solid var(--border-strong); }
+
+/* ---- Grid view: REEFER-storefront-styled product cards ---- */
+.catalog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 22px; padding: 4px 8px 8px 4px; }
+.rfc-card { background: #F6F1E7; color: #101010; border: 2px solid #101010; box-shadow: 6px 6px 0 #101010; display: flex; flex-direction: column; transition: transform .12s, box-shadow .12s; }
+.rfc-card:hover { transform: translate(-2px, -2px); box-shadow: 8px 8px 0 #101010; }
+.rfc-photo { position: relative; background: #ECE5D6; border-bottom: 2px solid #101010; aspect-ratio: 4 / 3; overflow: hidden; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+.rfc-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.rfc-drop { color: #A99F8C; font-weight: 700; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; text-align: center; padding: 18px; }
+.rfc-tag { position: absolute; top: 10px; left: 10px; background: #F97B0C; border: 2px solid #101010; color: #101010; font-weight: 900; font-size: 10px; letter-spacing: .14em; padding: 4px 9px; z-index: 2; }
+.rfc-type { position: absolute; top: 10px; right: 10px; background: #F6F1E7; border: 2px solid #101010; color: #101010; font-weight: 900; font-size: 10px; letter-spacing: .1em; padding: 4px 8px; z-index: 2; }
+.rfc-code { position: absolute; bottom: 10px; left: 10px; background: rgba(246,241,231,0.94); border: 2px solid #101010; color: #101010; font-family: ui-monospace, Menlo, monospace; font-size: 10px; font-weight: 800; letter-spacing: .06em; padding: 3px 8px; z-index: 2; }
+.rfc-body { padding: 12px 14px 11px; }
+.rfc-title-row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.rfc-name { font-family: Anton, Impact, 'Arial Black', sans-serif; font-weight: 400; font-size: 19px; text-transform: uppercase; line-height: 1.05; }
+.rfc-price { font-family: Anton, Impact, 'Arial Black', sans-serif; font-weight: 400; font-size: 16px; color: #F97B0C; white-space: nowrap; }
+.rfc-stock { font-weight: 900; font-size: 10.5px; letter-spacing: .14em; margin-top: 6px; color: #1F8A5B; }
+.rfc-stock.low { color: #B26A00; }
+.rfc-stock.out { color: #C0392B; }
+.rfc-blurb { font-size: 12px; color: #5C5546; margin-top: 6px; line-height: 1.45; }
+.rfc-blurb.empty { color: #A99F8C; font-style: italic; }
+/* The size table must never paint outside the card: it scrolls inside
+   instead (queued chips can make the price column wide). */
+.rfc-table-wrap { flex: 1; overflow-x: auto; }
+.rfc-table { width: 100%; border-collapse: collapse; border-top: 2px solid #101010; }
+.rfc-table th { background: #ECE5D6; color: #6B6357; font-size: 9px; text-transform: uppercase; letter-spacing: .5px; text-align: left; padding: 5px 8px; font-weight: 900; }
+.rfc-table td { padding: 6px 8px; font-size: 11px; border-top: 1px solid #E2D9C3; vertical-align: middle; white-space: nowrap; }
+.rfc-table tbody tr { cursor: pointer; }
+.rfc-table tbody tr:hover { background: #EFE8D8; }
+.rfc-table .size-badge { background: #F6F1E7; color: #101010; border: 1.5px solid #101010; border-radius: 0; min-width: 18px; padding: 2px 6px; }
+.rfc-table .rfc-sku-sub { font-family: ui-monospace, Menlo, monospace; font-size: 9.5px; color: #6B6357; margin-top: 2px; white-space: nowrap; }
+.rfc-cta { display: block; width: 100%; border: none; border-top: 2px solid #101010; background: #101010; color: #F6F1E7; font-family: Anton, Impact, 'Arial Black', sans-serif; font-weight: 400; font-size: 13px; letter-spacing: .1em; padding: 12px; cursor: pointer; text-transform: uppercase; }
+.rfc-cta:hover { background: #F97B0C; color: #101010; }
+
+/* editable price cell works in both table cells and card cells */
+.cell-edit { display: inline-flex; align-items: center; gap: 6px; }
+
+/* ---- Right-side product detail panel (mirrors Inventory's) ---- */
+.detail-panel .sku-code { font-family: ui-monospace, Menlo, monospace; font-size: 17px; font-weight: 800; color: var(--navy); }
+.panel-header-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+.panel-header-row .close-btn { float: none; }
+.panel-nav { display: flex; align-items: center; gap: 6px; }
+.panel-nav-btn { border: 1px solid var(--border-strong); background: var(--surface); color: var(--slate); width: 26px; height: 26px; border-radius: 7px; cursor: pointer; font-size: 10px; display: inline-flex; align-items: center; justify-content: center; line-height: 1; padding: 0; }
+.panel-nav-btn:hover:not(:disabled) { background: var(--slate-bg); border-color: var(--slate); }
+.panel-nav-btn:disabled { opacity: 0.35; cursor: default; }
+.panel-nav-pos { font-size: 11px; color: var(--muted); font-weight: 700; min-width: 46px; text-align: center; }
+.detail-panel .prod-name { font-size: 15px; font-weight: 700; margin-top: 10px; }
+.detail-panel .prod-sub { font-size: 12.5px; color: var(--muted-dark); margin-top: 2px; }
+.panel-thumb { width: 100%; aspect-ratio: 1 / 1; border-radius: 10px; overflow: hidden; background: var(--surface-tint); margin-bottom: 14px; }
+.panel-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.panel-size-badge { display: inline-block; background: var(--slate-bg); color: var(--slate); font-size: 11px; font-weight: 800; padding: 3px 9px; border-radius: 6px; margin-left: 8px; vertical-align: middle; }
+/* the pencil normally only reveals on tr:hover — the panel isn't a table
+   row, so keep it visible here */
+.detail-panel .cell-edit-btn { opacity: 1; }
+.detail-panel .stat-value .status-pill { font-size: 12px; }
+/* Stock-left badge: green = healthy, amber = running low, red = out. */
+.stock-left { display: inline-block; font-size: 12px; font-weight: 800; padding: 3px 9px; border-radius: 6px; white-space: nowrap; }
+.stock-ok  { background: #E8F6EE; color: #1F8A5B; }
+.stock-low { background: #FDF3E2; color: #B26A00; }
+.stock-out { background: #FBEAE7; color: #C0392B; }
+
+/* ---- Push Product (queued edits) ---- */
+.push-btn { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
+.push-btn .push-count { background: #B26A00; color: #fff; font-size: 11px; font-weight: 800; min-width: 20px; padding: 2px 6px; border-radius: 999px; text-align: center; }
+/* amber "queued" chip shown beside a price/status that has a pending edit */
+.queued-chip { display: inline-block; font-size: 10px; font-weight: 800; background: #FDF3E2; color: #B26A00; border-radius: 5px; padding: 2px 6px; margin-left: 6px; white-space: nowrap; vertical-align: middle; }
+.push-modal-box { width: 860px; max-width: 94%; }
+.push-table-wrap { max-height: 55vh; overflow: auto; margin-top: 14px; border: 1px solid var(--border); border-radius: 10px; }
+.push-table-wrap table { width: 100%; border-collapse: collapse; }
+.push-table-wrap th { position: sticky; top: 0; background: var(--surface-tint); color: var(--muted); font-size: 10px; text-transform: uppercase; letter-spacing: .3px; text-align: left; padding: 8px 12px; font-weight: 700; }
+.push-table-wrap td { padding: 9px 12px; font-size: 12.5px; border-top: 1px solid var(--border-soft); vertical-align: middle; }
+.push-field-pill { display: inline-block; font-size: 10.5px; font-weight: 800; padding: 2px 8px; border-radius: 999px; }
+.push-field-price { background: var(--slate-bg); color: var(--slate); }
+.push-field-active { background: #E8F6EE; color: #1F8A5B; }
+.push-field-available { background: #FDF3E2; color: #B26A00; }
+.push-row-btn { border: 1px solid var(--border-strong); background: var(--surface); border-radius: 7px; font-size: 11px; font-weight: 700; padding: 4px 9px; cursor: pointer; color: var(--slate); }
+.push-row-btn:hover { background: var(--slate-bg); }
+.push-row-btn.danger { color: var(--red); border-color: var(--red-border); }
+.push-empty { padding: 26px; text-align: center; font-size: 12.5px; color: var(--muted); }
+.push-note { font-size: 11.5px; color: var(--muted-dark); background: var(--surface-tint); border-radius: 8px; padding: 9px 12px; margin-top: 12px; }
+/* website-content rows in the push list + activity log */
+.push-field-content, .log-website { background: #EDE9FE; color: #6D28D9; }
+
+/* ---- Website View: storefront-styled preview with editable content ---- */
+.wv-open-btn { border: 1px solid var(--border-strong); background: var(--surface); color: var(--slate); border-radius: 7px; font-size: 11px; font-weight: 700; padding: 4px 9px; cursor: pointer; white-space: nowrap; }
+.wv-open-btn:hover { background: var(--slate-bg); }
+
+.wv-box { width: 1100px; max-width: 96%; max-height: 92vh; overflow: auto; background: #F6F1E7; color: #101010; border-radius: 14px; padding: 22px 26px 26px; box-shadow: 0 18px 50px rgba(15,23,42,0.35); }
+/* theme.css doesn't set a global border-box, so padded 100%-width boxes
+   (the photo frame) would overflow their grid column and paint over the
+   info column — contain everything inside the modal. */
+.wv-box, .wv-box * { box-sizing: border-box; }
+.wv-topbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-bottom: 12px; border-bottom: 2px solid #101010; margin-bottom: 16px; }
+.wv-title { font-weight: 900; font-size: 14px; letter-spacing: .1em; }
+.wv-note { font-size: 11.5px; color: #6B6357; }
+.wv-close { border: 2px solid #101010; background: #F6F1E7; color: #101010; font-weight: 900; border-radius: 0; width: 30px; height: 30px; cursor: pointer; }
+.wv-close:hover { background: #101010; color: #F6F1E7; }
+.wv-crumb { font-weight: 700; font-size: 10.5px; letter-spacing: .14em; color: #6B6357; margin-bottom: 14px; text-transform: uppercase; }
+.wv-crumb strong { color: #101010; }
+.wv-grid { display: grid; grid-template-columns: 1.02fr 1fr; gap: 26px; align-items: start; }
+.wv-grid > * { min-width: 0; }
+@media (max-width: 900px) { .wv-grid { grid-template-columns: 1fr; } }
+
+/* The photo column pins while the (longer) editable column scrolls past it. */
+.wv-left { position: sticky; top: 0; min-width: 0; }
+.wv-gallery { display: flex; gap: 12px; }
+.wv-queue-all { display: block; width: 100%; margin-top: 16px; border: 2px solid #101010; background: #101010; color: #F6F1E7; font-family: Anton, Impact, 'Arial Black', sans-serif; font-weight: 400; font-size: 14px; letter-spacing: .08em; text-transform: uppercase; padding: 12px; cursor: pointer; box-shadow: 4px 4px 0 #F97B0C; }
+.wv-queue-all:hover { background: #F97B0C; color: #101010; box-shadow: 4px 4px 0 #101010; }
+.wv-queue-all:disabled { opacity: .5; cursor: default; }
+.wv-thumbs { display: flex; flex-direction: column; gap: 10px; width: 64px; flex: none; }
+.wv-thumb { width: 64px; aspect-ratio: 4 / 5; border: 2px solid #101010; background: #ECE5D6; cursor: pointer; padding: 0; position: relative; overflow: hidden; }
+.wv-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.wv-thumb.active { box-shadow: 3px 3px 0 #F97B0C; }
+.wv-thumb .wv-slot-label { position: absolute; left: 0; right: 0; bottom: 0; background: rgba(16,16,16,0.75); color: #F6F1E7; font-size: 8.5px; font-weight: 800; letter-spacing: .08em; text-align: center; padding: 2px 0; }
+.wv-main { position: relative; flex: 1; min-width: 0; overflow: hidden; border: 2px solid #101010; background: #ECE5D6; box-shadow: 8px 8px 0 #101010; }
+.wv-main-frame { position: relative; width: 100%; aspect-ratio: 4 / 5; display: flex; align-items: center; justify-content: center; color: #A99F8C; font-size: 13px; font-weight: 700; letter-spacing: .08em; text-align: center; padding: 20px; overflow: hidden; }
+.wv-main-frame img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.wv-tag-badge { position: absolute; top: 12px; left: 12px; background: #F97B0C; color: #101010; font-weight: 900; font-size: 10.5px; letter-spacing: .16em; padding: 5px 10px; border: 2px solid #101010; z-index: 2; }
+.wv-photo-actions { position: absolute; right: 10px; bottom: 10px; z-index: 3; display: flex; gap: 6px; align-items: center; }
+.wv-mini-btn { border: 2px solid #101010; background: #F6F1E7; color: #101010; font-size: 10.5px; font-weight: 800; letter-spacing: .04em; padding: 5px 9px; cursor: pointer; }
+.wv-mini-btn:hover { background: #101010; color: #F6F1E7; }
+
+.wv-eyebrow { font-weight: 900; font-size: 11px; letter-spacing: .2em; color: #F97B0C; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.wv-name { font-family: Anton, Impact, 'Arial Black', sans-serif; font-weight: 400; font-size: clamp(26px, 3.4vw, 42px); text-transform: uppercase; line-height: 0.95; margin: 6px 0 10px; }
+.wv-price-row { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 4px; }
+.wv-price { font-family: Anton, Impact, 'Arial Black', sans-serif; font-size: 26px; color: #F97B0C; }
+.wv-stock-chip { font-weight: 900; font-size: 10.5px; letter-spacing: .1em; border: 2px solid #101010; padding: 3px 9px; background: #8FD6AE; color: #101010; }
+.wv-stock-chip.low { background: #F97B0C; }
+.wv-stock-chip.out { background: #C0392B; color: #F6F1E7; }
+
+.wv-section-label { font-weight: 900; font-size: 11.5px; letter-spacing: .12em; margin: 16px 0 6px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.wv-field { border-top: 1px dashed #C9BFA9; padding: 9px 0; }
+.wv-field-k { display: flex; align-items: center; gap: 8px; font-weight: 900; font-size: 10.5px; letter-spacing: .1em; flex-wrap: wrap; }
+.wv-field-v { font-size: 13px; margin-top: 4px; white-space: pre-wrap; line-height: 1.45; }
+.wv-field-v.empty { color: #A99F8C; font-style: italic; }
+.wv-edit-btn { border: 1px solid #101010; background: transparent; color: #101010; border-radius: 0; font-size: 10.5px; font-weight: 800; padding: 2px 8px; cursor: pointer; }
+.wv-edit-btn:hover { background: #101010; color: #F6F1E7; }
+.wv-editor { margin-top: 6px; }
+.wv-editor textarea, .wv-editor input, .wv-editor select { width: 100%; border: 2px solid #101010; background: #FFFDF8; color: #101010; font-size: 13px; padding: 8px 10px; font-family: inherit; box-sizing: border-box; }
+.wv-editor textarea { min-height: 84px; resize: vertical; }
+.wv-editor-actions { display: flex; gap: 8px; margin-top: 8px; }
+.wv-editor-hint { font-size: 10.5px; color: #6B6357; margin-top: 5px; }
+
+.wv-sizes { display: flex; gap: 8px; flex-wrap: wrap; }
+.wv-size-chip { border: 2px solid #101010; padding: 6px 13px; font-weight: 900; font-size: 12px; background: #F6F1E7; }
+.wv-static-note { font-size: 10.5px; color: #6B6357; margin-top: 5px; }
+.wv-pay-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+.wv-pay-badge { border: 2px solid #101010; font-weight: 900; font-size: 10px; padding: 3px 8px; letter-spacing: .06em; }
+.wv-fit-box { background: #101010; color: #F6F1E7; padding: 14px 16px; margin-top: 14px; }
+.wv-fit-box .wv-field-k { color: #F97B0C; }
+.wv-fit-box .wv-field-v.empty { color: #8b8577; }
+.wv-fit-box .wv-edit-btn { border-color: #F6F1E7; color: #F6F1E7; }
+.wv-fit-box .wv-edit-btn:hover { background: #F6F1E7; color: #101010; }
+.wv-footnote { font-size: 11px; color: #6B6357; border-top: 2px solid #101010; margin-top: 18px; padding-top: 10px; line-height: 1.5; }
+.wv-box .queued-chip { vertical-align: baseline; }

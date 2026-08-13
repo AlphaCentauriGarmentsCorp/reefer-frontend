@@ -1,0 +1,167 @@
+/* Page CSS for Orders.jsx — the two inline <style> blocks of
+   public/orders.html, copied verbatim and concatenated.
+   Block 1 sat above the <link> to theme.css (print rules + the waybill label);
+   block 2 sat below it (the page chrome). Neither block collides with a
+   theme.css selector, so the order between them is preserved and the whole
+   file simply loads after theme.css, exactly as block 2 did. */
+
+@media print {
+  body * { visibility: hidden; }
+  /* display:none (set below, outside this media query) can't be undone by
+     visibility alone — display and visibility are separate properties, and
+     an element with display:none is removed from the render tree entirely.
+     This override is why the print preview was blank before. */
+  #print-root { display: block !important; }
+  #print-root, #print-root * { visibility: visible; }
+  #print-root { position: absolute; top: 0; left: 0; width: 100%; }
+  .waybill-block { padding: 30px; box-sizing: border-box; page-break-after: always; }
+}
+#print-root { display: none; }
+
+/* ---- Waybill: realistic courier-label layout (thermal-label style) ---- */
+.waybill-block { font-family: Arial, Helvetica, sans-serif; color: #000; }
+.wb-label { width: 105mm; margin: 0 auto; background: #fff; border: 3px solid #000; }
+.wb-top { display: flex; border-bottom: 2px solid #000; }
+.wb-courier-cell { width: 38%; box-sizing: border-box; border-right: 2px solid #000; display: flex; align-items: center; justify-content: center; padding: 10px 8px; }
+.wb-logo-jnt { color: #e60012; font-style: italic; font-weight: 900; font-size: 18px; letter-spacing: 0.3px; white-space: nowrap; }
+.wb-logo-ninjavan { color: #c41230; font-weight: 900; font-size: 16px; letter-spacing: 1px; white-space: nowrap; }
+.wb-logo-generic { font-weight: 900; font-size: 15px; }
+.wb-dest-cell { flex: 1; min-width: 0; box-sizing: border-box; padding: 8px 12px; }
+.wb-dest-line { display: flex; justify-content: space-between; gap: 10px; font-size: 16px; font-weight: 700; }
+.wb-send-date { font-size: 12px; margin-top: 3px; }
+.wb-idrow { display: flex; align-items: stretch; border-bottom: 2px solid #000; }
+.wb-orderid-cell { width: 38%; box-sizing: border-box; border-right: 2px solid #000; padding: 8px 10px; text-align: center; }
+.wb-small-label { font-size: 10.5px; }
+.wb-orderid { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 14px; font-weight: 700; margin-top: 2px; }
+.wb-sortcode { flex: 1; min-width: 0; display: flex; align-items: center; justify-content: center; font-size: 30px; font-weight: 900; letter-spacing: 1px; padding: 6px 10px; word-break: break-all; }
+.wb-barcode-band { border-bottom: 2px solid #000; padding: 8px 14px 5px; }
+.wb-barcode-num { text-align: center; font-size: 13px; font-weight: 700; letter-spacing: 3px; margin-top: 2px; }
+.wb-party { display: flex; border-bottom: 2px solid #000; }
+.wb-party-tag { width: 26px; box-sizing: border-box; border-right: 2px solid #000; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 11px; letter-spacing: 2px; writing-mode: vertical-rl; transform: rotate(180deg); padding: 6px 2px; }
+.wb-party-body { flex: 1; min-width: 0; box-sizing: border-box; padding: 8px 12px; }
+.wb-party-head { display: flex; justify-content: space-between; gap: 10px; font-size: 14px; font-weight: 700; }
+.wb-party-addr { font-size: 12px; margin-top: 3px; line-height: 1.45; }
+.wb-party--seller .wb-party-head { font-size: 12px; }
+.wb-party--seller .wb-party-addr { font-size: 10.5px; }
+.wb-items { border-bottom: 2px solid #000; padding: 6px 12px 7px; }
+.wb-items-title { font-size: 9.5px; font-weight: 800; letter-spacing: 1px; }
+.wb-item-line { display: flex; justify-content: space-between; gap: 8px; font-size: 11px; margin-top: 2px; }
+.wb-bottom { display: flex; border-bottom: 2px solid #000; }
+.wb-qr-cell { width: 38%; box-sizing: border-box; border-right: 2px solid #000; display: flex; align-items: center; justify-content: center; padding: 10px; }
+.wb-qr-cell img, .wb-qr-cell canvas { display: block; }
+.wb-bottom-right { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.wb-bottom-barcode { padding: 8px 12px 4px; border-bottom: 2px solid #000; }
+.wb-meta-row { display: flex; flex: 1; }
+.wb-meta-cell { flex: 1.2; box-sizing: border-box; border-right: 2px solid #000; padding: 7px 12px; font-size: 12.5px; line-height: 1.7; }
+.wb-cod-cell { flex: 1; box-sizing: border-box; padding: 7px 12px; font-size: 12.5px; }
+.wb-cod-amt { font-size: 16px; font-weight: 800; margin-top: 2px; }
+.wb-footer { display: flex; align-items: stretch; }
+.wb-foot-note { flex: 1.2; min-width: 0; box-sizing: border-box; border-right: 2px solid #000; display: flex; flex-direction: column; justify-content: center; padding: 6px 10px; font-size: 8.5px; line-height: 1.45; color: #333; }
+.wb-attempt { flex: 1; display: flex; flex-direction: column; border-right: 2px solid #000; }
+.wb-attempt:last-child { border-right: none; }
+.wb-attempt-title { font-size: 11px; font-weight: 700; text-align: center; padding: 4px 2px; border-bottom: 1.5px solid #000; }
+.wb-attempt-cells { display: flex; flex: 1; }
+.wb-attempt-cells span { flex: 1; display: flex; align-items: center; justify-content: center; border-right: 1.5px solid #000; padding: 6px 0; font-size: 16px; font-weight: 700; }
+.wb-attempt-cells span:last-child { border-right: none; }
+
+.detail-panel .order-id { font-family: ui-monospace, Menlo, monospace; font-size: 17px; font-weight: 800; color: var(--navy); }
+.detail-panel .cust-name { font-size: 15px; font-weight: 700; margin-top: 10px; }
+.detail-panel .prod-line { font-size: 12.5px; color: var(--muted-dark); margin-top: 2px; }
+.detail-panel select { width: 100%; margin-top: 16px; padding: 9px 10px; border-radius: 8px; border: 1px solid var(--border-strong); font-size: 12.5px; }
+
+/* Every control in the toolbar shares one height so the row sits on a single
+   baseline instead of the search box towering over the buttons. */
+.toolbar { margin-bottom: 0; }
+.toolbar .search-box,
+.toolbar .btn,
+.toolbar #courier-filter { height: 38px; box-sizing: border-box; }
+.toolbar .search-box { max-width: 360px; padding: 0 13px; }
+.toolbar .btn { padding: 0 16px; border-radius: 9px; }
+.toolbar #courier-filter { padding: 0 12px; }
+
+/* The status filters render as the live pipeline stepper (see theme.css):
+   one glanceable strip where the bar under each stage shows its share of
+   the queue. Clicking a step still filters the table below. */
+#tabs { margin-top: 14px; }
+
+/* ---- Work row: the orders table IS the workspace, so it starts right
+   under the stepper instead of below a tall right-hand column (which left
+   a large dead gap and pushed the queue under the fold). The Needs
+   Follow-up and Orders by Courier panels ride alongside the table in a
+   sticky side column, staying in view while the queue scrolls. Stacks
+   below the table on narrow windows. ---- */
+.work-row { display: flex; gap: 16px; align-items: flex-start; margin-top: 14px; }
+.work-row .table-scroll { flex: 1; min-width: 0; }
+.side-col { width: 300px; flex: none; display: flex; flex-direction: column; gap: 12px; position: sticky; top: 0; }
+.side-col .panel { box-sizing: border-box; padding: 14px 16px; }
+@media (max-width: 1250px) { .work-row { flex-direction: column; } .side-col { width: auto; position: static; } }
+
+/* Light table for the courier × stage matrix — header stays quiet (the
+   navy sticky header from theme.css is for full-page lists, not panels).
+   table-layout:auto overrides the page's fixed layout so the courier name
+   column takes what it needs instead of wrapping "J&T Express". */
+.mini-table { width: 100%; border-collapse: collapse; box-shadow: none; table-layout: auto; }
+.mini-table th { background: transparent; color: var(--muted); font-size: 9.5px; letter-spacing: 0.3px; padding: 4px 5px; position: static; }
+.mini-table td { padding: 6px 5px; font-size: 12px; border-bottom: 1px solid var(--border-soft); }
+.mini-table td:first-child { white-space: nowrap; font-size: 11.5px; }
+.mini-table tr:last-child td { border-bottom: none; }
+.mini-table th.num, .mini-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
+.mini-table td.num { cursor: pointer; }
+.mini-table td.num:hover { text-decoration: underline; }
+/* zero cells recede so the eye lands on queues that actually hold work */
+.mini-table td.zero { color: var(--muted); }
+/* Amber = "watch closely": this courier's queue is notably larger than
+   the others in that stage — same meaning amber carries everywhere. */
+.mini-table td.hot { background: var(--amber-bg); color: var(--amber-text); font-weight: 800; }
+
+.aging-count { display: none; font-size: 10.5px; font-weight: 800; color: #fff; background: var(--red); border-radius: 999px; padding: 2px 8px; margin-left: 6px; vertical-align: 2px; }
+.aging-count.visible { display: inline-block; }
+.aging-row { display: flex; align-items: center; gap: 8px; padding: 7px 0; border-bottom: 1px solid var(--border-soft); font-size: 12px; cursor: pointer; }
+.aging-row:last-of-type { border-bottom: none; }
+.aging-row:hover .aging-id { text-decoration: underline; }
+.aging-id { font-family: ui-monospace, Menlo, monospace; font-weight: 700; color: var(--navy); flex: none; }
+.aging-cust { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--muted-dark); }
+.aging-row .status-pill { flex: none; }
+.aging-days { flex: none; font-weight: 800; font-size: 11px; padding: 2px 8px; border-radius: 999px; font-variant-numeric: tabular-nums; }
+.aging-days.warn { background: var(--amber-bg); color: var(--amber-text); }
+.aging-days.late { background: var(--red-bg); color: var(--red-text); }
+.aging-empty { font-size: 12px; color: var(--green-text); background: var(--green-bg); border-radius: 8px; padding: 10px 12px; margin-top: 10px; }
+.aging-more { font-size: 11px; color: var(--muted-dark); margin-top: 8px; }
+
+.stocks-root table { table-layout: fixed; }
+.table-scroll th, .table-scroll td { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Order-stage badge colors now come from theme.css — the one fixed
+   palette shared by every screen, counter, and chart legend. */
+
+#courier-filter { padding: 9px 12px; border-radius: 9px; border: 1px solid var(--border-input); font-size: 12.5px; background: #fff; color: var(--slate); }
+.courier-pill { display: inline-block; font-size: 10.5px; font-weight: 700; padding: 3px 9px; border-radius: 999px; }
+.courier-jnt { background: #fee2e2; color: #b91c1c; }
+.courier-ninjavan { background: #ede9fe; color: #6d28d9; }
+.courier-unassigned { background: #f1f5f9; color: #64748b; }
+.size-badge { font-size: 11px; font-weight: 800; color: var(--slate); background: var(--slate-bg); border-radius: 6px; padding: 3px 9px; display: inline-block; min-width: 26px; text-align: center; }
+.multi-badge { font-size: 10px; font-weight: 700; color: var(--navy); background: #e0e7ff; border-radius: 6px; padding: 2px 7px; display: inline-block; }
+/* Multi-design orders: one sub-line per design. The Product and Size columns
+   both use this layout so each design lines up with its size across columns. */
+.multi-products { display: flex; flex-direction: column; gap: 6px; }
+.multi-product-line { display: flex; align-items: center; min-height: 22px; }
+.multi-qty .multi-product-line { justify-content: flex-end; }
+.panel-item-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 8px 10px; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 6px; }
+.panel-item-main { font-size: 12px; font-weight: 600; color: var(--slate); }
+.panel-item-meta { font-size: 11.5px; color: var(--muted-dark); font-weight: 600; white-space: nowrap; }
+
+/* Bulk action bar — appears when one or more orders are selected */
+#bulk-action-bar { display: none; align-items: center; gap: 10px; flex-wrap: wrap; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 10px; padding: 10px 14px; margin-bottom: 12px; }
+#bulk-action-bar.visible { display: flex; }
+.bulk-count { font-size: 12.5px; font-weight: 700; color: var(--navy); }
+#bulk-command { padding: 8px 11px; border-radius: 8px; border: 1px solid var(--border-input); font-size: 12.5px; background: #fff; color: var(--slate); }
+#bulk-action-bar .btn { padding: 8px 14px; font-size: 12.5px; }
+
+/* Confirmation modal card */
+.modal-card { background: var(--surface); border-radius: 12px; padding: 22px; width: 420px; max-width: 90%; }
+.modal-body { font-size: 13px; color: var(--slate); margin-top: 8px; line-height: 1.5; }
+#confirm-modal.open { display: flex !important; }
+#courier-modal.open { display: flex !important; }
+#waybill-courier-select { margin-top: 12px; width: 100%; padding: 8px 11px; border-radius: 8px; border: 1px solid var(--border-input); font-size: 12.5px; background: #fff; color: var(--slate); }
+
+.btn-block { width: 100%; box-sizing: border-box; justify-content: center; }

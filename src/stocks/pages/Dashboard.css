@@ -1,0 +1,176 @@
+/* Page-specific styles for the Dashboard.
+ *
+ * The <style> block from public/dashboard.html, copied verbatim (lines 12-179
+ * of that file). It is imported by Dashboard.jsx; the shared design system
+ * still lives in src/theme.css, which main.jsx imports once. Nothing here was
+ * rewritten, renamed or "improved" - this is a port.
+ */
+
+  .search-box { margin-bottom: 20px; }
+  .section-label { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.4px; margin: 26px 0 10px; }
+
+  /* ---- Page header row: title · search · actions, all on one line ---- */
+  .page-title-row { display: flex; align-items: flex-start; gap: 16px; flex-wrap: wrap; margin-bottom: 4px; }
+  .page-title-block { flex: none; }
+  .page-title-block .sub { margin-bottom: 7px; white-space: nowrap; }
+  .page-title-block #status { margin-bottom: 0; }
+  /* Search absorbs ALL the slack between the title and the actions — no
+     max-width, so it runs right up to the Stock Alerts button instead of
+     leaving dead space in the middle of the header. */
+  .header-search { flex: 1; min-width: 200px; margin-bottom: 0; }
+  .page-title-actions { display: flex; gap: 8px; align-items: center; flex: none; }
+  /* Below ~1100px the three-across header stops fitting: let the title keep
+     the top line and drop the search to its own full-width row underneath. */
+  @media (max-width: 1100px) {
+    .page-title-block .sub { white-space: normal; }
+    .header-search { order: 3; flex-basis: 100%; }
+  }
+
+  /* Alerts badge button. The colour and count carry the severity, so the
+     owner sees THAT something is wrong without the list taking up the
+     dashboard — red if anything is out of stock, amber if only low, green
+     when there's nothing to action. */
+  .alerts-btn { display: inline-flex; align-items: center; gap: 8px; font-size: 12.5px; font-weight: 700; padding: 9px 14px; border-radius: 8px; cursor: pointer; border: 1px solid var(--border-strong); background: var(--surface); color: var(--slate); font-family: inherit; transition: border-color 0.12s, background 0.12s; }
+  .alerts-btn:hover { border-color: var(--slate); }
+  .alerts-count { display: inline-flex; align-items: center; justify-content: center; min-width: 19px; height: 19px; padding: 0 6px; border-radius: 999px; font-size: 11px; font-weight: 800; color: #fff; background: var(--muted); }
+  .alerts-btn.sev-out { background: var(--red-bg); border-color: var(--red-border); color: var(--red-text); }
+  .alerts-btn.sev-out .alerts-count { background: var(--red); }
+  .alerts-btn.sev-low { background: var(--amber-bg); border-color: var(--amber); color: var(--amber-text); }
+  .alerts-btn.sev-low .alerts-count { background: var(--amber); }
+  .alerts-btn.sev-info { background: var(--blue-bg); border-color: var(--blue); color: var(--blue-text); }
+  .alerts-btn.sev-info .alerts-count { background: var(--blue); }
+  .alerts-btn.sev-none { background: var(--green-bg); border-color: #bbf7d0; color: var(--green-text); }
+  .alerts-btn.sev-none .alerts-count { display: none; }
+
+  /* ---- Drill-down KPI cards ----
+     A <button> rather than a div so it's keyboard-reachable and announced as
+     clickable; the reset strips the default button chrome so it still reads
+     as a card. */
+  .kpi-clickable { display: block; width: 100%; text-align: left; font: inherit; color: inherit;
+    cursor: pointer; -webkit-appearance: none; appearance: none;
+    transition: border-color 0.12s, box-shadow 0.12s, transform 0.12s; }
+  .kpi-clickable:hover { border-color: var(--navy); box-shadow: 0 4px 14px rgba(11,31,58,0.10); transform: translateY(-1px); }
+  .kpi-clickable:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .kpi-drill { font-size: 11px; font-weight: 700; color: var(--accent); margin-top: 9px; }
+
+  /* ---- Breakdown table popup ---- */
+  #table-modal.open { display: flex !important; }
+  .table-box { width: 640px; }
+  .table-modal-body { margin-top: 16px; max-height: 58vh; overflow-y: auto; }
+  .table-modal-body table { box-shadow: none; }
+  .table-modal-body td, .table-modal-body th { padding: 7px 12px; }
+  /* Signed movement columns reuse the status palette: green in, red out. */
+  .mv-in { color: var(--green); font-weight: 700; }
+  .mv-out { color: var(--red); font-weight: 700; }
+  .mv-zero { color: var(--muted); }
+  .tbl-total td { border-top: 2px solid var(--border-strong); font-weight: 800; background: var(--surface-tint); }
+  .tbl-empty { padding: 26px; text-align: center; color: var(--muted); font-size: 12.5px; }
+
+  /* ---- Alerts popup ---- */
+  #alerts-modal.open { display: flex !important; }
+  .alerts-box { width: 560px; }
+  .alerts-box-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+  .alerts-box-head .close-btn { float: none; position: static; }
+  .alerts-box-body { margin-top: 16px; max-height: 58vh; overflow-y: auto; }
+
+  /* ---- Dashboard sections ----
+     Finance / Orders / Stock are separate concerns, so each gets a banded
+     heading and a rule above it. The rule is what makes "money" visibly
+     stop and "order analytics" visibly start, instead of one long scroll
+     of cards where the reader has to work out which number is which kind. */
+  .dash-section { margin-top: 30px; padding-top: 22px; border-top: 2px solid var(--border); }
+  .dash-section.first { border-top: none; padding-top: 4px; margin-top: 20px; }
+  .dash-section-head { display: flex; align-items: center; gap: 11px; margin-bottom: 13px; }
+  .dash-section-icon { width: 30px; height: 30px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; flex: none; }
+  .dash-section-icon.money { background: var(--green-bg); color: var(--green-text); }
+  .dash-section-icon.orders { background: var(--blue-bg); }
+  .dash-section-icon.stock { background: var(--amber-bg); }
+  .dash-section-icon.inv { background: var(--slate-bg); }
+  .dash-section-title { font-size: 15.5px; font-weight: 800; letter-spacing: -0.1px; }
+  .dash-section-sub { font-size: 11.5px; color: var(--muted); margin-top: 1px; }
+
+  .panel-row { display: flex; gap: 14px; }
+  .legend { display: flex; gap: 16px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border-soft); font-size: 11.5px; color: var(--slate-soft); }
+  .legend span.dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
+
+  .alert-row { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px solid #f1f3f5; font-size: 12.5px; }
+  .alert-row:last-child { border-bottom: none; }
+
+  /* ---- Inventory Intelligence view ---- */
+  .intel-summary { font-size: 12px; color: var(--muted-dark); margin-top: 8px; }
+  /* Short plain-language caption under each chart/table. */
+  .chart-note { font-size: 11.5px; color: var(--muted-dark); line-height: 1.45; margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--border-soft); }
+
+  /* ---- Overall Movement: donut + click-to-select tier rows -------------
+     Replaces the old tier-card grid + stacked bar + legend (three places
+     showing the same four numbers) with one panel: a part-to-whole donut
+     on the left, and rows on the right that double as the legend AND the
+     tier selector driving the table below. Colors are the validated FSN
+     palette (see the movement-tier note in the JS) — every swatch here,
+     the donut ring, and the size-chart bars below all draw from the same
+     TIER_META so a tier is always the same color everywhere on this tab. */
+  .movement-row { display: flex; gap: 24px; align-items: center; margin-top: 14px; flex-wrap: wrap; }
+  .donut-wrap { position: relative; width: 210px; height: 210px; flex: none; }
+  .donut-wrap svg { width: 100%; height: 100%; overflow: visible; }
+  /* The size donut is a read-only breakdown, not a filter — no pointer. */
+  .donut-static .donut-seg { cursor: default; }
+  /* Selection cue is a stroke-width grow on the active wedge, never an
+     opacity dim on the rest — dimming looked right for one wedge but
+     washed the other three toward pale, low-chroma versions of
+     themselves, which brought back exactly the moderate/slow confusion
+     the validated palette was chosen to avoid. Full color, all the time;
+     the active wedge just reads slightly thicker. */
+  .donut-seg { cursor: pointer; transition: stroke-width 0.12s ease; }
+  .donut-seg.seg-active { stroke-width: 40; }
+  .donut-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; pointer-events: none; text-align: center; padding: 0 34px; box-sizing: border-box; }
+  .donut-total { font-size: 32px; font-weight: 800; color: var(--text); line-height: 1; }
+  /* A size name ("MEDIUM") needs to fit the same hole a 2-digit count does. */
+  .donut-total.is-text { font-size: 15px; letter-spacing: -0.1px; line-height: 1.15; overflow-wrap: anywhere; }
+  .donut-total-label { font-size: 9.5px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.3px; margin-top: 5px; }
+
+  /* max-width keeps each row's count next to its label — letting the list
+     stretch the full panel put "Fast Moving" and its number a screen apart. */
+  .tier-select { flex: 1; min-width: 230px; max-width: 420px; display: flex; flex-direction: column; gap: 2px; }
+  .tier-row { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 9px; cursor: pointer; user-select: none; border: 1px solid transparent; }
+  .tier-row:hover { background: var(--surface-tint); }
+  .tier-row.active { background: var(--surface-tint); border-color: var(--border-strong); }
+  .tier-row .dot { width: 11px; height: 11px; border-radius: 50%; flex: none; }
+  .tr-main { flex: 1; min-width: 0; }
+  .tr-top { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+  .tr-label { font-size: 12.5px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .tr-count { font-size: 16px; font-weight: 800; font-variant-numeric: tabular-nums; flex: none; }
+  .tr-sub { font-size: 11px; color: var(--muted-dark); margin-top: 1px; }
+  .tr-unit { font-size: 10.5px; font-weight: 600; color: var(--muted); margin-left: 2px; }
+  /* Size rows are a breakdown, not a selector — no hover/pointer affordance. */
+  .tier-row.static { cursor: default; }
+  .tier-row.static:hover { background: none; }
+  .tr-tag { font-size: 8.5px; font-weight: 800; letter-spacing: 0.4px; text-transform: uppercase; color: var(--blue-text); background: var(--blue-bg); border-radius: 999px; padding: 2px 7px; margin-left: 7px; vertical-align: 1px; }
+
+  .col-r { text-align: right; font-variant-numeric: tabular-nums; }
+
+  /* ---- Chart hover layer: crosshair + tooltip ----
+     A vertical hairline snaps to the nearest day, so the reader aims at a
+     date rather than at a 2px line, and one tooltip lists EVERY series at
+     that day — the pointer never has to land on a specific line to get a
+     value. The tooltip enhances but never gates: the axis ticks and the
+     end-of-line label keep every number readable without hovering. */
+  .chart-wrap { position: relative; }
+  .cx-capture { fill: transparent; cursor: crosshair; }
+  .cx-line { stroke: var(--border-strong); stroke-width: 1; pointer-events: none; }
+  .cx-dot { stroke: #fff; stroke-width: 2; pointer-events: none; }
+  .cx-layer { pointer-events: none; }
+
+  .chart-tip { position: absolute; z-index: 5; pointer-events: none; opacity: 0;
+    transition: opacity 0.1s ease; background: var(--navy-dark); color: #fff;
+    border-radius: 9px; padding: 9px 12px; font-size: 12px; white-space: nowrap;
+    box-shadow: 0 6px 20px rgba(15,23,42,0.22); }
+  .chart-tip.on { opacity: 1; }
+  .tip-date { font-size: 11px; font-weight: 600; color: var(--nav-muted); margin-bottom: 7px; }
+  .tip-row { display: flex; align-items: center; gap: 8px; }
+  .tip-row + .tip-row { margin-top: 5px; }
+  /* A short stroke keys the series — at tooltip density a filled swatch is
+     data-weight ink doing a label's job. */
+  .tip-key { width: 14px; height: 2px; border-radius: 2px; flex: none; }
+  .tip-name { color: #c3cbd6; }
+  /* Value leads, name follows: the reader already knows the series here. */
+  .tip-val { font-weight: 800; margin-left: 14px; font-variant-numeric: tabular-nums; }

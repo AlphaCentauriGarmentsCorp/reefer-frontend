@@ -1,0 +1,375 @@
+/* ============================================================
+   ASH ERP — Shared Theme
+   Single source of truth for colors, layout, and components
+   used across dashboard.html, catalog.html, orders.html and
+   inventory.html. Page-specific rules stay in each page's own
+   <style> block; anything reused across 2+ pages lives here.
+   ============================================================ */
+
+:root {
+  /* brand */
+  --navy-dark: #0b1220;   /* sidebar background */
+  --navy: #0b1f3a;        /* primary action / table header */
+  --navy-light: #13314f;  /* active nav item */
+  --accent: #0891b2;      /* cyan accent action */
+  --accent-soft: #7fa8d9; /* muted cyan for sidebar sub-text */
+
+  /* neutrals */
+  --bg: #f4f5f7;
+  --text: #0f172a;
+  --slate: #334155;
+  --slate-soft: #475569;
+  --muted: #94a3b8;
+  --muted-dark: #64748b;
+  --nav-muted: #9aabc2;
+  --nav-muted-dark: #7c93ad;
+  --nav-label: #5b6b82;
+  --border: #e6e8ec;
+  --border-soft: #f0f1f3;
+  --border-input: #e2e6ec;
+  --border-strong: #d7dbe2;
+  --surface: #fff;
+  --surface-tint: #f8fafc;
+
+  /* status colors — the fixed 4-color system. Each hue carries ONE meaning
+     everywhere in the product:
+       RED   = needs attention right now (out of stock, cancelled, negative trend)
+       AMBER = in progress, watch closely (low stock, In Process, To Pickup)
+       BLUE  = informational, moving along (New, Shipped, live-sync dot)
+       GREEN = healthy / done (Completed, positive trend)
+     Never add a second red/amber/blue/green for a different meaning. */
+  --green-bg: #dcfce7;  --green-text: #166534;  --green: #16a34a;
+  --red-bg: #fee2e2;    --red-text: #991b1b;    --red: #dc2626;    --red-border: #fca5a5;
+  --amber: #d97706;
+  --amber-bg: #fef3c7;  --amber-text: #92400e;
+  --blue: #2563eb;
+  --blue-bg: #dbeafe;   --blue-text: #1e40af;
+  /* legacy aliases kept for existing selectors; visually they now sit inside
+     the four families above rather than adding new hues */
+  --orange: #d97706;
+  --orange-bg: #fff7ed; --orange-border: #fed7aa; --orange-text: #9a3412;
+  --yellow-bg: #fef9c3; --yellow-text: #854d0e;
+  --indigo-bg: #e0e7ff; --indigo-text: #3730a3;
+  --slate-bg: #f1f5f9;
+}
+
+/* ---------- base ---------- */
+.stocks-root {
+  font-family: -apple-system, "Segoe UI", Arial, sans-serif;
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  height: 100vh;
+}
+
+.stocks-root h1 { font-size: 20px; margin: 0 0 4px; }
+p.sub { color: var(--muted-dark); font-size: 13px; margin: 0 0 20px; }
+
+/* ---------- sidebar / nav ---------- */
+.sidebar { width: 230px; flex: none; background: var(--navy-dark); color: #fff; padding: 18px 14px; }
+.logo-row { display: flex; align-items: center; gap: 10px; padding: 2px 4px 16px; }
+.logo-box { width: 34px; height: 34px; border-radius: 9px; background: linear-gradient(135deg, var(--accent), var(--navy)); display: flex; align-items: center; justify-content: center; font-size: 16px; flex: none; }
+.brand { font-size: 13.5px; font-weight: 800; line-height: 1.2; }
+.brand-sub { font-size: 9px; color: var(--accent-soft); text-transform: uppercase; letter-spacing: 0.6px; margin-top: 1px; }
+.sidebar-divider { border-top: 1px solid rgba(255,255,255,0.08); margin: 0 0 12px; }
+.nav-section-label { font-size: 10px; font-weight: 700; color: var(--nav-label); text-transform: uppercase; letter-spacing: 0.5px; margin: 16px 6px 6px; }
+.sidebar .nav-item { display: flex; align-items: center; gap: 9px; padding: 8px 10px; border-radius: 8px; color: var(--nav-muted); font-size: 12.5px; font-weight: 600; text-decoration: none; margin-bottom: 2px; cursor: pointer; }
+.sidebar .nav-item .icon { font-size: 13px; width: 15px; text-align: center; flex: none; }
+.sidebar .nav-item:hover { background: rgba(255,255,255,0.05); color: #fff; }
+.sidebar .nav-item.active { background: var(--navy-light); color: #fff; font-weight: 700; }
+.sidebar .nav-subitem { display: block; padding: 7px 10px 7px 32px; border-radius: 8px; color: var(--nav-muted-dark); font-size: 11.5px; font-weight: 600; text-decoration: none; margin-bottom: 2px; }
+.sidebar .nav-subitem:hover { background: rgba(255,255,255,0.05); color: #fff; }
+.sidebar .nav-subitem.active { background: rgba(255,255,255,0.12); color: #fff; }
+
+/* Collapsible subitem groups (see js/sidebar-nav.js). The caret sits inside
+   its parent .nav-item — margin-left:auto pushes it to the far right without
+   needing to touch .nav-item's own layout rules. */
+.nav-caret { margin: -6px -6px -6px auto; padding: 6px; font-size: 9px; opacity: 0.6; transition: transform 0.18s ease; flex: none; }
+.nav-caret.collapsed { transform: rotate(-90deg); }
+.nav-subitems { overflow: hidden; max-height: 300px; transition: max-height 0.2s ease; }
+.nav-subitems.collapsed { max-height: 0; }
+
+/* ---------- sidebar user card (bottom of nav, injected by auth-guard.js) ---------- */
+.sidebar-user { display: flex; align-items: center; gap: 9px; margin-top: 14px; padding: 9px; border-radius: 10px; background: rgba(255,255,255,0.04); }
+.sidebar-avatar { width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--navy-light)); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; color: #fff; flex: none; }
+.sidebar-user-info { flex: 1; min-width: 0; }
+.sidebar-user-name { font-size: 12px; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sidebar-user-role { font-size: 9.5px; color: var(--nav-muted-dark); text-transform: uppercase; letter-spacing: 0.4px; margin-top: 1px; }
+.sidebar-logout-btn { background: none; border: none; color: var(--nav-muted); cursor: pointer; font-size: 14px; padding: 6px; border-radius: 6px; flex: none; line-height: 1; }
+.sidebar-logout-btn:hover { background: rgba(255,255,255,0.08); color: #fff; }
+
+/* ---------- main content shell ---------- */
+/* min-width: 0 overrides the flex default of min-width: auto — without it,
+   a flex item refuses to shrink below its content's natural width (here, a
+   wide table), so narrowing the window pushes the whole page wider instead
+   of the table developing its own scrollbar. This is what caused the
+   sidebar/table overlap when the browser window was made narrow. */
+.main { flex: 1; min-width: 0; overflow-y: auto; padding: 26px 30px; transition: margin-right 0.15s ease; }
+.main.panel-open { margin-right: 320px; }
+
+/* Wrap a wide table in this so it scrolls horizontally within its own box
+   instead of overflowing the page (which is what pushed the sidebar off
+   when the window got narrow). */
+.table-scroll { overflow-x: auto; }
+
+/* ---------- connection status banner (legacy pages) ---------- */
+#status { font-size: 12.5px; padding: 9px 13px; border-radius: 8px; margin-bottom: 16px; }
+.status-ok { background: var(--green-bg); color: var(--green-text); }
+.status-error { background: var(--red-bg); color: var(--red-text); }
+
+/* ---------- live-sync status dot (replaces the wide banner) ----------
+   A quiet one-line indicator: blue pulsing dot + "last synced Xs ago".
+   Red dot + "Reconnecting…" when the feed drops. See js/sync-status.js. */
+#status.sync-line { padding: 0; margin-bottom: 14px; background: none; }
+.sync-line { display: flex; align-items: center; gap: 7px; font-size: 12px; color: var(--muted-dark); min-height: 18px; }
+.sync-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--blue); flex: none; animation: sync-pulse 2.4s infinite; }
+.sync-dot.err { background: var(--red); animation: none; }
+.sync-line.err { color: var(--red-text); font-weight: 600; }
+@keyframes sync-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(37,99,235,0.35); }
+  70% { box-shadow: 0 0 0 6px rgba(37,99,235,0); }
+  100% { box-shadow: 0 0 0 0 rgba(37,99,235,0); }
+}
+
+/* ---------- search box ---------- */
+.search-box { display: flex; align-items: center; gap: 8px; background: var(--surface); border: 1px solid var(--border-input); border-radius: 10px; padding: 12px 15px; }
+.search-box input { border: none; outline: none; font-size: 13px; flex: 1; background: transparent; }
+
+/* ---------- toolbar row (search + filter + actions) ---------- */
+.toolbar { display: flex; gap: 10px; align-items: center; }
+.toolbar .search-box { border-radius: 9px; padding: 9px 13px; flex: 1; max-width: 360px; }
+.toolbar .search-box input { font-size: 12.5px; }
+.stocks-root select { padding: 9px 12px; border-radius: 9px; border: 1px solid var(--border-input); font-size: 12.5px; background: var(--surface); color: var(--slate); }
+
+.count-label { font-size: 11.5px; color: var(--muted); margin: 14px 0 8px; }
+
+/* ---------- KPI cards ---------- */
+.kpi-grid, .kpi-row { display: grid; gap: 12px; }
+.kpi-grid { grid-template-columns: repeat(4, 1fr); }
+.kpi-row { grid-template-columns: repeat(3, 1fr); margin-bottom: 20px; }
+.kpi-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 15px; }
+.kpi-link { display: block; text-decoration: none; color: inherit; cursor: pointer; transition: border-color 0.12s, box-shadow 0.12s, transform 0.12s; }
+.kpi-link:hover { border-color: var(--navy); box-shadow: 0 4px 14px rgba(11,31,58,0.10); transform: translateY(-1px); }
+.kpi-label { font-size: 10.5px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.3px; }
+.kpi-value { font-size: 22px; font-weight: 800; margin-top: 7px; }
+.kpi-value.c-green { color: var(--green); }
+.kpi-value.c-orange { color: var(--orange); }
+.kpi-value.c-red { color: var(--red); }
+.kpi-value.c-navy { color: var(--navy); }
+
+/* ---------- panels (dashboard trend / alerts) ---------- */
+.panel { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px; }
+.panel-title { font-size: 14.5px; font-weight: 700; }
+.panel-sub { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
+
+/* ---------- data table ---------- */
+/* Row padding is deliberately tight (8px): staff scan hundreds of orders and
+   SKUs a day, so density savings compound. Long lists also zebra-stripe and
+   keep a sticky header (see the polish section below). */
+.stocks-root table { width: 100%; border-collapse: collapse; background: var(--surface); border-radius: 10px; overflow: hidden; }
+.stocks-root th, .stocks-root td { text-align: left; padding: 8px 12px; font-size: 12.5px; border-bottom: 1px solid var(--border-soft); }
+.stocks-root th { background: var(--navy); color: #fff; font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.3px; }
+tr:last-child td { border-bottom: none; }
+tr.data-row:hover { background: var(--surface-tint); cursor: pointer; }
+
+/* numeric columns read right-aligned with lining figures */
+.col-num, .col-r { text-align: right; font-variant-numeric: tabular-nums; }
+
+/* zebra-stripe the long list tables (anything wrapped in .table-scroll) */
+.table-scroll table tbody tr:nth-child(even):not(:hover) { background: #fafbfd; }
+
+/* generic status pill (page CSS adds its own color modifiers) */
+.status-pill { display: inline-block; font-size: 10.5px; font-weight: 700; padding: 3px 10px; border-radius: 999px; border: none; cursor: pointer; }
+
+/* ---------- order-stage badges — the one true palette ----------
+   Stage → color family (see the token block at the top):
+   New/Shipped = blue (moving along) · In Process/To Pickup = amber (watch)
+   Completed = green (done) · Cancelled = red (attention). Used in table rows,
+   the pipeline stepper, dashboard counters, and chart legends alike. */
+.status-new { background: var(--blue-bg); color: var(--blue-text); }
+.status-in_process { background: var(--amber-bg); color: var(--amber-text); }
+.status-to_pickup { background: var(--amber-bg); color: var(--amber-text); }
+.status-shipped { background: var(--blue-bg); color: var(--blue-text); }
+.status-completed { background: var(--green-bg); color: var(--green-text); }
+.status-cancelled { background: var(--red-bg); color: var(--red-text); }
+/* Returns: a pending request is "watch closely" (amber); an approved return
+   is a settled, terminal state — neutral slate so it never reads as the
+   cancelled-red alarm. */
+.status-return_requested { background: var(--amber-bg); color: var(--amber-text); }
+.status-returned { background: var(--slate-bg); color: var(--slate); }
+
+/* ---------- slide-in detail panel (orders / inventory) ---------- */
+.detail-panel { position: fixed; top: 0; right: -340px; width: 320px; height: 100%; background: var(--surface); box-shadow: -4px 0 16px rgba(0,0,0,0.08); padding: 24px 20px; box-sizing: border-box; transition: right 0.15s ease; overflow-y: auto; }
+.detail-panel.open { right: 0; }
+.detail-panel .close-btn { float: right; cursor: pointer; color: var(--muted); font-size: 18px; border: none; background: none; }
+.detail-panel .stat-row { display: flex; gap: 12px; margin-top: 18px; }
+.detail-panel .stat-box { flex: 1; background: var(--surface-tint); border-radius: 9px; padding: 10px 12px; }
+.detail-panel .stat-label { font-size: 10px; color: var(--muted); text-transform: uppercase; }
+.detail-panel .stat-value { font-size: 18px; font-weight: 800; margin-top: 4px; }
+.detail-panel .stat-input { width: 100%; border: 1px solid var(--border-strong); border-radius: 6px; padding: 4px 6px; box-sizing: border-box; font-size: 18px; font-weight: 800; }
+
+/* ---------- buttons ---------- */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-size: 12.5px; font-weight: 600; padding: 9px 14px; border-radius: 8px; cursor: pointer; border: 1px solid transparent; text-decoration: none; box-sizing: border-box; }
+.btn:hover { opacity: 0.92; }
+.btn-primary { background: var(--navy); color: #fff; font-weight: 700; }
+.btn-accent { background: var(--accent); color: #fff; font-weight: 700; }
+.btn-outline { background: var(--surface); border-color: var(--border-strong); color: var(--slate); }
+.btn-outline-danger { background: var(--surface); border-color: var(--red-border); color: var(--red); }
+.btn-block { width: 100%; }
+.btn-flex { flex: 1; }
+
+/* ---------- modal overlay (inventory import) ---------- */
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15,23,42,0.4); align-items: center; justify-content: center; z-index: 10; }
+.modal-box { background: var(--surface); border-radius: 12px; padding: 22px; width: 520px; max-width: 90%; }
+.modal-title { font-size: 15px; font-weight: 700; }
+.modal-desc { font-size: 12px; color: var(--muted-dark); margin-top: 4px; }
+.modal-textarea { width: 100%; box-sizing: border-box; min-height: 140px; margin-top: 12px; font-family: ui-monospace, Menlo, monospace; font-size: 12px; padding: 10px; border: 1.5px solid var(--border-strong); border-radius: 8px; resize: vertical; }
+.modal-actions { display: flex; gap: 10px; margin-top: 14px; }
+
+/* ============================================================
+   Additions — activity log, confirm dialog, analytics range,
+   editable cells, and general polish. Appended so existing
+   selectors above keep working unchanged.
+   ============================================================ */
+
+/* ---------- general polish ---------- */
+.main { padding: 28px 32px 40px; }
+.stocks-root h1 { font-size: 21px; letter-spacing: -0.2px; }
+.kpi-card, .panel, .queue-card { transition: border-color 0.12s ease, box-shadow 0.12s ease; }
+.kpi-card:hover, .panel:hover { border-color: var(--border-strong); }
+.stocks-root table { box-shadow: 0 1px 2px rgba(15,23,42,0.04); }
+.stocks-root th { position: sticky; top: 0; z-index: 1; }
+tr.data-row:hover { background: var(--surface-tint); }
+.btn { transition: opacity 0.12s ease, transform 0.06s ease; }
+.btn:active { transform: scale(0.985); }
+.search-box:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(8,145,178,0.10); }
+input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); }
+
+/* ---------- section headings ---------- */
+.section-label { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.4px; margin: 26px 0 10px; }
+
+/* ---------- date range / analytics bar ---------- */
+.range-bar { display: flex; align-items: flex-end; gap: 10px; flex-wrap: wrap; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; }
+.range-field { display: flex; flex-direction: column; gap: 5px; }
+.range-field label { font-size: 10.5px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.3px; }
+.range-field input[type="date"] { padding: 8px 10px; border: 1px solid var(--border-input); border-radius: 8px; font-size: 12.5px; color: var(--slate); background: var(--surface); font-family: inherit; }
+.range-presets { display: flex; gap: 6px; flex-wrap: wrap; }
+.preset-btn { background: var(--surface); border: 1px solid var(--border-input); color: var(--slate-soft); font-size: 11.5px; font-weight: 600; padding: 7px 12px; border-radius: 999px; cursor: pointer; }
+.preset-btn:hover { border-color: var(--border-strong); }
+.preset-btn.active { background: var(--navy); color: #fff; border-color: var(--navy); }
+.range-spacer { flex: 1; }
+
+/* ---------- editable table cell ---------- */
+.cell-edit { display: inline-flex; align-items: center; gap: 6px; }
+.cell-edit-btn { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 12px; padding: 2px 4px; border-radius: 5px; opacity: 0; }
+tr:hover .cell-edit-btn { opacity: 1; }
+.cell-edit-btn:hover { background: var(--slate-bg); color: var(--slate); }
+.price-input { width: 88px; padding: 5px 8px; border: 1.5px solid var(--accent); border-radius: 6px; font-size: 12.5px; font-family: inherit; }
+
+/* ---------- confirm dialog ---------- */
+.confirm-box { background: var(--surface); border-radius: 12px; padding: 22px; width: 440px; max-width: 90%; }
+.confirm-title { font-size: 15px; font-weight: 700; }
+.confirm-desc { font-size: 12px; color: var(--muted-dark); margin-top: 4px; }
+.diff-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; background: var(--surface-tint); border-radius: 8px; margin-top: 12px; font-size: 12.5px; }
+.diff-old { color: var(--muted-dark); text-decoration: line-through; }
+.diff-arrow { color: var(--muted); margin: 0 8px; }
+.diff-new { font-weight: 800; color: var(--navy); }
+.diff-delta { font-size: 11.5px; font-weight: 700; padding: 2px 8px; border-radius: 999px; }
+.delta-up { background: var(--green-bg); color: var(--green-text); }
+.delta-down { background: var(--red-bg); color: var(--red-text); }
+.confirm-meta { font-size: 12px; color: var(--slate-soft); margin-top: 12px; line-height: 1.6; }
+.confirm-meta strong { color: var(--slate); }
+
+/* ---------- reason form ---------- */
+.reason-label { font-size: 10.5px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.3px; margin: 14px 0 6px; }
+.reason-select { width: 100%; box-sizing: border-box; }
+.reason-notes { width: 100%; box-sizing: border-box; padding: 9px 11px; border: 1.5px solid var(--border-strong); border-radius: 8px; font-size: 12.5px; font-family: inherit; resize: vertical; min-height: 62px; }
+
+/* ---------- activity log ---------- */
+.log-field-pill { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 999px; text-transform: uppercase; letter-spacing: 0.3px; }
+.log-available { background: var(--blue-bg); color: var(--blue-text); }
+.log-price { background: var(--indigo-bg); color: var(--indigo-text); }
+.log-active { background: var(--slate-bg); color: var(--slate); }
+.log-marketplace { background: #fff1e8; color: #c2410c; }
+.log-deleted { background: var(--red-bg); color: var(--red-text); }
+.log-delta { font-weight: 800; font-family: ui-monospace, Menlo, monospace; font-size: 12px; }
+.log-ts { font-family: ui-monospace, Menlo, monospace; font-size: 11.5px; color: var(--muted-dark); }
+.log-empty { padding: 26px; text-align: center; color: var(--muted); font-size: 12.5px; }
+
+/* ---------- misc ---------- */
+.pill-muted { display: inline-block; background: var(--slate-bg); color: var(--muted-dark); font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 999px; }
+.empty-state { padding: 34px; text-align: center; color: var(--muted); font-size: 13px; background: var(--surface); border: 1px dashed var(--border-strong); border-radius: 12px; }
+
+/* ---------- pill tabs (orders, inventory, admin) ---------- */
+.tabs { display: flex; gap: 8px; margin: 18px 0 16px; flex-wrap: wrap; }
+.tab { background: var(--surface); border: 1px solid var(--border-input); color: var(--slate-soft); font-size: 12px; font-weight: 600; padding: 8px 14px; border-radius: 999px; cursor: pointer; user-select: none; }
+.tab:hover { border-color: var(--border-strong); }
+.tab.active { background: var(--navy); color: #fff; border-color: var(--navy); }
+.tab .count { opacity: 0.7; margin-left: 5px; }
+
+/* ============================================================
+   Redesign components — KPI metric cards, pipeline stepper,
+   severity-coded alerts. All of them reuse ONLY the fixed
+   4-color system defined at the top of this file.
+   ============================================================ */
+
+/* ---------- KPI metric card v2 (icon + label + figure + trend) ---------- */
+/* The colored top edge and the trend arrow reuse the status palette:
+   green = positive change, red = negative, neutral dot = informational. */
+.kpi-edge-green { border-top: 3px solid var(--green); }
+.kpi-edge-blue { border-top: 3px solid var(--blue); }
+.kpi-edge-amber { border-top: 3px solid var(--amber); }
+.kpi-edge-red { border-top: 3px solid var(--red); }
+.kpi-icon { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; margin-bottom: 9px; }
+.kpi-icon.ic-green { background: var(--green-bg); color: var(--green-text); }
+.kpi-icon.ic-blue { background: var(--blue-bg); color: var(--blue-text); }
+.kpi-icon.ic-amber { background: var(--amber-bg); color: var(--amber-text); }
+.kpi-note { font-size: 11px; color: var(--muted); margin-top: 3px; line-height: 1.4; }
+.kpi-trend { display: flex; align-items: center; gap: 5px; font-size: 11.5px; font-weight: 700; margin-top: 11px; padding-top: 9px; border-top: 1px solid var(--border-soft); }
+.kpi-trend.up { color: var(--green); }
+.kpi-trend.down { color: var(--red); }
+.kpi-trend.flat { color: var(--muted-dark); font-weight: 600; }
+
+/* ---------- live pipeline stepper ---------- */
+/* One glanceable strip New → In Process → To Pickup → Shipped → Completed.
+   The bar under each stage is sized relative to its count, so the widest
+   bar is visibly the current bottleneck — no mental math required. */
+.stepper { display: flex; align-items: stretch; gap: 6px; flex-wrap: wrap; }
+.step { position: relative; flex: 1; min-width: 92px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px 12px; text-decoration: none; color: inherit; cursor: pointer; user-select: none; transition: border-color 0.12s, box-shadow 0.12s, transform 0.12s; }
+.step:hover { border-color: var(--navy); box-shadow: 0 4px 14px rgba(11,31,58,0.10); transform: translateY(-1px); }
+.step.active { border-color: var(--navy); box-shadow: 0 0 0 2px var(--navy) inset, 0 4px 14px rgba(11,31,58,0.14); }
+.step-label { font-size: 9.5px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.3px; white-space: nowrap; }
+.step-count { font-size: 19px; font-weight: 800; margin-top: 3px; line-height: 1.15; color: var(--navy); }
+.step-load { height: 5px; border-radius: 999px; background: var(--border-soft); margin-top: 9px; overflow: hidden; }
+.step-load i { display: block; height: 100%; border-radius: 999px; background: var(--navy); }
+.step-arrow { align-self: center; color: var(--muted); font-size: 11px; flex: none; }
+.step-divider { width: 1px; background: var(--border-strong); margin: 6px 4px; flex: none; }
+/* stage colors — same families as the badges */
+.step-blue .step-count { color: var(--blue); }   .step-blue .step-load i { background: var(--blue); }
+.step-amber .step-count { color: var(--amber); } .step-amber .step-load i { background: var(--amber); }
+.step-green .step-count { color: var(--green); } .step-green .step-load i { background: var(--green); }
+.step-red .step-count { color: var(--red); }     .step-red .step-load i { background: var(--red); }
+.step-slate .step-count { color: var(--slate-soft); } .step-slate .step-load i { background: var(--slate-soft); }
+/* zero-count stages stay visible but recede so the eye lands on real work */
+.step-empty:not(.active) { background: var(--surface-tint); }
+.step-empty:not(.active) .step-count { color: var(--muted); }
+/* "LARGEST QUEUE" flag on the stage where orders are piling up */
+.step-tag { position: absolute; top: -9px; left: 10px; background: var(--amber); color: #fff; font-size: 8.5px; font-weight: 800; letter-spacing: 0.4px; padding: 2px 7px; border-radius: 999px; text-transform: uppercase; white-space: nowrap; }
+
+/* ---------- severity-coded alert rows ---------- */
+/* Red = act now (out of stock) · Amber = watch closely (low stock) ·
+   Blue = informational. The colored left bar + badge let staff triage the
+   list in one pass instead of reading every line. */
+.alert-sev { display: flex; align-items: flex-start; gap: 10px; padding: 9px 12px; border-left: 3px solid; border-radius: 8px; margin-bottom: 8px; font-size: 12.5px; }
+.alert-sev:last-child { margin-bottom: 0; }
+.alert-sev .ic { flex: none; font-size: 13px; line-height: 1.5; }
+.alert-badge { display: inline-block; font-size: 9px; font-weight: 800; letter-spacing: 0.5px; padding: 2px 8px; border-radius: 999px; text-transform: uppercase; color: #fff; }
+.alert-sev.sev-out { background: var(--red-bg); border-color: var(--red); }
+.alert-sev.sev-out .alert-badge { background: var(--red); }
+.alert-sev.sev-low { background: var(--amber-bg); border-color: var(--amber); }
+.alert-sev.sev-low .alert-badge { background: var(--amber); }
+.alert-sev.sev-info { background: var(--blue-bg); border-color: var(--blue); }
+.alert-sev.sev-info .alert-badge { background: var(--blue); }
+.alert-name { font-weight: 700; margin-top: 3px; }
+.alert-detail { font-size: 11.5px; color: var(--slate-soft); margin-top: 1px; }
