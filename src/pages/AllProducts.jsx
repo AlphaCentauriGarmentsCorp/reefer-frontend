@@ -264,7 +264,12 @@ export default function AllProducts() {
         ) : (
           <div
             aria-busy={busy}
-            style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: 28, opacity: busy ? 0.45 : 1, transition: "opacity 0.18s" }}
+            /* Columns and gap live in .rf-products-grid (index.css). They have to:
+               the phone rule forces 2-up, because the desktop floor of 300px
+               collapses to a single full-width card below ~640px — and an inline
+               value cannot be overridden by a media query. */
+            className="rf-products-grid"
+            style={{ opacity: busy ? 0.45 : 1, transition: "opacity 0.18s" }}
           >
             {shown.map((item) => (
               <ProductTile key={item.slug} item={item} corner={item.typeLabel} />
