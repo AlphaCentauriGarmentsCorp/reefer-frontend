@@ -107,7 +107,10 @@ export default function Shop() {
       {/* Shop by collection */}
       <section style={{ maxWidth: 1440, margin: "0 auto", padding: "8px 32px 100px" }}>
         <span style={{ fontWeight: 900, fontSize: 12, letterSpacing: "0.22em", color: "#F97B0C" }}>SHOP BY COLLECTION</span>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, marginTop: 14 }}>
+        {/* Columns and gap live in .rf-collection-grid (index.css) so a media
+            query can drop this to 2-up on phones — an inline value could not be
+            overridden. Three across a 320px screen left ~70px per tile. */}
+        <div className="rf-collection-grid" style={{ marginTop: 14 }}>
           {COLLECTIONS.map((c) => (
             <CollectionTile key={c.title} c={c} />
           ))}

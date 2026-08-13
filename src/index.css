@@ -531,3 +531,78 @@ body::after {
     padding-left: 24px !important;
   }
 }
+
+/* ---------------------------------------------------------------------------
+ * Mobile grids: collection tiles and the product catalogue
+ *
+ * Both grids used to carry their columns as an INLINE style, which no media
+ * query can reach — inline wins over a stylesheet. So the column definition
+ * lives here and the inline `gridTemplateColumns` was removed from Shop.jsx and
+ * AllProducts.jsx rather than fought with `!important`. The card's own type and
+ * padding moved out for the same reason: at half width the inline 23px name and
+ * 20px padding overflowed a ~140px card.
+ * ------------------------------------------------------------------------- */
+
+.rf-collection-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.rf-products-grid {
+  display: grid;
+  /* auto-fill so a wide screen keeps filling rows; the floor is what decides
+     how many fit, and 300px is comfortably a desktop card. */
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 28px;
+}
+
+/* Card internals, at their desktop sizes. Overridden below. */
+.rf-dropcard-body {
+  padding: 20px;
+  gap: 12px;
+}
+.rf-dropcard-name {
+  font-size: 23px;
+}
+.rf-dropcard-price {
+  font-size: 18px;
+}
+.rf-dropcard-blurb {
+  font-size: 14px;
+}
+
+@media (max-width: 767px) {
+  /* Three collection tiles across a 320px screen left ~70px each — narrower
+     than the word "COLLECTION" at any readable size, so every label wrapped
+     into a stack of fragments. Two across roughly doubles the tile. */
+  .rf-collection-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  /* Forced to 2, not auto-fill: a 300px floor collapses to a single column
+     below ~640px, which is what made each card fill the whole screen. */
+  .rf-products-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .rf-dropcard-body {
+    padding: 12px;
+    gap: 8px;
+  }
+  .rf-dropcard-name {
+    font-size: 16px;
+    line-height: 1.1;
+  }
+  .rf-dropcard-price {
+    font-size: 14px;
+  }
+  /* The blurb is a full sentence; at half width it costs more vertical space
+     than the photo and pushes the price and button below the fold. The product
+     page carries the same copy. */
+  .rf-dropcard-blurb {
+    display: none;
+  }
+}
